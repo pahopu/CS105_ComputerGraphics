@@ -31,12 +31,12 @@
 
 | STT    | MSSV          | Họ và Tên                |Vai trò    | Github                                          | Email                   |
 | :----: |:-------------:| :-----------------------:|:---------:|:-----------------------------------------------:|:-------------------------:
-| 1      | 20520278      | Phạm Hoàng Phúc          |Trưởng nhóm|[pahopu](https://github.com/pahopu)              |20520278@gm.uit.edu.vn   |
-| 2      | 20520795      | Nguyễn Minh Thuận        |Thành viên |[thuwpink](https://github.com/thuwpink)          |20520795@gm.uit.edu.vn   |
-| 3      | 20521663      | Nguyễn Đặng Bảo Ngọc     |Thành viên |[hnvkhanh](https://github.com/hnvkhanh)          |20521663@gm.uit.edu.vn   |
+| 1      | 20520278      | Phạm Hoàng Phúc          | Trưởng nhóm| [pahopu](https://github.com/pahopu)              | 20520278@gm.uit.edu.vn   |
+| 2      | 20520795      | Nguyễn Minh Thuận        | Thành viên | 404 Not Found         | 20520795@gm.uit.edu.vn   |
+| 3      | 20521663      | Nguyễn Đặng Bảo Ngọc     | Thành viên | [ngocndb03](https://github.com/ngocndb03)          | 20521663@gm.uit.edu.vn   |
 
 ## [THÔNG TIN SEMINAR](#top)
-* **Tên seminar:** 3D model cùng các phép biến đổi và animation
+* **Tên seminar:** Tạo animation cho 3D model với các phép biến đổi cơ bản trong đồ họa máy tính
 * **Ngôn ngữ lập trình:** HTML, JavaScript
 
 ## [CÁC BƯỚC CẦN THIẾT](#top)
@@ -63,5 +63,3 @@ Sau khi cài đặt thư viện, dùng câu lệnh dưới đây để chạy co
 ```bash
 npx vite
 ```
-
-Để trình duyệt tự động mở web, ta nhấn nút ```o``` và để kết thúc quá trình chạy, ta nhấn nút ```q```.

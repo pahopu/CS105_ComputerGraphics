@@ -31,9 +31,9 @@
 
 | STT    | MSSV          | Họ và Tên                |Vai trò    | Github                                          | Email                   |
 | :----: |:-------------:| :-----------------------:|:---------:|:-----------------------------------------------:|:-------------------------:
-| 1      | 20520278      | Phạm Hoàng Phúc          | Trưởng nhóm| [pahopu](https://github.com/pahopu)              | 20520278@gm.uit.edu.vn   |
-| 2      | 20520795      | Nguyễn Minh Thuận        | Thành viên | 404 Not Found         | 20520795@gm.uit.edu.vn   |
-| 3      | 20521663      | Nguyễn Đặng Bảo Ngọc     | Thành viên | [ngocndb03](https://github.com/ngocndb03)          | 20521663@gm.uit.edu.vn   |
+| 1      | 20520278      | Phạm Hoàng Phúc          | Trưởng nhóm| [pahopu](https://github.com/pahopu)            | 20520278@gm.uit.edu.vn   |
+| 2      | 20520795      | Nguyễn Minh Thuận        | Thành viên | [ThuanE3691](https://github.com/ThuanE3691)    | 20520795@gm.uit.edu.vn   |
+| 3      | 20521663      | Nguyễn Đặng Bảo Ngọc     | Thành viên | [ngocndb03](https://github.com/ngocndb03)      | 20521663@gm.uit.edu.vn   |
 
 ## [THÔNG TIN SEMINAR](#top)
 * **Tên seminar:** Tạo animation cho 3D model với các phép biến đổi cơ bản trong đồ họa máy tính

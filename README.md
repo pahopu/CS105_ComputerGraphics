@@ -11,8 +11,8 @@
 
 [![Status](https://img.shields.io/badge/status-working-blue?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
 [![GitHub contributors](https://img.shields.io/github/contributors/pahopu/CS105_3DAnimation?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation/graphs/contributors)
-[![Status](https://img.shields.io/badge/language2-html-orange?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
-[![Status](https://img.shields.io/badge/language4-javascript-yellow?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
+[![Status](https://img.shields.io/badge/language1-html-orange?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
+[![Status](https://img.shields.io/badge/language2-javascript-yellow?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
 
 ## [BẢNG MỤC LỤC](#top)
 * [Giới thiệu môn học](#giới-thiệu-môn-học)

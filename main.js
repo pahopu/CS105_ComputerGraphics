@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import Stats from 'three/addons/libs/stats.module.js'
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js'
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const model_path = 'static/mutant/model.fbx';
 const anim_paths = [

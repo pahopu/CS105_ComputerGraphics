@@ -50,7 +50,7 @@ git clone https://github.com/pahopu/CS105_3DAnimation.git
 ```
 
 ### 2. Cài đặt thư viện
-Cài đặt các thư viện cần thiết cho project với câu lệnh dưới đây.
+Trước tiên, bạn cần cài đặt [Node.js](https://nodejs.org/en). Sau đó, tiến hành cài đặt các thư viện cần thiết cho project với câu lệnh dưới đây.
 
 ```bash
 cd CS105_3DAnimation

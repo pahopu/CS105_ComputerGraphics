@@ -36,7 +36,7 @@
 | 3      | 20521663      | Nguyễn Đặng Bảo Ngọc     | Thành viên | [ngocndb03](https://github.com/ngocndb03)      | 20521663@gm.uit.edu.vn   |
 
 ## [THÔNG TIN SEMINAR](#top)
-* **Tên seminar:** Tạo animation cho 3D model với các phép biến đổi cơ bản trong đồ họa máy tính
+* **Chủ đề seminar:** Animation trong mô hình 3D với Three.js
 * **Ngôn ngữ lập trình:** HTML, JavaScript
 
 ## [CÁC BƯỚC CẦN THIẾT](#top)

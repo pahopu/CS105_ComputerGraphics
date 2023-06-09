@@ -3,9 +3,10 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
-let model_path = "static/models/mutant.fbx";
-let default_model = "Mutant";
+let model_path = "static/models/themutant.fbx";
+let default_model = "the mutant";
 let panel_gui = null;
+
 const anim_paths = [
 	"static/animations/idle.fbx",
 	"static/animations/walk.fbx",
@@ -13,9 +14,9 @@ const anim_paths = [
 ];
 
 const model_options = {
-	Mutant: "mutant",
-	"The Boss": "The Boss",
-	"Peasant Girl": "Peasant Girl",
+	"the mutant": "themutant",
+	"the boss": "theboss",
+	"peasant girl": "peasantgirl",
 };
 
 let model, skeleton, mixer, clock;
@@ -174,6 +175,7 @@ function createPanel() {
 	panel_gui = new GUI({ width: 330 });
 
 	const folder_choose_model = panel_gui.addFolder("Model");
+
 	const folder1 = panel_gui.addFolder("Visibility");
 	const folder2 = panel_gui.addFolder("Activation/Deactivation");
 	const folder3 = panel_gui.addFolder("Pausing/Stepping");
@@ -182,7 +184,7 @@ function createPanel() {
 	const folder6 = panel_gui.addFolder("General Speed");
 
 	settings = {
-		"Model selection": default_model,
+		"model selection": default_model,
 		"show model": true,
 		"show skeleton": false,
 		"activate all": activateAllActions,
@@ -210,9 +212,7 @@ function createPanel() {
 		"modify time scale": 1.0,
 	};
 
-	folder_choose_model
-		.add(settings, "Model selection", model_options)
-		.onChange(onChangeModel);
+	folder_choose_model.add(settings, "model selection", model_options).onChange(onChangeModel);
 
 	folder1.add(settings, "show model").onChange(showModel);
 	folder1.add(settings, "show skeleton").onChange(showSkeleton);

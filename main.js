@@ -3,20 +3,18 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
-let model_path = "static/models/themutant.fbx";
+let assets_path = "static/animations";
+let model_path = `${assets_path}/themutant/model.fbx`;
 let default_model = "the mutant";
 let panel_gui = null;
 
-const anim_paths = [
-	"static/animations/idle.fbx",
-	"static/animations/walk.fbx",
-	"static/animations/run.fbx",
-];
+let animations = ["idle", "run", "walk"];
+let anim_paths = [];
 
 const model_options = {
 	"the mutant": "themutant",
-	"the boss": "theboss",
-	"peasant girl": "peasantgirl",
+	"the astronaut": "theastronaut",
+	"the archer": "thearcher",
 };
 
 let model, skeleton, mixer, clock;
@@ -35,6 +33,15 @@ let sizeOfNextStep = 0;
 
 init();
 
+function initAnimation(model_name) {
+	anim_paths = [];
+	animations.forEach((animation_name) => {
+		console.log(model_name);
+		let anima_path = `${assets_path}/${model_name}/${animation_name}.fbx`;
+		anim_paths.push(anima_path);
+	});
+}
+
 function resetParams() {
 	actions = [];
 	actionNum = 0;
@@ -49,7 +56,7 @@ function createGUI() {
 	createPanel();
 }
 
-function load_model(model_path) {
+function load_model(model_path, model_name = "themutant") {
 	const loader = new FBXLoader();
 	loader.load(model_path, function (fbx) {
 		// Scale and set position
@@ -58,6 +65,8 @@ function load_model(model_path) {
 
 		// Model
 		model = fbx;
+
+		console.log(model_path);
 
 		model.name = "model";
 		scene.add(model);
@@ -76,6 +85,8 @@ function load_model(model_path) {
 
 		// Mixer
 		mixer = new THREE.AnimationMixer(model);
+
+		initAnimation(model_name);
 
 		// Animations
 		anim_paths.forEach((path) => {
@@ -212,7 +223,9 @@ function createPanel() {
 		"modify time scale": 1.0,
 	};
 
-	folder_choose_model.add(settings, "model selection", model_options).onChange(onChangeModel);
+	folder_choose_model
+		.add(settings, "model selection", model_options)
+		.onChange(onChangeModel);
 
 	folder1.add(settings, "show model").onChange(showModel);
 	folder1.add(settings, "show skeleton").onChange(showSkeleton);
@@ -273,9 +286,9 @@ function onChangeModel(model_choose) {
 	default_model = model_choose;
 	removeModel();
 	panel_gui.destroy();
-	model_path = `static/models/${model_choose}.fbx`;
+	model_path = `static/animations/${model_choose}/model.fbx`;
 	resetParams();
-	load_model(model_path);
+	load_model(model_path, model_choose);
 }
 
 function showModel(visibility) {

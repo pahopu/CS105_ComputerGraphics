@@ -4,11 +4,28 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
+// INIT GLOBAL VARIABLES
 let scene, camera, renderer, stats, clock, controls;
+let panel_gui = null;
+
+function createGUI() {
+	if (panel_gui) {
+		panel_gui.__folders = {};
+		panel_gui.__controllers = [];
+	}
+	createPanel();
+}
+
+function createPanel() {
+	panel_gui = new GUI({ width: 330 });
+}
 
 function init() {
 	// Clock
 	clock = new THREE.Clock();
+
+	// GUI
+	createGUI();
 
 	// Scene
 	scene = new THREE.Scene();

@@ -3,7 +3,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
-let assets_path = "static/animations";
+let assets_path = "Seminar/static/animations";
 let model_path = `${assets_path}/themutant/model.fbx`;
 let default_model = "the mutant";
 let panel_gui = null;

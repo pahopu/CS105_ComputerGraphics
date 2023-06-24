@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #000000;
+}
+
+.title-mini{
+    font-size: 20px;
+    color: white;
+    width: 50%;
+    padding-left: 30px;    
+}
+
+.nav{
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    width: auto;
+    padding-top: 15px;
+}
+
+.selection{
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+.selection:hover{
+    background-color: white;
+    color: black;
+
+}

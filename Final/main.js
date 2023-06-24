@@ -1,12 +1,15 @@
 // Import Three.js library
 import * as THREE from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 
 // INIT GLOBAL VARIABLES
-let scene, camera, renderer, stats, clock, controls;
+let scene, camera, renderer, clock, controls, transformControls;
 let panel_gui = null;
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
 function createGUI() {
 	if (panel_gui) {
@@ -30,7 +33,7 @@ function init() {
 	// Scene
 	scene = new THREE.Scene();
 	scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
-	scene.background = new THREE.Color(0xa0a0a0);
+	scene.background = new THREE.Color(0x000000);
 
 	// Camera
 	camera = new THREE.PerspectiveCamera(
@@ -53,18 +56,7 @@ function init() {
 
 	document.body.appendChild(renderer.domElement);
 
-	// Stats
-	stats = new Stats();
-	document.body.appendChild(stats.dom);
-
 	// Responsive
-	window.addEventListener("resize", function () {
-		var width = window.innerWidth;
-		var height = window.innerHeight;
-		renderer.setSize(width, height);
-		camera.aspect = width / height;
-		camera.updateProjectionMatrix();
-	});
 
 	// Lights
 	const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
@@ -88,7 +80,7 @@ function init() {
 	// Ground
 	const plane = new THREE.Mesh(
 		new THREE.PlaneGeometry(100, 100),
-		new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+		new THREE.MeshPhongMaterial({ color: 0x000000, depthWrite: false })
 	);
 	plane.rotation.x = -Math.PI / 2;
 	plane.receiveShadow = true;
@@ -114,12 +106,56 @@ function init() {
 
 	boxMesh.position.y = 1;
 	scene.add(boxMesh);
+
+	transformControls = new TransformControls(camera, renderer.domElement);
+
+	transformControls.addEventListener("dragging-changed", function (event) {
+		controls.enabled = !event.value;
+	});
+
+	scene.add(transformControls);
 }
+
+function onMouseClickMesh(event) {
+	event.preventDefault();
+
+	// Calculate mouse position in normalized device coordinates
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+	// Perform raycasting from the camera
+	raycaster.setFromCamera(mouse, camera);
+
+	// Get intersects
+	const intersects = raycaster.intersectObjects(scene.children, true);
+
+	if (intersects.length > 0) {
+		// Set selected object as the first intersected object
+		// selectedObject = intersects[0].object;
+		transformControls.attach(intersects[0].object);
+		transformControls.setMode("translate");
+	} else {
+		// selectedObject = null;
+		transformControls.detach();
+	}
+}
+
+window.addEventListener(
+	"resize",
+	function () {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		renderer.setSize(width, height);
+		camera.aspect = width / height;
+		camera.updateProjectionMatrix();
+	},
+	false
+);
+
+window.addEventListener("mousemove", onMouseClickMesh, false);
 
 function animate() {
 	requestAnimationFrame(animate);
-
-	stats.update();
 
 	controls.update();
 

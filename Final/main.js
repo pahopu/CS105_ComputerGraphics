@@ -26,7 +26,7 @@ function createPanel() {
 	panel_gui = new GUI({ width: 330 });
 }
 
-function initObjects() {
+function create_box() {
 	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 	const boxMaterial = new THREE.MeshNormalMaterial({
 		transparent: true,
@@ -36,7 +36,13 @@ function initObjects() {
 
 	boxMesh.position.y = 1;
 	boxMesh.userData.canjustify = true;
+	boxMesh.userData.isSelected = false;
 
+	return boxMesh;
+}
+
+function initObjects() {
+	let boxMesh = create_box();
 	meshObject.push(boxMesh);
 }
 
@@ -168,6 +174,7 @@ document.getElementsByClassName("btn-add")[0].addEventListener(
 		boxMesh.position.x = 2;
 		boxMesh.position.y = 1;
 		boxMesh.userData.canjustify = true;
+		boxMesh.userData.isSelected = false;
 
 		meshObject.push(boxMesh);
 		scene.add(boxMesh);
@@ -201,15 +208,54 @@ document.getElementById("rendering").addEventListener(
 			var object = intersect[0].object;
 			if (object.userData.canjustify) {
 				transformControls.attach(object);
-				// meshObject[0].material.opacity = 0.5;
+				object.userData.isSelected = true;
 			} else {
-				// meshObject[0].material.opacity = 1;
 				transformControls.detach();
+				object.userData.isSelected = false;
 			}
 		} else {
 			transformControls.detach();
+			for (let obj in meshObject) {
+				meshObject[obj].userData.isSelected = false;
+			}
+		}
+	},
+	false
+);
 
-			// meshObject[0].material.opacity = 1;
+document.getElementById("rendering").addEventListener(
+	"mousemove",
+	function (event) {
+		var canvasBounds = renderer.domElement.getBoundingClientRect();
+		event.preventDefault();
+		mouse.x =
+			((event.clientX - canvasBounds.left) /
+				(canvasBounds.right - canvasBounds.left)) *
+				2 -
+			1;
+		mouse.y =
+			-(
+				(event.clientY - canvasBounds.top) /
+				(canvasBounds.bottom - canvasBounds.top)
+			) *
+				2 +
+			1;
+
+		raycaster.setFromCamera(mouse, camera);
+
+		const intersect = raycaster.intersectObjects(meshObject, true);
+
+		if (intersect.length > 0) {
+			var object = intersect[0].object;
+			if (object.userData.canjustify && object.userData.isSelected == false) {
+				object.material.opacity = 0.5;
+			} else {
+				object.material.opacity = 1;
+			}
+		} else {
+			for (let obj in meshObject) {
+				meshObject[obj].material.opacity = 1;
+			}
 		}
 	},
 	false

@@ -17,21 +17,24 @@
 
 	<body>
 		<!-- MAIN SEMINAR -->
-		<nav class="nav">
-			<div class="title-mini">
-				ĐỒ ÁN CUỐI KÌ ĐỒ HỌA MÁY TÍNH - MÔ PHỎNG HÌNH HỌC 3D CƠ BẢN
-			</div>
-			<div class="selection-area">
-				<div>
-					<select class="selection" name="geometry" id="geometry">
-						<option value="geometry">Geometry</option>
-						<option value="box">Box</option>
-						<option value="circle">Circle</option>
-					</select>
+		<div>
+			<nav class="nav">
+				<div class="title-mini">
+					ĐỒ ÁN CUỐI KÌ ĐỒ HỌA MÁY TÍNH - MÔ PHỎNG HÌNH HỌC 3D CƠ BẢN
 				</div>
-			</div>
-		</nav>
-
+				<!-- <div class="selection-area">
+					<div>
+						<select class="selection" name="geometry" id="geometry">
+							<option value="geometry">Geometry</option>
+							<option value="box">Box</option>
+							<option value="circle">Circle</option>
+						</select>
+					</div>
+				</div> -->
+				<button class="btn-add">Add Geometry</button>
+			</nav>
+			<div id="rendering"></div>
+		</div>
 		<script type="module" src="main.js"></script>
 	</body>
 </html>

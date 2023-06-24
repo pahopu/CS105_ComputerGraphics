@@ -7,9 +7,12 @@ import { TransformControls } from "three/examples/jsm/controls/TransformControls
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
 let panel_gui = null;
+let isDragging = false;
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+
+let meshObject = [];
 
 function createGUI() {
 	if (panel_gui) {
@@ -23,12 +26,23 @@ function createPanel() {
 	panel_gui = new GUI({ width: 330 });
 }
 
+function initObjects() {
+	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+	const boxMaterial = new THREE.MeshNormalMaterial({
+		transparent: true,
+		opacity: 1,
+	});
+	const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+
+	boxMesh.position.y = 1;
+	boxMesh.userData.canjustify = true;
+
+	meshObject.push(boxMesh);
+}
+
 function init() {
 	// Clock
 	clock = new THREE.Clock();
-
-	// GUI
-	createGUI();
 
 	// Scene
 	scene = new THREE.Scene();
@@ -54,7 +68,7 @@ function init() {
 	controls = new OrbitControls(camera, renderer.domElement);
 	controls.update();
 
-	document.body.appendChild(renderer.domElement);
+	document.getElementById("rendering").appendChild(renderer.domElement);
 
 	// Responsive
 
@@ -99,44 +113,19 @@ function init() {
 
 	scene.add(plane);
 
-	// Init object
-	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-	const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-	const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-
-	boxMesh.position.y = 1;
-	scene.add(boxMesh);
-
 	transformControls = new TransformControls(camera, renderer.domElement);
+	transformControls.setMode("translate");
 
 	transformControls.addEventListener("dragging-changed", function (event) {
 		controls.enabled = !event.value;
 	});
 
 	scene.add(transformControls);
-}
 
-function onMouseClickMesh(event) {
-	event.preventDefault();
+	initObjects();
 
-	// Calculate mouse position in normalized device coordinates
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-	// Perform raycasting from the camera
-	raycaster.setFromCamera(mouse, camera);
-
-	// Get intersects
-	const intersects = raycaster.intersectObjects(scene.children, true);
-
-	if (intersects.length > 0) {
-		// Set selected object as the first intersected object
-		// selectedObject = intersects[0].object;
-		transformControls.attach(intersects[0].object);
-		transformControls.setMode("translate");
-	} else {
-		// selectedObject = null;
-		transformControls.detach();
+	for (var i = 0; i < meshObject.length; i++) {
+		scene.add(meshObject[i]);
 	}
 }
 
@@ -152,7 +141,79 @@ window.addEventListener(
 	false
 );
 
-window.addEventListener("mousemove", onMouseClickMesh, false);
+window.addEventListener("keydown", function (event) {
+	switch (event.code) {
+		case "KeyG":
+			transformControls.setMode("translate");
+			break;
+		case "KeyR":
+			transformControls.setMode("rotate");
+			break;
+		case "KeyS":
+			transformControls.setMode("scale");
+			break;
+	}
+});
+
+document.getElementsByClassName("btn-add")[0].addEventListener(
+	"click",
+	function (e) {
+		const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+		const boxMaterial = new THREE.MeshNormalMaterial({
+			transparent: true,
+			opacity: 1,
+		});
+		const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+
+		boxMesh.position.x = 2;
+		boxMesh.position.y = 1;
+		boxMesh.userData.canjustify = true;
+
+		meshObject.push(boxMesh);
+		scene.add(boxMesh);
+	},
+	false
+);
+
+document.getElementById("rendering").addEventListener(
+	"click",
+	function (event) {
+		var canvasBounds = renderer.domElement.getBoundingClientRect();
+		event.preventDefault();
+		mouse.x =
+			((event.clientX - canvasBounds.left) /
+				(canvasBounds.right - canvasBounds.left)) *
+				2 -
+			1;
+		mouse.y =
+			-(
+				(event.clientY - canvasBounds.top) /
+				(canvasBounds.bottom - canvasBounds.top)
+			) *
+				2 +
+			1;
+
+		raycaster.setFromCamera(mouse, camera);
+
+		const intersect = raycaster.intersectObjects(meshObject, true);
+
+		if (intersect.length > 0) {
+			var object = intersect[0].object;
+			if (object.userData.canjustify) {
+				transformControls.attach(object);
+				// meshObject[0].material.opacity = 0.5;
+			} else {
+				// meshObject[0].material.opacity = 1;
+				transformControls.detach();
+			}
+		} else {
+			transformControls.detach();
+
+			// meshObject[0].material.opacity = 1;
+		}
+	},
+	false
+);
 
 function animate() {
 	requestAnimationFrame(animate);

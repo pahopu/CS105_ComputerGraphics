@@ -33,3 +33,19 @@
     color: black;
 
 }
+
+.btn-add{
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    outline: none;
+    border: none;
+    transition: all ease-in-out 0.1s;
+}
+
+.btn-add:hover{
+    background-color: white;
+    color: black;
+}

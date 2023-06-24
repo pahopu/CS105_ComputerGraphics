@@ -1,12 +1,18 @@
 // Import Three.js library
 import * as THREE from "three";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 
 // INIT GLOBAL VARIABLES
-let scene, camera, renderer, stats, clock, controls;
+let scene, camera, renderer, clock, controls, transformControls;
 let panel_gui = null;
+let isDragging = false;
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+let meshObject = [];
 
 function createGUI() {
 	if (panel_gui) {
@@ -20,17 +26,34 @@ function createPanel() {
 	panel_gui = new GUI({ width: 330 });
 }
 
+function create_box() {
+	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+	const boxMaterial = new THREE.MeshNormalMaterial({
+		transparent: true,
+		opacity: 1,
+	});
+	const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+
+	boxMesh.position.y = 1;
+	boxMesh.userData.canjustify = true;
+	boxMesh.userData.isSelected = false;
+
+	return boxMesh;
+}
+
+function initObjects() {
+	let boxMesh = create_box();
+	meshObject.push(boxMesh);
+}
+
 function init() {
 	// Clock
 	clock = new THREE.Clock();
 
-	// GUI
-	createGUI();
-
 	// Scene
 	scene = new THREE.Scene();
 	scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
-	scene.background = new THREE.Color(0xa0a0a0);
+	scene.background = new THREE.Color(0x000000);
 
 	// Camera
 	camera = new THREE.PerspectiveCamera(
@@ -51,20 +74,9 @@ function init() {
 	controls = new OrbitControls(camera, renderer.domElement);
 	controls.update();
 
-	document.body.appendChild(renderer.domElement);
-
-	// Stats
-	stats = new Stats();
-	document.body.appendChild(stats.dom);
+	document.getElementById("rendering").appendChild(renderer.domElement);
 
 	// Responsive
-	window.addEventListener("resize", function () {
-		var width = window.innerWidth;
-		var height = window.innerHeight;
-		renderer.setSize(width, height);
-		camera.aspect = width / height;
-		camera.updateProjectionMatrix();
-	});
 
 	// Lights
 	const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
@@ -88,7 +100,7 @@ function init() {
 	// Ground
 	const plane = new THREE.Mesh(
 		new THREE.PlaneGeometry(100, 100),
-		new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+		new THREE.MeshPhongMaterial({ color: 0x000000, depthWrite: false })
 	);
 	plane.rotation.x = -Math.PI / 2;
 	plane.receiveShadow = true;
@@ -107,19 +119,150 @@ function init() {
 
 	scene.add(plane);
 
-	// Init object
-	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-	const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-	const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+	transformControls = new TransformControls(camera, renderer.domElement);
+	transformControls.setMode("translate");
 
-	boxMesh.position.y = 1;
-	scene.add(boxMesh);
+	transformControls.addEventListener("dragging-changed", function (event) {
+		controls.enabled = !event.value;
+	});
+
+	scene.add(transformControls);
+
+	initObjects();
+
+	for (var i = 0; i < meshObject.length; i++) {
+		scene.add(meshObject[i]);
+	}
 }
+
+window.addEventListener(
+	"resize",
+	function () {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		renderer.setSize(width, height);
+		camera.aspect = width / height;
+		camera.updateProjectionMatrix();
+	},
+	false
+);
+
+window.addEventListener("keydown", function (event) {
+	switch (event.code) {
+		case "KeyG":
+			transformControls.setMode("translate");
+			break;
+		case "KeyR":
+			transformControls.setMode("rotate");
+			break;
+		case "KeyS":
+			transformControls.setMode("scale");
+			break;
+	}
+});
+
+document.getElementsByClassName("btn-add")[0].addEventListener(
+	"click",
+	function (e) {
+		const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+		const boxMaterial = new THREE.MeshNormalMaterial({
+			transparent: true,
+			opacity: 1,
+		});
+		const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+
+		boxMesh.position.x = 2;
+		boxMesh.position.y = 1;
+		boxMesh.userData.canjustify = true;
+		boxMesh.userData.isSelected = false;
+
+		meshObject.push(boxMesh);
+		scene.add(boxMesh);
+	},
+	false
+);
+
+document.getElementById("rendering").addEventListener(
+	"click",
+	function (event) {
+		var canvasBounds = renderer.domElement.getBoundingClientRect();
+		event.preventDefault();
+		mouse.x =
+			((event.clientX - canvasBounds.left) /
+				(canvasBounds.right - canvasBounds.left)) *
+				2 -
+			1;
+		mouse.y =
+			-(
+				(event.clientY - canvasBounds.top) /
+				(canvasBounds.bottom - canvasBounds.top)
+			) *
+				2 +
+			1;
+
+		raycaster.setFromCamera(mouse, camera);
+
+		const intersect = raycaster.intersectObjects(meshObject, true);
+
+		if (intersect.length > 0) {
+			var object = intersect[0].object;
+			if (object.userData.canjustify) {
+				transformControls.attach(object);
+				object.userData.isSelected = true;
+			} else {
+				transformControls.detach();
+				object.userData.isSelected = false;
+			}
+		} else {
+			transformControls.detach();
+			for (let obj in meshObject) {
+				meshObject[obj].userData.isSelected = false;
+			}
+		}
+	},
+	false
+);
+
+document.getElementById("rendering").addEventListener(
+	"mousemove",
+	function (event) {
+		var canvasBounds = renderer.domElement.getBoundingClientRect();
+		event.preventDefault();
+		mouse.x =
+			((event.clientX - canvasBounds.left) /
+				(canvasBounds.right - canvasBounds.left)) *
+				2 -
+			1;
+		mouse.y =
+			-(
+				(event.clientY - canvasBounds.top) /
+				(canvasBounds.bottom - canvasBounds.top)
+			) *
+				2 +
+			1;
+
+		raycaster.setFromCamera(mouse, camera);
+
+		const intersect = raycaster.intersectObjects(meshObject, true);
+
+		if (intersect.length > 0) {
+			var object = intersect[0].object;
+			if (object.userData.canjustify && object.userData.isSelected == false) {
+				object.material.opacity = 0.5;
+			} else {
+				object.material.opacity = 1;
+			}
+		} else {
+			for (let obj in meshObject) {
+				meshObject[obj].material.opacity = 1;
+			}
+		}
+	},
+	false
+);
 
 function animate() {
 	requestAnimationFrame(animate);
-
-	stats.update();
 
 	controls.update();
 

@@ -41,6 +41,31 @@ function create_box() {
 	return boxMesh;
 }
 
+function create_background_point() {
+	const vertices = [];
+	const num_points = 30000;
+	for (let i = 0; i < num_points; i++) {
+		const x = THREE.MathUtils.randFloatSpread(2000);
+		const y = THREE.MathUtils.randFloatSpread(2000);
+		const z = THREE.MathUtils.randFloatSpread(2000);
+
+		vertices.push(x, y, z);
+	}
+
+	const background_geometry = new THREE.BufferGeometry();
+	background_geometry.setAttribute(
+		"position",
+		new THREE.Float32BufferAttribute(vertices, 3)
+	);
+
+	const background_material = new THREE.PointsMaterial({ color: 0x888888 });
+	const background_points = new THREE.Points(
+		background_geometry,
+		background_material
+	);
+	return background_points;
+}
+
 function initObjects() {
 	let boxMesh = create_box();
 	meshObject.push(boxMesh);
@@ -54,6 +79,9 @@ function init() {
 	scene = new THREE.Scene();
 	scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
 	scene.background = new THREE.Color(0x000000);
+
+	var background_points = create_background_point();
+	scene.add(background_points);
 
 	// Camera
 	camera = new THREE.PerspectiveCamera(
@@ -147,7 +175,7 @@ window.addEventListener(
 	false
 );
 
-window.addEventListener("keydown", function (event) {
+function HandleKeyboard(event) {
 	switch (event.code) {
 		case "KeyG":
 			transformControls.setMode("translate");
@@ -159,7 +187,7 @@ window.addEventListener("keydown", function (event) {
 			transformControls.setMode("scale");
 			break;
 	}
-});
+}
 
 document.getElementsByClassName("btn-add")[0].addEventListener(
 	"click",
@@ -182,84 +210,73 @@ document.getElementsByClassName("btn-add")[0].addEventListener(
 	false
 );
 
-document.getElementById("rendering").addEventListener(
-	"click",
-	function (event) {
-		var canvasBounds = renderer.domElement.getBoundingClientRect();
-		event.preventDefault();
-		mouse.x =
-			((event.clientX - canvasBounds.left) /
-				(canvasBounds.right - canvasBounds.left)) *
-				2 -
-			1;
-		mouse.y =
-			-(
-				(event.clientY - canvasBounds.top) /
-				(canvasBounds.bottom - canvasBounds.top)
-			) *
-				2 +
-			1;
+function SetMousePosition(event) {
+	var canvasBounds = renderer.domElement.getBoundingClientRect();
+	let left_event = event.clientX - canvasBounds.left;
+	let canvas_width = canvasBounds.right - canvasBounds.left;
 
-		raycaster.setFromCamera(mouse, camera);
+	let top_event = event.clientY - canvasBounds.top;
+	let canvas_height = canvasBounds.bottom - canvasBounds.top;
 
-		const intersect = raycaster.intersectObjects(meshObject, true);
+	mouse.x = (left_event / canvas_width) * 2 - 1;
+	mouse.y = -(top_event / canvas_height) * 2 + 1;
+}
 
-		if (intersect.length > 0) {
-			var object = intersect[0].object;
-			if (object.userData.canjustify) {
-				transformControls.attach(object);
-				object.userData.isSelected = true;
-			} else {
-				transformControls.detach();
-				object.userData.isSelected = false;
-			}
+function transformObject(event) {
+	event.preventDefault();
+	SetMousePosition(event);
+	raycaster.setFromCamera(mouse, camera);
+
+	const intersect = raycaster.intersectObjects(meshObject, true);
+
+	if (intersect.length > 0) {
+		var object = intersect[0].object;
+		if (object.userData.canjustify) {
+			transformControls.attach(object);
+			object.userData.isSelected = true;
 		} else {
 			transformControls.detach();
-			for (let obj in meshObject) {
-				meshObject[obj].userData.isSelected = false;
-			}
+			object.userData.isSelected = false;
 		}
-	},
-	false
-);
+	} else {
+		transformControls.detach();
+		for (let obj in meshObject) {
+			meshObject[obj].userData.isSelected = false;
+		}
+	}
+}
 
-document.getElementById("rendering").addEventListener(
-	"mousemove",
-	function (event) {
-		var canvasBounds = renderer.domElement.getBoundingClientRect();
-		event.preventDefault();
-		mouse.x =
-			((event.clientX - canvasBounds.left) /
-				(canvasBounds.right - canvasBounds.left)) *
-				2 -
-			1;
-		mouse.y =
-			-(
-				(event.clientY - canvasBounds.top) /
-				(canvasBounds.bottom - canvasBounds.top)
-			) *
-				2 +
-			1;
+function hoverObject(event) {
+	event.preventDefault();
 
-		raycaster.setFromCamera(mouse, camera);
+	SetMousePosition(event);
+	raycaster.setFromCamera(mouse, camera);
 
-		const intersect = raycaster.intersectObjects(meshObject, true);
+	const intersect = raycaster.intersectObjects(meshObject, true);
 
-		if (intersect.length > 0) {
-			var object = intersect[0].object;
-			if (object.userData.canjustify && object.userData.isSelected == false) {
-				object.material.opacity = 0.5;
-			} else {
-				object.material.opacity = 1;
-			}
+	if (intersect.length > 0) {
+		var object = intersect[0].object;
+		if (object.userData.canjustify && object.userData.isSelected == false) {
+			object.material.opacity = 0.5;
 		} else {
-			for (let obj in meshObject) {
-				meshObject[obj].material.opacity = 1;
-			}
+			object.material.opacity = 1;
 		}
-	},
-	false
-);
+	} else {
+		for (let obj in meshObject) {
+			meshObject[obj].material.opacity = 1;
+		}
+	}
+}
+
+window.addEventListener("keydown", HandleKeyboard);
+
+document
+	.getElementById("rendering")
+	.addEventListener("click", transformObject, false);
+
+document
+	.getElementById("rendering")
+	.addEventListener("mousemove", hoverObject, false);
 
 function animate() {
 	requestAnimationFrame(animate);

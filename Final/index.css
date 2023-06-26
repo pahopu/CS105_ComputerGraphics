@@ -94,6 +94,10 @@
     opacity: 50%;
 }
 
+.icon-tool.active{
+    filter: invert(86%) sepia(31%) saturate(912%) hue-rotate(328deg) brightness(101%) contrast(99%);
+}
+
 .tool-tip {
     position: absolute;
     top: 23%;
@@ -110,4 +114,5 @@
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 1000;
+    visibility: hidden;
 }

@@ -3,6 +3,9 @@
     padding: 0;
     overflow: hidden;
     background-color: #000000;
+    font-family: 'Comfortaa', cursive;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
 }
 
 .title-mini{
@@ -18,6 +21,7 @@
     background-color: transparent;
     width: auto;
     padding-top: 15px;
+    position: relative;
 }
 
 .selection{
@@ -48,4 +52,62 @@
 .btn-add:hover{
     background-color: white;
     color: black;
+}
+
+.tool-bar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    padding: 10px;
+    background: gray;
+    border-radius: 5px;
+    right: 2%;
+    top: 20%;
+    z-index: 0;
+}
+
+.tool{
+    margin-bottom: 15px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    z-index: 0;
+    position: relative;
+}
+
+.tool:last-child{
+    margin-bottom: 0px;
+}
+
+.icon-tool{
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
+    transition: all linear 0.1s;
+    cursor: pointer;
+    z-index: 0;
+}
+
+.icon-tool:hover{
+    opacity: 50%;
+}
+
+.tool-tip {
+    position: absolute;
+    top: 23%;
+    right: 2%;
+    transform: translateX(-55%);
+    text-align: center;
+    background-color: white;
+    width: 80px;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1000;
 }

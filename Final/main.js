@@ -278,6 +278,54 @@ document
 	.getElementById("rendering")
 	.addEventListener("mousemove", hoverObject, false);
 
+const tools = document.querySelectorAll(".icon-tool");
+
+tools.forEach((tool) => {
+	tool.addEventListener("mouseenter", showTooltip);
+	tool.addEventListener("mouseleave", hideTooltip);
+});
+
+function showTooltip(event) {
+	const icon = event.target;
+	const tooltip = document.getElementsByClassName("tool-tip")[0];
+
+	tooltip.innerHTML = icon.alt;
+
+	const iconRect = icon.getBoundingClientRect();
+
+	const tooltipRect = tooltip.getBoundingClientRect();
+
+	console.log(iconRect);
+	console.log(tooltipRect);
+
+	tooltip.style.top = iconRect.top + "px";
+	tooltip.style.opacity = 1;
+
+	// Set the tooltip content based on the icon tool
+	// tooltip.textContent = icon.alt;
+
+	// // Calculate the position of the tooltip
+	// const iconRect = icon.getBoundingClientRect();
+	// const tooltipRect = tooltip.getBoundingClientRect();
+	// const iconCenterX = iconRect.left + iconRect.width / 2;
+	// const tooltipLeft = iconCenterX - tooltipRect.width / 2;
+
+	// // Position the tooltip beside the icon tool
+	// tooltip.style.right = `${tooltipLeft}px`;
+	// tooltip.style.top = `${iconRect.top - tooltipRect.height}px`;
+
+	// // Show the tooltip
+	// tooltip.style.opacity = "1";
+}
+
+function hideTooltip(event) {
+	// const tooltip = event.target.nextElementSibling;
+	// tooltip.style.opacity = "0";
+	const tooltip = document.getElementsByClassName("tool-tip")[0];
+
+	tooltip.style.opacity = 0;
+}
+
 function animate() {
 	requestAnimationFrame(animate);
 

@@ -23,22 +23,87 @@
 
 	<body>
 		<!-- MAIN SEMINAR -->
-		<div>
+		<div class="container">
 			<nav class="nav">
 				<div class="title-mini">
 					ĐỒ ÁN CUỐI KÌ ĐỒ HỌA MÁY TÍNH - MÔ PHỎNG HÌNH HỌC 3D CƠ BẢN
 				</div>
-				<!-- <div class="selection-area">
-					<div>
-						<select class="selection" name="geometry" id="geometry">
-							<option value="geometry">Geometry</option>
-							<option value="box">Box</option>
-							<option value="circle">Circle</option>
-						</select>
-					</div>
-				</div> -->
 				<button class="btn-add">Add Geometry</button>
 			</nav>
+			<nav class="tool-bar">
+				<div class="tool">
+					<img
+						src="Icon/translate.svg"
+						alt="Translate"
+						name="translate"
+						class="icon-tool"
+					/>
+				</div>
+
+				<div class="tool">
+					<img
+						src="Icon/rotate.svg"
+						alt="Rotate"
+						name="rotate"
+						class="icon-tool"
+					/>
+				</div>
+
+				<div class="tool">
+					<img
+						src="Icon/scale.svg"
+						alt="Scale"
+						name="scale"
+						class="icon-tool"
+					/>
+				</div>
+
+				<div class="tool">
+					<img
+						src="Icon/light.svg"
+						alt="Light"
+						name="light"
+						class="icon-tool"
+					/>
+				</div>
+
+				<div class="tool">
+					<img
+						src="Icon/object.svg"
+						alt="Geometry"
+						name="geometry"
+						class="icon-tool"
+					/>
+				</div>
+
+				<div class="tool">
+					<img
+						src="Icon/animation.svg"
+						alt="Animation"
+						name="animation"
+						class="icon-tool"
+					/>
+				</div>
+
+				<div class="tool">
+					<img
+						src="Icon/camera.svg"
+						alt="Camera"
+						name="camera"
+						class="icon-tool"
+					/>
+				</div>
+
+				<div class="tool">
+					<img
+						src="Icon/color.svg"
+						alt="Color"
+						name="color"
+						class="icon-tool"
+					/>
+				</div>
+			</nav>
+			<div class="tool-tip"></div>
 			<div id="rendering"></div>
 		</div>
 		<script type="module" src="main.js"></script>

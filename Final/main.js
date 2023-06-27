@@ -278,48 +278,6 @@ document
 	.getElementById("rendering")
 	.addEventListener("mousemove", hoverObject, false);
 
-const tools = document.querySelectorAll(".icon-tool");
-
-tools.forEach((tool) => {
-	tool.addEventListener("mouseenter", showTooltip);
-	tool.addEventListener("mouseleave", hideTooltip);
-	tool.addEventListener("click", selectTool);
-});
-
-function selectTool(event) {
-	var current = document.getElementsByClassName("icon-tool active");
-	if (current.length > 0) {
-		current[0].className = current[0].className.replace(" active", "");
-	}
-	const icon = event.target;
-	icon.className += " active";
-	hideTooltip();
-}
-
-function showTooltip(event) {
-	const icon = event.target;
-
-	if (icon.className.includes("active")) return;
-	const tooltip = document.getElementsByClassName("tool-tip")[0];
-
-	tooltip.innerHTML = icon.alt;
-
-	const iconRect = icon.getBoundingClientRect();
-
-	tooltip.style.top = iconRect.top + "px";
-	tooltip.style.opacity = 1;
-	tooltip.style.visibility = "visible";
-}
-
-function hideTooltip(event) {
-	// const tooltip = event.target.nextElementSibling;
-	// tooltip.style.opacity = "0";
-	const tooltip = document.getElementsByClassName("tool-tip")[0];
-
-	tooltip.style.opacity = 0;
-	tooltip.style.visibility = "hidden";
-}
-
 function animate() {
 	requestAnimationFrame(animate);
 

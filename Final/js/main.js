@@ -1,8 +1,13 @@
 // Import Three.js library
 import * as THREE from "three";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+import { updateCurrentGeometry } from "./update.js";
+import {
+	create_background_point,
+	create_cube,
+	create_sphere,
+} from "./geometry.js";
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
@@ -14,60 +19,11 @@ const mouse = new THREE.Vector2();
 
 let meshObject = [];
 
-function createGUI() {
-	if (panel_gui) {
-		panel_gui.__folders = {};
-		panel_gui.__controllers = [];
-	}
-	createPanel();
-}
-
-function createPanel() {
-	panel_gui = new GUI({ width: 330 });
-}
-
-function create_box() {
-	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-	const boxMaterial = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-
-	boxMesh.position.y = 1;
-	boxMesh.userData.canjustify = true;
-	boxMesh.userData.isSelected = false;
-
-	return boxMesh;
-}
-
-function create_background_point() {
-	const vertices = [];
-	const num_points = 30000;
-	for (let i = 0; i < num_points; i++) {
-		const x = THREE.MathUtils.randFloatSpread(2000);
-		const y = THREE.MathUtils.randFloatSpread(2000);
-		const z = THREE.MathUtils.randFloatSpread(2000);
-
-		vertices.push(x, y, z);
-	}
-
-	const background_geometry = new THREE.BufferGeometry();
-	background_geometry.setAttribute(
-		"position",
-		new THREE.Float32BufferAttribute(vertices, 3)
-	);
-
-	const background_material = new THREE.PointsMaterial({ color: 0x888888 });
-	const background_points = new THREE.Points(
-		background_geometry,
-		background_material
-	);
-	return background_points;
-}
-
 function initObjects() {
-	let boxMesh = create_box();
+	let boxMesh = create_cube();
+	if (meshObject.length === 0) {
+		boxMesh.userData.isSelected = true;
+	}
 	meshObject.push(boxMesh);
 }
 
@@ -192,17 +148,8 @@ function HandleKeyboard(event) {
 document.getElementsByClassName("btn-add")[0].addEventListener(
 	"click",
 	function (e) {
-		const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-		const boxMaterial = new THREE.MeshNormalMaterial({
-			transparent: true,
-			opacity: 1,
-		});
-		const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-
+		const boxMesh = create_cube();
 		boxMesh.position.x = 2;
-		boxMesh.position.y = 1;
-		boxMesh.userData.canjustify = true;
-		boxMesh.userData.isSelected = false;
 
 		meshObject.push(boxMesh);
 		scene.add(boxMesh);
@@ -236,12 +183,14 @@ function transformObject(event) {
 			object.userData.isSelected = true;
 		} else {
 			transformControls.detach();
-			object.userData.isSelected = false;
+			if (meshObject.length > 1) object.userData.isSelected = false;
 		}
 	} else {
 		transformControls.detach();
-		for (let obj in meshObject) {
-			meshObject[obj].userData.isSelected = false;
+		if (meshObject.length > 1) {
+			for (let obj in meshObject) {
+				meshObject[obj].userData.isSelected = false;
+			}
 		}
 	}
 }
@@ -268,6 +217,44 @@ function hoverObject(event) {
 	}
 }
 
+function resetObj(obj) {
+	scene.remove(obj);
+	obj.traverse(function (object) {
+		if (object.isMesh) {
+			object.geometry.dispose();
+			object.material.dispose();
+		}
+	});
+	obj = null;
+}
+
+const onClickGeometry = (event) => {
+	const typeMesh = event.target.alt;
+	let meshIndex = meshObject.findIndex(
+		(obj) => obj.userData.isSelected === true
+	);
+	let current_position = meshObject[meshIndex].position;
+	if (typeMesh === "Cube") {
+		if (meshObject[meshIndex].userData.type === "Cube") return;
+		resetObj(meshObject[meshIndex]);
+		meshObject[meshIndex] = create_cube(current_position);
+		meshObject[meshIndex].userData.isSelected = true;
+		scene.add(meshObject[meshIndex]);
+	} else if (typeMesh === "Sphere") {
+		if (meshObject[meshIndex].userData.type === "Sphere") return;
+		resetObj(meshObject[meshIndex]);
+		meshObject[meshIndex] = create_sphere(current_position);
+		meshObject[meshIndex].userData.isSelected = true;
+		scene.add(meshObject[meshIndex]);
+	}
+	updateCurrentGeometry(meshObject);
+};
+
+const geometry_option = document.querySelectorAll(".geometry-option");
+geometry_option.forEach((option) => {
+	option.addEventListener("click", onClickGeometry);
+});
+
 window.addEventListener("keydown", HandleKeyboard);
 
 document
@@ -288,3 +275,5 @@ function animate() {
 
 init();
 animate();
+
+export { meshObject };

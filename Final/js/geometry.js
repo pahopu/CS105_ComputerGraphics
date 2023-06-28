@@ -53,7 +53,11 @@ function create_cube(position = null) {
 
 function create_sphere(position = null) {
 	const geometry = new THREE.SphereGeometry(1, 32, 16);
-	const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+	const material = new THREE.MeshBasicMaterial({
+		color: 0xb2beb5,
+		transparent: true,
+		opacity: 1,
+	});
 	const sphere = new THREE.Mesh(geometry, material);
 
 	if (position === null) sphere.position.y = 1;

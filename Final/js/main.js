@@ -154,7 +154,8 @@ document.getElementsByClassName("btn-add")[0].addEventListener(
 	"click",
 	function (e) {
 		const boxMesh = create_cube();
-		boxMesh.position.x = 2;
+		boxMesh.position.x = THREE.MathUtils.randInt(0, 10);
+		boxMesh.position.y = THREE.MathUtils.randInt(1, 5);
 
 		meshObject.push(boxMesh);
 		scene.add(boxMesh);

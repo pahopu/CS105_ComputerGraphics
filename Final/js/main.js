@@ -13,6 +13,7 @@ import {
 let scene, camera, renderer, clock, controls, transformControls;
 let panel_gui = null;
 let isDragging = false;
+let arrowMesh;
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -57,6 +58,10 @@ function init() {
 
 	controls = new OrbitControls(camera, renderer.domElement);
 	controls.update();
+
+	const arrowGeometry = new THREE.ConeGeometry(0.5, 1, 32);
+	const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+	arrowMesh = new THREE.Mesh(arrowGeometry, arrowMaterial);
 
 	document.getElementById("rendering").appendChild(renderer.domElement);
 
@@ -177,21 +182,30 @@ function transformObject(event) {
 	const intersect = raycaster.intersectObjects(meshObject, true);
 
 	if (intersect.length > 0) {
+		// var object = intersect[0].object;
+		// if (object.userData.canjustify) {
+		// 	transformControls.attach(object);
+		// 	object.userData.isSelected = true;
+		// } else {
+		// 	transformControls.detach();
+		// 	if (meshObject.length > 1) object.userData.isSelected = false;
+		// }
+
 		var object = intersect[0].object;
-		if (object.userData.canjustify) {
-			transformControls.attach(object);
+		if (object.userData.isSelected === false) {
+			meshObject.forEach((obj, index) => {
+				meshObject[index].userData.isSelected = false;
+			});
 			object.userData.isSelected = true;
-		} else {
-			transformControls.detach();
-			if (meshObject.length > 1) object.userData.isSelected = false;
+			updateCurrentGeometry(meshObject);
 		}
 	} else {
-		transformControls.detach();
-		if (meshObject.length > 1) {
-			for (let obj in meshObject) {
-				meshObject[obj].userData.isSelected = false;
-			}
-		}
+		// transformControls.detach();
+		// if (meshObject.length > 1) {
+		// 	for (let obj in meshObject) {
+		// 		meshObject[obj].userData.isSelected = false;
+		// 	}
+		// }
 	}
 }
 

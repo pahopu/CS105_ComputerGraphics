@@ -19,7 +19,20 @@ function selectTool(event) {
 
 	if (current.length > 0) {
 		if (current[0] === icon) flag = true;
-		current[0].className = current[0].className.replace(" active", "");
+		const excludes = ["Translate", "Rotate", "Scale"];
+		const isCurrentIncludes = excludes.some((el) =>
+			current[0].alt.includes(el)
+		);
+		const isIconIncludes = excludes.some((el) => icon.alt.includes(el));
+
+		if (
+			!(
+				(isCurrentIncludes && !isIconIncludes) ||
+				(!isCurrentIncludes && isIconIncludes)
+			)
+		) {
+			current[0].className = current[0].className.replace(" active", "");
+		}
 	}
 
 	if (!flag) {

@@ -1,3 +1,6 @@
+import { meshObject } from "./main";
+import { updateCurrentGeometry } from "./update";
+
 const tools = document.querySelectorAll(".icon-tool");
 
 tools.forEach((tool) => {
@@ -20,13 +23,15 @@ function selectTool(event) {
 	}
 
 	if (!flag) {
+		hideTooltip();
+
 		icon.className += " active";
 		if (icon.alt === "Geometry") {
 			const geometry_option =
 				document.getElementsByClassName("geometry-option")[0];
 			geometry_option.className += " active";
+			updateCurrentGeometry(meshObject);
 		}
-		hideTooltip();
 	}
 }
 
@@ -51,3 +56,5 @@ function hideTooltip(event) {
 	tooltip.style.opacity = 0;
 	tooltip.style.visibility = "hidden";
 }
+
+// export { updateCurrentGeometry };

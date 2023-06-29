@@ -1,73 +1,31 @@
 // Import Three.js library
 import * as THREE from "three";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+import { updateCurrentGeometry } from "./update.js";
+import {
+	create_background_point,
+	create_cube,
+	create_sphere,
+	create_cone,
+} from "./geometry.js";
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
 let panel_gui = null;
 let isDragging = false;
+let arrowMesh;
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 let meshObject = [];
 
-function createGUI() {
-	if (panel_gui) {
-		panel_gui.__folders = {};
-		panel_gui.__controllers = [];
-	}
-	createPanel();
-}
-
-function createPanel() {
-	panel_gui = new GUI({ width: 330 });
-}
-
-function create_box() {
-	const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-	const boxMaterial = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-
-	boxMesh.position.y = 1;
-	boxMesh.userData.canjustify = true;
-	boxMesh.userData.isSelected = false;
-
-	return boxMesh;
-}
-
-function create_background_point() {
-	const vertices = [];
-	const num_points = 30000;
-	for (let i = 0; i < num_points; i++) {
-		const x = THREE.MathUtils.randFloatSpread(2000);
-		const y = THREE.MathUtils.randFloatSpread(2000);
-		const z = THREE.MathUtils.randFloatSpread(2000);
-
-		vertices.push(x, y, z);
-	}
-
-	const background_geometry = new THREE.BufferGeometry();
-	background_geometry.setAttribute(
-		"position",
-		new THREE.Float32BufferAttribute(vertices, 3)
-	);
-
-	const background_material = new THREE.PointsMaterial({ color: 0x888888 });
-	const background_points = new THREE.Points(
-		background_geometry,
-		background_material
-	);
-	return background_points;
-}
-
 function initObjects() {
-	let boxMesh = create_box();
+	let boxMesh = create_cube();
+	if (meshObject.length === 0) {
+		boxMesh.userData.isSelected = true;
+	}
 	meshObject.push(boxMesh);
 }
 
@@ -101,6 +59,10 @@ function init() {
 
 	controls = new OrbitControls(camera, renderer.domElement);
 	controls.update();
+
+	const arrowGeometry = new THREE.ConeGeometry(0.5, 1, 32);
+	const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+	arrowMesh = new THREE.Mesh(arrowGeometry, arrowMaterial);
 
 	document.getElementById("rendering").appendChild(renderer.domElement);
 
@@ -192,17 +154,9 @@ function HandleKeyboard(event) {
 document.getElementsByClassName("btn-add")[0].addEventListener(
 	"click",
 	function (e) {
-		const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-		const boxMaterial = new THREE.MeshNormalMaterial({
-			transparent: true,
-			opacity: 1,
-		});
-		const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-
-		boxMesh.position.x = 2;
-		boxMesh.position.y = 1;
-		boxMesh.userData.canjustify = true;
-		boxMesh.userData.isSelected = false;
+		const boxMesh = create_cube();
+		boxMesh.position.x = THREE.MathUtils.randInt(0, 10);
+		boxMesh.position.y = THREE.MathUtils.randInt(1, 5);
 
 		meshObject.push(boxMesh);
 		scene.add(boxMesh);
@@ -222,7 +176,7 @@ function SetMousePosition(event) {
 	mouse.y = -(top_event / canvas_height) * 2 + 1;
 }
 
-function transformObject(event) {
+function clickObject(event) {
 	event.preventDefault();
 	SetMousePosition(event);
 	raycaster.setFromCamera(mouse, camera);
@@ -231,17 +185,23 @@ function transformObject(event) {
 
 	if (intersect.length > 0) {
 		var object = intersect[0].object;
-		if (object.userData.canjustify) {
-			transformControls.attach(object);
+		if (object.userData.isSelected === false) {
+			let isTransform = false;
+			meshObject.forEach((obj, index) => {
+				meshObject[index].userData.isSelected = false;
+				if (meshObject[index].userData.isTransform === true) {
+					meshObject[index].userData.isTransform = false;
+					transformControls.detach();
+					isTransform = true;
+				}
+			});
+
 			object.userData.isSelected = true;
-		} else {
-			transformControls.detach();
-			object.userData.isSelected = false;
-		}
-	} else {
-		transformControls.detach();
-		for (let obj in meshObject) {
-			meshObject[obj].userData.isSelected = false;
+			object.userData.isTransform = isTransform;
+			if (isTransform) {
+				transformControls.attach(object);
+			}
+			updateCurrentGeometry(meshObject);
 		}
 	}
 }
@@ -268,11 +228,76 @@ function hoverObject(event) {
 	}
 }
 
+function resetObj(obj) {
+	scene.remove(obj);
+	obj.traverse(function (object) {
+		if (object.isMesh) {
+			object.geometry.dispose();
+			object.material.dispose();
+		}
+	});
+	obj = null;
+}
+
+const onClickGeometry = (event) => {
+	const typeMesh = event.target.alt;
+	let meshIndex = meshObject.findIndex(
+		(obj) => obj.userData.isSelected === true
+	);
+	if (meshObject[meshIndex].userData.type === typeMesh) return;
+	let current_position = meshObject[meshIndex].position;
+	resetObj(meshObject[meshIndex]);
+	switch (typeMesh) {
+		case "Cube":
+			meshObject[meshIndex] = create_cube(current_position);
+			break;
+		case "Sphere":
+			meshObject[meshIndex] = create_sphere(current_position);
+			break;
+		case "Cone":
+			meshObject[meshIndex] = create_cone(current_position);
+			break;
+	}
+	meshObject[meshIndex].userData.isSelected = true;
+	scene.add(meshObject[meshIndex]);
+	updateCurrentGeometry(meshObject);
+};
+
+function active_transform(event) {
+	event.preventDefault();
+	const icon = event.target;
+	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
+	if (!icon.className.includes(" active")) {
+		transformControls.attach(meshSelected);
+		meshSelected.userData.isTransform = true;
+	} else {
+		transformControls.detach();
+		meshSelected.userData.isTransform = false;
+	}
+	if (icon.alt === "Translate") {
+		transformControls.setMode("translate");
+	} else if (icon.alt === "Rotate") {
+		transformControls.setMode("rotate");
+	} else if (icon.alt === "Scale") {
+		transformControls.setMode("scale");
+	}
+}
+
+const geometry_option = document.querySelectorAll(".geometry-option");
+geometry_option.forEach((option) => {
+	option.addEventListener("click", onClickGeometry);
+});
+
+const tools = document.querySelectorAll(".icon-tool");
+tools.forEach((tool, index) => {
+	if (index < 3) tool.addEventListener("click", active_transform);
+});
+
 window.addEventListener("keydown", HandleKeyboard);
 
 document
 	.getElementById("rendering")
-	.addEventListener("click", transformObject, false);
+	.addEventListener("click", clickObject, false);
 
 document
 	.getElementById("rendering")
@@ -288,3 +313,5 @@ function animate() {
 
 init();
 animate();
+
+export { meshObject };

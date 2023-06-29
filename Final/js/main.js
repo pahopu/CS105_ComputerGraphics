@@ -11,7 +11,9 @@ import {
 	set_transform,
 	create_cylinder,
 	create_torus,
+	create_teapot,
 } from "./geometry.js";
+import { TeapotBufferGeometry } from "./TeapotBufferGeometry.js";
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
@@ -247,15 +249,12 @@ const onClickGeometry = (event) => {
 	let meshIndex = meshObject.findIndex(
 		(obj) => obj.userData.isSelected === true
 	);
-	let isTransform = meshObject[meshIndex].userData.isTransform;
-	if (isTransform) {
-		transformControls.detach();
-	}
 	if (meshObject[meshIndex].userData.type === typeMesh) return;
+	let isTransform = meshObject[meshIndex].userData.isTransform;
+	if (isTransform) transformControls.detach();
 	let current_position = meshObject[meshIndex].position;
 	let current_rotate = meshObject[meshIndex].rotation;
 	let current_scale = meshObject[meshIndex].scale;
-	console.log(current_rotate);
 	resetObj(meshObject[meshIndex]);
 	switch (typeMesh) {
 		case "Cube":
@@ -272,6 +271,9 @@ const onClickGeometry = (event) => {
 			break;
 		case "Torus":
 			meshObject[meshIndex] = create_torus();
+			break;
+		case "Teapot":
+			meshObject[meshIndex] = create_teapot();
 			break;
 	}
 	meshObject[meshIndex] = set_transform(

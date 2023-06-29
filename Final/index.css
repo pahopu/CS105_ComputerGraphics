@@ -170,6 +170,9 @@
 }
 
 .icon-geometry[name='torus']{
+    margin-bottom: 4px;
+}
+
+.icon-geometry[name='teapot']{
     margin-bottom: 0px;
-    margin-top: 1px;
 }

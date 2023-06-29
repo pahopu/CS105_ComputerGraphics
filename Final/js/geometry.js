@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { TeapotBufferGeometry } from "./TeapotBufferGeometry";
 
 function initUserData(obj, type) {
 	obj.userData.canjustify = true;
@@ -103,6 +104,17 @@ function create_torus() {
 	return torus;
 }
 
+function create_teapot() {
+	const geometry = new TeapotBufferGeometry(1, 8);
+	const teapot = new THREE.Mesh(geometry, material);
+
+	teapot.position.y = 1;
+
+	initUserData(teapot, "Teapot");
+
+	return teapot;
+}
+
 export {
 	create_background_point,
 	set_transform,
@@ -111,4 +123,5 @@ export {
 	create_cone,
 	create_cylinder,
 	create_torus,
+	create_teapot,
 };

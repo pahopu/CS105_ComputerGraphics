@@ -9,6 +9,8 @@ import {
 	create_sphere,
 	create_cone,
 	set_transform,
+	create_cylinder,
+	create_torus,
 } from "./geometry.js";
 
 // INIT GLOBAL VARIABLES
@@ -253,6 +255,7 @@ const onClickGeometry = (event) => {
 	let current_position = meshObject[meshIndex].position;
 	let current_rotate = meshObject[meshIndex].rotation;
 	let current_scale = meshObject[meshIndex].scale;
+	console.log(current_rotate);
 	resetObj(meshObject[meshIndex]);
 	switch (typeMesh) {
 		case "Cube":
@@ -263,6 +266,12 @@ const onClickGeometry = (event) => {
 			break;
 		case "Cone":
 			meshObject[meshIndex] = create_cone();
+			break;
+		case "Cylinder":
+			meshObject[meshIndex] = create_cylinder();
+			break;
+		case "Torus":
+			meshObject[meshIndex] = create_torus();
 			break;
 	}
 	meshObject[meshIndex] = set_transform(

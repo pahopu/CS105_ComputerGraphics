@@ -68,8 +68,6 @@ function showTooltip(event) {
 
 	const iconRect = icon.getBoundingClientRect();
 
-	console.log(icon.className);
-
 	if (icon.className.includes("-geometry")) {
 		tooltip.className += " geometry";
 	}

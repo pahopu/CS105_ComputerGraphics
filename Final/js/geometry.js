@@ -10,6 +10,11 @@ function initUserData(obj, type) {
 	return obj;
 }
 
+const material = new THREE.MeshNormalMaterial({
+	transparent: true,
+	opacity: 1,
+});
+
 function create_background_point() {
 	const vertices = [];
 	const num_points = 30000;
@@ -44,11 +49,8 @@ function set_transform(obj, position, rotate, scale) {
 
 function create_cube() {
 	const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-	const cubeMaterial = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+	const cubeMesh = new THREE.Mesh(cubeGeometry, material);
 
 	cubeMesh.position.y = 1;
 
@@ -59,10 +61,6 @@ function create_cube() {
 
 function create_sphere() {
 	const geometry = new THREE.SphereGeometry(1, 32, 16);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
 	const sphere = new THREE.Mesh(geometry, material);
 
 	sphere.position.y = 1;
@@ -74,10 +72,6 @@ function create_sphere() {
 
 function create_cone() {
 	const geometry = new THREE.ConeGeometry(1, 2, 32);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
 	const cone = new THREE.Mesh(geometry, material);
 
 	cone.position.y = 1;
@@ -87,10 +81,34 @@ function create_cone() {
 	return cone;
 }
 
+function create_cylinder() {
+	const geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
+	const cyclinder = new THREE.Mesh(geometry, material);
+
+	cyclinder.position.y = 1;
+
+	initUserData(cyclinder, "Cylinder");
+
+	return cyclinder;
+}
+
+function create_torus() {
+	const geometry = new THREE.TorusGeometry(1, 0.3, 16, 100);
+	const torus = new THREE.Mesh(geometry, material);
+
+	torus.position.y = 1;
+
+	initUserData(torus, "Torus");
+
+	return torus;
+}
+
 export {
 	create_background_point,
 	set_transform,
 	create_cube,
 	create_sphere,
 	create_cone,
+	create_cylinder,
+	create_torus,
 };

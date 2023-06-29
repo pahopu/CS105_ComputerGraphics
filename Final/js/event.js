@@ -23,6 +23,8 @@ function selectTool(event) {
 	}
 
 	if (!flag) {
+		hideTooltip();
+
 		icon.className += " active";
 		if (icon.alt === "Geometry") {
 			const geometry_option =
@@ -30,7 +32,6 @@ function selectTool(event) {
 			geometry_option.className += " active";
 			updateCurrentGeometry(meshObject);
 		}
-		hideTooltip();
 	}
 }
 

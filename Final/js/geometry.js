@@ -53,8 +53,7 @@ function create_cube(position = null) {
 
 function create_sphere(position = null) {
 	const geometry = new THREE.SphereGeometry(1, 32, 16);
-	const material = new THREE.MeshBasicMaterial({
-		color: 0xb2beb5,
+	const material = new THREE.MeshNormalMaterial({
 		transparent: true,
 		opacity: 1,
 	});
@@ -67,4 +66,19 @@ function create_sphere(position = null) {
 	return sphere;
 }
 
-export { create_background_point, create_cube, create_sphere };
+function create_cone(position = null) {
+	const geometry = new THREE.ConeGeometry(1, 2, 32);
+	const material = new THREE.MeshNormalMaterial({
+		transparent: true,
+		opacity: 1,
+	});
+	const cone = new THREE.Mesh(geometry, material);
+
+	if (position === null) cone.position.y = 1;
+	else cone.position.copy(position);
+	initUserData(cone, "Cone");
+
+	return cone;
+}
+
+export { create_background_point, create_cube, create_sphere, create_cone };

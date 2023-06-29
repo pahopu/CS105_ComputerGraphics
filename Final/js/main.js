@@ -7,6 +7,7 @@ import {
 	create_background_point,
 	create_cube,
 	create_sphere,
+	create_cone,
 } from "./geometry.js";
 
 // INIT GLOBAL VARIABLES
@@ -243,18 +244,21 @@ const onClickGeometry = (event) => {
 	let meshIndex = meshObject.findIndex(
 		(obj) => obj.userData.isSelected === true
 	);
+	if (meshObject[meshIndex].userData.type === typeMesh) return;
 	let current_position = meshObject[meshIndex].position;
-	if (typeMesh === "Cube") {
-		if (meshObject[meshIndex].userData.type === "Cube") return;
-		resetObj(meshObject[meshIndex]);
-		meshObject[meshIndex] = create_cube(current_position);
-		meshObject[meshIndex].userData.isSelected = true;
-	} else if (typeMesh === "Sphere") {
-		if (meshObject[meshIndex].userData.type === "Sphere") return;
-		resetObj(meshObject[meshIndex]);
-		meshObject[meshIndex] = create_sphere(current_position);
-		meshObject[meshIndex].userData.isSelected = true;
+	resetObj(meshObject[meshIndex]);
+	switch (typeMesh) {
+		case "Cube":
+			meshObject[meshIndex] = create_cube(current_position);
+			break;
+		case "Sphere":
+			meshObject[meshIndex] = create_sphere(current_position);
+			break;
+		case "Cone":
+			meshObject[meshIndex] = create_cone(current_position);
+			break;
 	}
+	meshObject[meshIndex].userData.isSelected = true;
 	scene.add(meshObject[meshIndex]);
 	updateCurrentGeometry(meshObject);
 };

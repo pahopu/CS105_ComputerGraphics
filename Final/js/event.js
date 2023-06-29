@@ -2,11 +2,17 @@ import { meshObject } from "./main";
 import { updateCurrentGeometry } from "./update";
 
 const tools = document.querySelectorAll(".icon-tool");
+const icons_geometry = document.querySelectorAll(".icon-geometry");
 
 tools.forEach((tool) => {
 	tool.addEventListener("mouseenter", showTooltip);
 	tool.addEventListener("mouseleave", hideTooltip);
 	tool.addEventListener("click", selectTool);
+});
+
+icons_geometry.forEach((icon) => {
+	icon.addEventListener("mouseenter", showTooltip);
+	icon.addEventListener("mouseleave", hideTooltip);
 });
 
 function selectTool(event) {
@@ -51,13 +57,22 @@ function selectTool(event) {
 function showTooltip(event) {
 	const icon = event.target;
 
-	if (icon.className.includes("active")) return;
+	if (
+		icon.className.includes("active") &&
+		!icon.className.includes("-geometry")
+	)
+		return;
 	const tooltip = document.getElementsByClassName("tool-tip")[0];
 
 	tooltip.innerHTML = icon.alt;
 
 	const iconRect = icon.getBoundingClientRect();
 
+	console.log(icon.className);
+
+	if (icon.className.includes("-geometry")) {
+		tooltip.className += " geometry";
+	}
 	tooltip.style.top = iconRect.top + "px";
 	tooltip.style.opacity = 1;
 	tooltip.style.visibility = "visible";
@@ -65,6 +80,8 @@ function showTooltip(event) {
 
 function hideTooltip(event) {
 	const tooltip = document.getElementsByClassName("tool-tip")[0];
+
+	tooltip.className = tooltip.className.replace(" geometry", "");
 
 	tooltip.style.opacity = 0;
 	tooltip.style.visibility = "hidden";

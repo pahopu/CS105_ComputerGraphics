@@ -102,7 +102,7 @@
     position: absolute;
     top: 23%;
     right: 2%;
-    transform: translateX(-55%);
+    transform: translateX(-62%);
     text-align: center;
     background-color: white;
     width: 80px;
@@ -115,6 +115,10 @@
     transition: opacity 0.3s;
     z-index: 1000;
     visibility: hidden;
+}
+
+.tool-tip.geometry{
+    right: 5%;
 }
 
 .geometry-option{

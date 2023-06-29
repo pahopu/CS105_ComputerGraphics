@@ -175,7 +175,7 @@ function SetMousePosition(event) {
 	mouse.y = -(top_event / canvas_height) * 2 + 1;
 }
 
-function transformObject(event) {
+function clickObject(event) {
 	event.preventDefault();
 	SetMousePosition(event);
 	raycaster.setFromCamera(mouse, camera);
@@ -183,30 +183,25 @@ function transformObject(event) {
 	const intersect = raycaster.intersectObjects(meshObject, true);
 
 	if (intersect.length > 0) {
-		// var object = intersect[0].object;
-		// if (object.userData.canjustify) {
-		// 	transformControls.attach(object);
-		// 	object.userData.isSelected = true;
-		// } else {
-		// 	transformControls.detach();
-		// 	if (meshObject.length > 1) object.userData.isSelected = false;
-		// }
-
 		var object = intersect[0].object;
 		if (object.userData.isSelected === false) {
+			let isTransform = false;
 			meshObject.forEach((obj, index) => {
 				meshObject[index].userData.isSelected = false;
+				if (meshObject[index].userData.isTransform === true) {
+					meshObject[index].userData.isTransform = false;
+					transformControls.detach();
+					isTransform = true;
+				}
 			});
+
 			object.userData.isSelected = true;
+			object.userData.isTransform = isTransform;
+			if (isTransform) {
+				transformControls.attach(object);
+			}
 			updateCurrentGeometry(meshObject);
 		}
-	} else {
-		// transformControls.detach();
-		// if (meshObject.length > 1) {
-		// 	for (let obj in meshObject) {
-		// 		meshObject[obj].userData.isSelected = false;
-		// 	}
-		// }
 	}
 }
 
@@ -254,27 +249,51 @@ const onClickGeometry = (event) => {
 		resetObj(meshObject[meshIndex]);
 		meshObject[meshIndex] = create_cube(current_position);
 		meshObject[meshIndex].userData.isSelected = true;
-		scene.add(meshObject[meshIndex]);
 	} else if (typeMesh === "Sphere") {
 		if (meshObject[meshIndex].userData.type === "Sphere") return;
 		resetObj(meshObject[meshIndex]);
 		meshObject[meshIndex] = create_sphere(current_position);
 		meshObject[meshIndex].userData.isSelected = true;
-		scene.add(meshObject[meshIndex]);
 	}
+	scene.add(meshObject[meshIndex]);
 	updateCurrentGeometry(meshObject);
 };
+
+function active_transform(event) {
+	event.preventDefault();
+	const icon = event.target;
+	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
+	if (!icon.className.includes(" active")) {
+		transformControls.attach(meshSelected);
+		meshSelected.userData.isTransform = true;
+	} else {
+		transformControls.detach();
+		meshSelected.userData.isTransform = false;
+	}
+	if (icon.alt === "Translate") {
+		transformControls.setMode("translate");
+	} else if (icon.alt === "Rotate") {
+		transformControls.setMode("rotate");
+	} else if (icon.alt === "Scale") {
+		transformControls.setMode("scale");
+	}
+}
 
 const geometry_option = document.querySelectorAll(".geometry-option");
 geometry_option.forEach((option) => {
 	option.addEventListener("click", onClickGeometry);
 });
 
+const tools = document.querySelectorAll(".icon-tool");
+tools.forEach((tool, index) => {
+	if (index < 3) tool.addEventListener("click", active_transform);
+});
+
 window.addEventListener("keydown", HandleKeyboard);
 
 document
 	.getElementById("rendering")
-	.addEventListener("click", transformObject, false);
+	.addEventListener("click", clickObject, false);
 
 document
 	.getElementById("rendering")

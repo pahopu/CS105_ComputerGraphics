@@ -35,7 +35,14 @@ function create_background_point() {
 	return background_points;
 }
 
-function create_cube(position = null) {
+function set_transform(obj, position, rotate, scale) {
+	obj.position.copy(position);
+	obj.rotation.copy(rotate);
+	obj.scale.copy(scale);
+	return obj;
+}
+
+function create_cube() {
 	const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 	const cubeMaterial = new THREE.MeshNormalMaterial({
 		transparent: true,
@@ -43,15 +50,14 @@ function create_cube(position = null) {
 	});
 	const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
-	if (position === null) cubeMesh.position.y = 1;
-	else cubeMesh.position.copy(position);
+	cubeMesh.position.y = 1;
 
 	initUserData(cubeMesh, "Cube");
 
 	return cubeMesh;
 }
 
-function create_sphere(position = null) {
+function create_sphere() {
 	const geometry = new THREE.SphereGeometry(1, 32, 16);
 	const material = new THREE.MeshNormalMaterial({
 		transparent: true,
@@ -59,14 +65,14 @@ function create_sphere(position = null) {
 	});
 	const sphere = new THREE.Mesh(geometry, material);
 
-	if (position === null) sphere.position.y = 1;
-	else sphere.position.copy(position);
+	sphere.position.y = 1;
+
 	initUserData(sphere, "Sphere");
 
 	return sphere;
 }
 
-function create_cone(position = null) {
+function create_cone() {
 	const geometry = new THREE.ConeGeometry(1, 2, 32);
 	const material = new THREE.MeshNormalMaterial({
 		transparent: true,
@@ -74,11 +80,17 @@ function create_cone(position = null) {
 	});
 	const cone = new THREE.Mesh(geometry, material);
 
-	if (position === null) cone.position.y = 1;
-	else cone.position.copy(position);
+	cone.position.y = 1;
+
 	initUserData(cone, "Cone");
 
 	return cone;
 }
 
-export { create_background_point, create_cube, create_sphere, create_cone };
+export {
+	create_background_point,
+	set_transform,
+	create_cube,
+	create_sphere,
+	create_cone,
+};

@@ -8,6 +8,7 @@ import {
 	create_cube,
 	create_sphere,
 	create_cone,
+	set_transform,
 } from "./geometry.js";
 
 // INIT GLOBAL VARIABLES
@@ -244,22 +245,38 @@ const onClickGeometry = (event) => {
 	let meshIndex = meshObject.findIndex(
 		(obj) => obj.userData.isSelected === true
 	);
+	let isTransform = meshObject[meshIndex].userData.isTransform;
+	if (isTransform) {
+		transformControls.detach();
+	}
 	if (meshObject[meshIndex].userData.type === typeMesh) return;
 	let current_position = meshObject[meshIndex].position;
+	let current_rotate = meshObject[meshIndex].rotation;
+	let current_scale = meshObject[meshIndex].scale;
 	resetObj(meshObject[meshIndex]);
 	switch (typeMesh) {
 		case "Cube":
-			meshObject[meshIndex] = create_cube(current_position);
+			meshObject[meshIndex] = create_cube();
 			break;
 		case "Sphere":
-			meshObject[meshIndex] = create_sphere(current_position);
+			meshObject[meshIndex] = create_sphere();
 			break;
 		case "Cone":
-			meshObject[meshIndex] = create_cone(current_position);
+			meshObject[meshIndex] = create_cone();
 			break;
 	}
+	meshObject[meshIndex] = set_transform(
+		meshObject[meshIndex],
+		current_position,
+		current_rotate,
+		current_scale
+	);
 	meshObject[meshIndex].userData.isSelected = true;
 	scene.add(meshObject[meshIndex]);
+	if (isTransform) {
+		meshObject[meshIndex].userData.isTransform = true;
+		transformControls.attach(meshObject[meshIndex]);
+	}
 	updateCurrentGeometry(meshObject);
 };
 

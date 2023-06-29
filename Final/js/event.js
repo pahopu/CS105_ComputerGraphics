@@ -4,10 +4,11 @@ import { updateCurrentGeometry } from "./update";
 const tools = document.querySelectorAll(".icon-tool");
 const icons_geometry = document.querySelectorAll(".icon-geometry");
 
-tools.forEach((tool) => {
+tools.forEach((tool, index) => {
 	tool.addEventListener("mouseenter", showTooltip);
 	tool.addEventListener("mouseleave", hideTooltip);
-	tool.addEventListener("click", selectTool);
+	if (index < 3) tool.addEventListener("click", selectTransfrom);
+	else tool.addEventListener("click", selectTool);
 });
 
 icons_geometry.forEach((icon) => {
@@ -15,8 +16,22 @@ icons_geometry.forEach((icon) => {
 	icon.addEventListener("mouseleave", hideTooltip);
 });
 
+function selectTransfrom(event) {
+	var current = document.getElementsByClassName("icon-tool transform active");
+	const icon = event.target;
+	let flag = false;
+	if (current.length > 0) {
+		if (current[0] === icon) flag = true;
+		current[0].className = current[0].className.replace(" active", "");
+	}
+	if (!flag) {
+		hideTooltip();
+		icon.className += " active";
+	}
+}
+
 function selectTool(event) {
-	var current = document.getElementsByClassName("icon-tool active");
+	var current = document.getElementsByClassName("icon-tool normal active");
 	const icon = event.target;
 	let flag = false;
 
@@ -25,27 +40,14 @@ function selectTool(event) {
 
 	if (current.length > 0) {
 		if (current[0] === icon) flag = true;
-		const excludes = ["Translate", "Rotate", "Scale"];
-		const isCurrentIncludes = excludes.some((el) =>
-			current[0].alt.includes(el)
-		);
-		const isIconIncludes = excludes.some((el) => icon.alt.includes(el));
-
-		if (
-			!(
-				(isCurrentIncludes && !isIconIncludes) ||
-				(!isCurrentIncludes && isIconIncludes)
-			)
-		) {
-			current[0].className = current[0].className.replace(" active", "");
-		}
+		current[0].className = current[0].className.replace(" active", "");
 	}
 
 	if (!flag) {
 		hideTooltip();
 
 		icon.className += " active";
-		if (icon.alt === "Geometry") {
+		if (icon.alt === "Geometry" || isCurrentIncludes) {
 			const geometry_option =
 				document.getElementsByClassName("geometry-option")[0];
 			geometry_option.className += " active";

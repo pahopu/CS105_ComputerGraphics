@@ -121,27 +121,33 @@
     right: 5%;
 }
 
-.geometry-option{
+.subtool{
     display: flex;
     flex-direction: column;
     padding: 10px;
     padding-bottom: 5px;
     position: absolute;
-    top: 35%;
-    right: 4%;
-    transform: translateX(-43%) translateY(1px);
     background-color: rgba(128, 128, 128, 0.5);
     border-radius: 4px;
+    transition: all ease-in-out 0.2s;
     opacity: 0;
     visibility: hidden;
-    transition: all ease-in-out 0.2s;
+    right: 4%;
+    transform: translateX(-43%) translateY(1px);
 }
 
-.geometry-option.active{
+.subtool.geometry-option{
+    top: 35%;
+}
+
+.subtool.material-option{
+    top: 47%;
+}
+
+.geometry-option.active, .material-option.active{
     opacity: 1;
     visibility: visible;    
     transition: all ease-in-out 0.2s;
-
 }
 
 .option{
@@ -157,8 +163,6 @@
     cursor: pointer;
     transition: all linear 0.1s;
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
-
-
 }
 
 .icon-geometry:hover{
@@ -176,3 +180,4 @@
 .icon-geometry[name='teapot']{
     margin-bottom: 0px;
 }
+

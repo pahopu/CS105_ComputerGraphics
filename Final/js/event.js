@@ -36,7 +36,10 @@ function selectTool(event) {
 	let flag = false;
 
 	const geometry_option = document.getElementsByClassName("geometry-option")[0];
+	const material_option = document.getElementsByClassName("material-option")[0];
+
 	geometry_option.className = geometry_option.className.replace(" active", "");
+	material_option.className = material_option.className.replace(" active", "");
 
 	if (current.length > 0) {
 		if (current[0] === icon) flag = true;
@@ -47,11 +50,11 @@ function selectTool(event) {
 		hideTooltip();
 
 		icon.className += " active";
-		if (icon.alt === "Geometry" || isCurrentIncludes) {
-			const geometry_option =
-				document.getElementsByClassName("geometry-option")[0];
+		if (icon.alt === "Geometry") {
 			geometry_option.className += " active";
 			updateCurrentGeometry(meshObject);
+		} else if (icon.alt === "Material") {
+			material_option.className += " active";
 		}
 	}
 }

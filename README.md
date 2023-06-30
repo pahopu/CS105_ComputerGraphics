@@ -9,10 +9,11 @@
 
 <h1 align="center"><b>ĐỒ HỌA MÁY TÍNH<br>(COMPUTER GRAPHICS)</b></h>
 
-[![Status](https://img.shields.io/badge/status-working-blue?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
-[![GitHub contributors](https://img.shields.io/github/contributors/pahopu/CS105_3DAnimation?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation/graphs/contributors)
-[![Status](https://img.shields.io/badge/language1-html-orange?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
-[![Status](https://img.shields.io/badge/language2-javascript-yellow?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
+[![Status](https://img.shields.io/badge/status-working-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
+[![GitHub contributors](https://img.shields.io/github/contributors/pahopu/CS105_ComputerGraphics?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics/graphs/contributors)
+[![Status](https://img.shields.io/badge/language1-html-orange?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
+[![Status](https://img.shields.io/badge/language2-css-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
+[![Status](https://img.shields.io/badge/language3-javascript-yellow?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
 
 ## [BẢNG MỤC LỤC](#top)
 * [Giới thiệu môn học](#giới-thiệu-môn-học)

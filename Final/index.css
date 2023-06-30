@@ -102,7 +102,7 @@
     position: absolute;
     top: 23%;
     right: 2%;
-    transform: translateX(-55%);
+    transform: translateX(-62%);
     text-align: center;
     background-color: white;
     width: 80px;
@@ -117,10 +117,15 @@
     visibility: hidden;
 }
 
+.tool-tip.geometry{
+    right: 5%;
+}
+
 .geometry-option{
     display: flex;
     flex-direction: column;
     padding: 10px;
+    padding-bottom: 5px;
     position: absolute;
     top: 35%;
     right: 4%;
@@ -164,7 +169,10 @@
     filter: invert(86%) sepia(31%) saturate(912%) hue-rotate(328deg) brightness(101%) contrast(99%);
 }
 
-.icon-geometry[name='wheel']{
-    margin-bottom: 0;
-    margin-top: 1px;
+.icon-geometry[name='torus']{
+    margin-bottom: 4px;
+}
+
+.icon-geometry[name='teapot']{
+    margin-bottom: 0px;
 }

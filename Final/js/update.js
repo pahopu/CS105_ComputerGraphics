@@ -1,5 +1,4 @@
 function updateCurrentGeometry(meshObject) {
-	console.log(meshObject);
 	const geometry_option = document.getElementsByClassName("geometry-option")[0];
 	if (meshObject.length > 0 && geometry_option.className.includes(" active")) {
 		let currentSelect;

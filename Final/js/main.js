@@ -8,7 +8,12 @@ import {
 	create_cube,
 	create_sphere,
 	create_cone,
+	set_transform,
+	create_cylinder,
+	create_torus,
+	create_teapot,
 } from "./geometry.js";
+import { TeapotBufferGeometry } from "./TeapotBufferGeometry.js";
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
@@ -245,21 +250,44 @@ const onClickGeometry = (event) => {
 		(obj) => obj.userData.isSelected === true
 	);
 	if (meshObject[meshIndex].userData.type === typeMesh) return;
+	let isTransform = meshObject[meshIndex].userData.isTransform;
+	if (isTransform) transformControls.detach();
 	let current_position = meshObject[meshIndex].position;
+	let current_rotate = meshObject[meshIndex].rotation;
+	let current_scale = meshObject[meshIndex].scale;
 	resetObj(meshObject[meshIndex]);
 	switch (typeMesh) {
 		case "Cube":
-			meshObject[meshIndex] = create_cube(current_position);
+			meshObject[meshIndex] = create_cube();
 			break;
 		case "Sphere":
-			meshObject[meshIndex] = create_sphere(current_position);
+			meshObject[meshIndex] = create_sphere();
 			break;
 		case "Cone":
-			meshObject[meshIndex] = create_cone(current_position);
+			meshObject[meshIndex] = create_cone();
+			break;
+		case "Cylinder":
+			meshObject[meshIndex] = create_cylinder();
+			break;
+		case "Torus":
+			meshObject[meshIndex] = create_torus();
+			break;
+		case "Teapot":
+			meshObject[meshIndex] = create_teapot();
 			break;
 	}
+	meshObject[meshIndex] = set_transform(
+		meshObject[meshIndex],
+		current_position,
+		current_rotate,
+		current_scale
+	);
 	meshObject[meshIndex].userData.isSelected = true;
 	scene.add(meshObject[meshIndex]);
+	if (isTransform) {
+		meshObject[meshIndex].userData.isTransform = true;
+		transformControls.attach(meshObject[meshIndex]);
+	}
 	updateCurrentGeometry(meshObject);
 };
 

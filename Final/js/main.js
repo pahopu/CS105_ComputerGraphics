@@ -13,7 +13,6 @@ import {
 	create_torus,
 	create_teapot,
 } from "./geometry.js";
-import { TeapotBufferGeometry } from "./TeapotBufferGeometry.js";
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
@@ -215,16 +214,15 @@ function hoverObject(event) {
 	event.preventDefault();
 
 	SetMousePosition(event);
+
 	raycaster.setFromCamera(mouse, camera);
 
 	const intersect = raycaster.intersectObjects(meshObject, true);
 
 	if (intersect.length > 0) {
 		var object = intersect[0].object;
-		if (object.userData.canjustify && object.userData.isSelected == false) {
+		if (object.userData.isSelected === false) {
 			object.material.opacity = 0.5;
-		} else {
-			object.material.opacity = 1;
 		}
 	} else {
 		for (let obj in meshObject) {

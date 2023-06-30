@@ -1,0 +1,335 @@
+[33mcommit 31a0c0ed2747fe8465a14d8550c58a998390864d[m[33m ([m[1;36mHEAD -> [m[1;32mupdated_code[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Fri Jun 30 09:37:15 2023 +0700
+
+    Translate title of final project to English
+
+[33mcommit a54847a420f33154e12ee465c82e005d0351c8bb[m
+Merge: c5f3453 fa73c9a
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Fri Jun 30 09:25:59 2023 +0700
+
+    Merge pull request #12 from pahopu/updated_code
+    
+    Updated code
+
+[33mcommit fa73c9aab58ede313aba76cb3aac6cbe95401b34[m[33m ([m[1;31morigin/updated_code[m[33m)[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Fri Jun 30 00:42:52 2023 +0700
+
+    Add teapot
+
+[33mcommit 87ad20046423a20913c64fd21ba0743b252d8a1b[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 22:01:00 2023 +0700
+
+    Change logic click tool
+
+[33mcommit 4bfe173ebb1163631d2dc611a7b40e50f1ee821c[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 21:39:06 2023 +0700
+
+    Add cylinder and torus geometry
+
+[33mcommit 95e4fb7f41236b97eb115fa76e05fbcae422d642[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 19:47:47 2023 +0700
+
+    Add hover geometry icon show name of that geometry
+
+[33mcommit 5a0f49a8295ade11d97f461dc2b45416e110876f[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 18:34:06 2023 +0700
+
+    Transform not dissapear when change geometry
+
+[33mcommit 1f35d8b0e3d4ddfc4003a514ab2d9a349e5f17dd[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 18:03:33 2023 +0700
+
+    Change icon logic (not turn off the state transform when click others icon not transform)
+
+[33mcommit c5f345332f6c78ea51d4acda45ac3505e2643b90[m
+Merge: 172d5fa 6ed2aea
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Thu Jun 29 16:00:41 2023 +0700
+
+    Merge pull request #11 from pahopu/updated_code
+    
+    Updated code
+
+[33mcommit 6ed2aea9cbf027025e520d133b10605ef3b67d66[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 15:13:34 2023 +0700
+
+    Add cone geometry
+
+[33mcommit a9774833ae64dde40d4b0c3eff28338ec71af520[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 14:33:26 2023 +0700
+
+    Add object only transform when click transform tool bar (first 3 icon), and if the old objet are transform and change to other obj, transform state not dissapear)
+
+[33mcommit 4ee6ff63bfe54f58062b0351c3fe2556913ef1c3[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Thu Jun 29 00:06:58 2023 +0700
+
+    Add random position generate when click add button
+
+[33mcommit c6a1dad35c961ea81779ca12ffe632e1ad79f64f[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Wed Jun 28 23:58:15 2023 +0700
+
+    Change the click event (now only change the selected object when click other obj)
+
+[33mcommit 6d9e0b457d9235d4a32c1cf66435c6737431d559[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Wed Jun 28 23:42:24 2023 +0700
+
+    Add change mesh of geometry (current have now is cube and sphere)
+
+[33mcommit 172d5faea19d77174ccac1d0250012298297a6c8[m
+Merge: 9fdd2f7 34fc081
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Wed Jun 28 23:15:58 2023 +0700
+
+    Merge pull request #10 from pahopu/updated_code
+    
+    Add display sub tool bar for geomtry option
+
+[33mcommit 34fc081efc049f75aa19418ce0d21712cc32f592[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Tue Jun 27 15:44:29 2023 +0700
+
+    Add display sub tool bar for geomtry option
+
+[33mcommit 9fdd2f78513d5d186a421574a628bb53ae2046ee[m
+Merge: 9de5a49 8a6c6fc
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Tue Jun 27 10:15:44 2023 +0700
+
+    Merge pull request #9 from pahopu/pahopu-patch-1
+    
+    Update README.md
+
+[33mcommit 8a6c6fc0d818c69a6ef65e84ad55c1360e525303[m[33m ([m[1;31morigin/pahopu-patch-1[m[33m)[m
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Tue Jun 27 10:04:03 2023 +0700
+
+    Update README.md
+
+[33mcommit 9de5a49b80d8ac2063406b84c350b31dec2f6e7c[m
+Merge: 1ee1f9e 9a6f96c
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Tue Jun 27 10:03:05 2023 +0700
+
+    Merge pull request #7 from pahopu/ThuanE3691-patch-1
+    
+    Update README.md
+
+[33mcommit 1ee1f9ef45a3655110329862dc362f2f5a029df5[m
+Merge: 37cd71f 0d80a4e
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Tue Jun 27 10:02:52 2023 +0700
+
+    Merge pull request #8 from pahopu/updated_code
+    
+    Add change color when click the icon tool and the name of that tool n…
+
+[33mcommit 0d80a4ea6e8199135498fc2efd3cbc933df71dba[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Tue Jun 27 00:11:08 2023 +0700
+
+    Add change color when click the icon tool and the name of that tool not be display (prepare for future step)
+
+[33mcommit 9a6f96ca34d7c58ec4c4d900ebf660e91f5201aa[m[33m ([m[1;31morigin/ThuanE3691-patch-1[m[33m)[m
+Author: Nguyễn Minh Thuận <77454876+ThuanE3691@users.noreply.github.com>
+Date:   Mon Jun 26 22:31:19 2023 +0700
+
+    Update README.md
+    
+    Change README
+
+[33mcommit 37cd71fe886f8d96c1743e14843af117dafd87de[m
+Merge: ff5d431 bfcf472
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Mon Jun 26 22:20:16 2023 +0700
+
+    Merge pull request #6 from pahopu/updated_code
+    
+    Updated code
+
+[33mcommit bfcf47202ff802baa6a71903b5021ff1546a5c16[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Mon Jun 26 22:16:24 2023 +0700
+
+    Add text will show when hover one tool in tool-bar (the display not complete)
+
+[33mcommit 6db14e440fa17f21b6fe2fb8f49ecec0fd6b4fae[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Sun Jun 25 14:47:47 2023 +0700
+
+    Clean code, add background points
+
+[33mcommit ff5d431d84518d03045f646c92c139583c9b8f22[m
+Merge: 2d79cf8 7ec739d
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Sat Jun 24 22:28:20 2023 +0700
+
+    Merge pull request #5 from pahopu/updated_code
+    
+    Updated code
+
+[33mcommit 7ec739db9e2b004f3688502e2b4da0def30303b2[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Sat Jun 24 21:26:21 2023 +0700
+
+    Add hover when object can click and not selected
+
+[33mcommit 5a4dcc26fb1b7973c96204557d0033988ec64b45[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Sat Jun 24 21:18:15 2023 +0700
+
+    Add orbit controls, transform controls, add button to add a new geometry, can move mutiple object by use transform controls
+
+[33mcommit 0f73a227e04f10b5205eec38c6620368f4b53c3a[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Sat Jun 24 13:20:29 2023 +0700
+
+    Change index.html to Final
+
+[33mcommit 2d79cf866a75b019318c811d9bec971f365f0268[m
+Merge: 2a82c70 206b10c
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Sat Jun 24 13:00:16 2023 +0700
+
+    Merge pull request #4 from pahopu/updated_code
+    
+    Updated code
+
+[33mcommit 206b10cc60e56bc8872180f8cd6143a6bd0572b5[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Fri Jun 23 23:06:03 2023 +0700
+
+    Create GUI
+
+[33mcommit 4b8325b01a537fed17ac8ca858031c336d3335cf[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Fri Jun 23 23:00:36 2023 +0700
+
+    Add Final Project, create common background and plane has grid
+
+[33mcommit 13beb991b4d7d6d842990129324c152359426b39[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Fri Jun 23 14:30:54 2023 +0700
+
+    Change seminar content to folder Seminar
+
+[33mcommit 2a82c7075d55e0614355577706cb5bcacfbfb8aa[m
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Sun Jun 11 14:46:12 2023 +0700
+
+    Change name of some files to correct the animation
+
+[33mcommit 3ba487bb559e6805cf67588d266250635bfea42a[m
+Merge: cab6aa6 c9fa180
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Sun Jun 11 14:33:46 2023 +0700
+
+    Merge pull request #3 from pahopu/updated_code
+    
+    Add animation change when change model
+
+[33mcommit c9fa180846bc405ddda816157259b6b31681b69e[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Sun Jun 11 14:30:49 2023 +0700
+
+    Add animation change when change model
+
+[33mcommit cab6aa69ab0fdec120f1ff3d3465496087422159[m
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Sun Jun 11 13:44:24 2023 +0700
+
+    Upload model
+
+[33mcommit e3f5586f26db21d2069669341760c16fffc29999[m
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Fri Jun 9 16:36:35 2023 +0700
+
+    Change something
+
+[33mcommit a57d9a9a529b81bccde59a34bbdc0893acf30c15[m
+Merge: d116464 7523450
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Sat Jun 3 23:30:20 2023 +0700
+
+    Merge pull request #2 from pahopu/updated_code
+    
+    Add demo Change Model
+
+[33mcommit 7523450b089910bea16ec0c5524131069146018d[m
+Author: Nguyễn Minh Thuận <20520795@ms.uit.edu.vn>
+Date:   Sat Jun 3 22:10:05 2023 +0700
+
+    Add demo Change Model
+
+[33mcommit d1164644d927806217d2115d526e0da9f11d5d97[m
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Sat Jun 3 20:29:00 2023 +0700
+
+    Update README.md
+
+[33mcommit b1d1286cf070f369d9263b31f126851932b4f4c2[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Fri May 26 07:59:45 2023 +0700
+
+    Update README.md
+
+[33mcommit cb2002e8cefd36df9ae9ea13aa7df571978cb20b[m
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Thu May 25 21:49:55 2023 +0700
+
+    Update README.md
+
+[33mcommit 53efd4e90f2dc73650b9195b53c739daaf7c7670[m
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Thu May 25 21:40:11 2023 +0700
+
+    Update README.md
+
+[33mcommit 52ad8ac7dcf65abb886aaddd76459dfdec986d18[m
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Thu May 25 21:39:31 2023 +0700
+
+    Edit README.md
+
+[33mcommit 91d1b428bb3015487e25b7ecfdc732f22df5b8b2[m
+Merge: f060ad8 13e4fc1
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Thu May 25 21:35:14 2023 +0700
+
+    Merge branch 'master' of https://github.com/pahopu/CS105_3DAnimation
+
+[33mcommit f060ad8c34ca4b6a85d950aa014b945f4d965b61[m
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Thu May 25 21:35:08 2023 +0700
+
+    Delete orbit
+
+[33mcommit 13e4fc1d3d0ffb9065eb618f9158c820b10c632b[m
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Thu May 25 21:32:52 2023 +0700
+
+    Update README.md
+
+[33mcommit b98acc57a685d90a72cf704569432ccb23b9156b[m
+Author: Phạm Hoàng Phúc <96386141+pahopu@users.noreply.github.com>
+Date:   Thu May 25 21:28:56 2023 +0700
+
+    Create README.md
+
+[33mcommit 57e0a2778bd79b93c819f2798042929397d13f48[m
+Author: pahopu <20520278@gm.uit.edu.vn>
+Date:   Thu May 25 21:15:55 2023 +0700
+
+    Upload basic model with animations

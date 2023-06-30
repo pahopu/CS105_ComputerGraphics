@@ -37,9 +37,11 @@ function selectTool(event) {
 
 	const geometry_option = document.getElementsByClassName("geometry-option")[0];
 	const material_option = document.getElementsByClassName("material-option")[0];
+	const light_option = document.getElementsByClassName("light-option")[0];
 
 	geometry_option.className = geometry_option.className.replace(" active", "");
 	material_option.className = material_option.className.replace(" active", "");
+	light_option.className = light_option.className.replace(" active", "");
 
 	if (current.length > 0) {
 		if (current[0] === icon) flag = true;
@@ -56,6 +58,9 @@ function selectTool(event) {
 		} else if (icon.alt === "Material") {
 			material_option.className += " active";
 			updateCurrentMaterial(meshObject);
+		} else if (icon.alt === "Light") {
+			light_option.className += " active";
+			updateCurrentMaterial(meshObject);
 		}
 	}
 }
@@ -66,7 +71,8 @@ function showTooltip(event) {
 	if (
 		icon.className.includes("active") &&
 		!icon.className.includes(" geometry") &&
-		!icon.className.includes(" material")
+		!icon.className.includes(" material") &&
+		!icon.className.includes(" light")
 	)
 		return;
 	const tooltip = document.getElementsByClassName("tool-tip")[0];
@@ -79,6 +85,8 @@ function showTooltip(event) {
 		tooltip.className += " geometry";
 	} else if (icon.className.includes(" material")) {
 		tooltip.className += " material";
+	} else if (icon.className.includes(" light")) {
+		tooltip.className += " light";
 	}
 	tooltip.style.top = iconRect.top + "px";
 	tooltip.style.opacity = 1;
@@ -90,6 +98,7 @@ function hideTooltip(event) {
 
 	tooltip.className = tooltip.className.replace(" geometry", "");
 	tooltip.className = tooltip.className.replace(" material", "");
+	tooltip.className = tooltip.className.replace(" light", "");
 
 	tooltip.style.opacity = 0;
 	tooltip.style.visibility = "hidden";

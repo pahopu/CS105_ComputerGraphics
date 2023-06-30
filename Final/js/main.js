@@ -16,6 +16,7 @@ import {
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
+let point_light, direct_light;
 let panel_gui = null;
 let isDragging = false;
 let arrowMesh;
@@ -24,6 +25,7 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 let meshObject = [];
+window.meshObject = meshObject;
 
 function initObjects() {
 	let boxMesh = create_cube();
@@ -39,7 +41,7 @@ function init() {
 
 	// Scene
 	scene = new THREE.Scene();
-	scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
+	// scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
 	scene.background = new THREE.Color(0x000000);
 
 	var background_points = create_background_point();
@@ -75,26 +77,26 @@ function init() {
 	// Lights
 	const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
 	hemiLight.position.set(0, 17, 0);
-	scene.add(hemiLight);
+	// scene.add(hemiLight);
 
-	const dirLight = new THREE.DirectionalLight(0xffffff);
-	dirLight.position.set(6, 17, 20);
-	dirLight.castShadow = true;
-	dirLight.shadow.camera.top = 10;
-	dirLight.shadow.camera.bottom = -10;
-	dirLight.shadow.camera.left = -10;
-	dirLight.shadow.camera.right = 10;
-	dirLight.shadow.camera.near = 0.1;
-	dirLight.shadow.camera.far = 40;
-	dirLight.shadow.bias = 0.001;
-	dirLight.shadow.mapSize.width = 4096;
-	dirLight.shadow.mapSize.height = 4096;
-	scene.add(dirLight);
+	direct_light = new THREE.DirectionalLight(0xffffff);
+	direct_light.position.set(6, 17, 20);
+	direct_light.castShadow = true;
+	direct_light.shadow.camera.top = 10;
+	direct_light.shadow.camera.bottom = -10;
+	direct_light.shadow.camera.left = -10;
+	direct_light.shadow.camera.right = 10;
+	direct_light.shadow.camera.near = 0.1;
+	direct_light.shadow.camera.far = 40;
+	direct_light.shadow.bias = 0.001;
+	direct_light.shadow.mapSize.width = 4096;
+	direct_light.shadow.mapSize.height = 4096;
+	// scene.add(direct_light);
 
 	// Ground
 	const plane = new THREE.Mesh(
 		new THREE.PlaneGeometry(100, 100),
-		new THREE.MeshPhongMaterial({ color: 0x000000, depthWrite: false })
+		new THREE.MeshPhongMaterial({ color: "#2D3750", depthWrite: false })
 	);
 	plane.rotation.x = -Math.PI / 2;
 	plane.receiveShadow = true;
@@ -323,6 +325,21 @@ function active_transform(event) {
 	}
 }
 
+function onClickLightOption(event) {
+	const light = event.target;
+	if (light.className.includes(" active")) {
+		light.className = light.className.replace(" active", "");
+		if (light.alt === "Directional Light") {
+			scene.remove(direct_light);
+		}
+	} else {
+		light.className += " active";
+		if (light.alt === "Directional Light") {
+			scene.add(direct_light);
+		}
+	}
+}
+
 const geometry_option = document.querySelectorAll(".geometry-option");
 geometry_option.forEach((option) => {
 	option.addEventListener("click", onClickSubToolObject);
@@ -331,6 +348,11 @@ geometry_option.forEach((option) => {
 const material_option = document.querySelectorAll(".material-option");
 material_option.forEach((option) => {
 	option.addEventListener("click", onClickSubToolObject);
+});
+
+const light_option = document.querySelectorAll(".sub-icon.light");
+light_option.forEach((option) => {
+	option.addEventListener("click", onClickLightOption);
 });
 
 const tools = document.querySelectorAll(".icon-tool");

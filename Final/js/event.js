@@ -1,4 +1,3 @@
-import { meshObject } from "./main";
 import { updateCurrentGeometry, updateCurrentMaterial } from "./update";
 
 const tools = document.querySelectorAll(".icon-tool");
@@ -54,13 +53,12 @@ function selectTool(event) {
 		icon.className += " active";
 		if (icon.alt === "Geometry") {
 			geometry_option.className += " active";
-			updateCurrentGeometry(meshObject);
+			updateCurrentGeometry(window.meshObject);
 		} else if (icon.alt === "Material") {
 			material_option.className += " active";
-			updateCurrentMaterial(meshObject);
+			updateCurrentMaterial(window.meshObject);
 		} else if (icon.alt === "Light") {
 			light_option.className += " active";
-			updateCurrentMaterial(meshObject);
 		}
 	}
 }

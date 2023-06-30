@@ -63,6 +63,10 @@ function get_material(geometry, typeMaterial) {
 			});
 			obj = new THREE.Points(geometry, material);
 			break;
+		case "Line":
+			material = new THREE.LineBasicMaterial({ transparent: true, opacity: 1 });
+			obj = new THREE.Line(geometry, material);
+			break;
 	}
 	return obj;
 }

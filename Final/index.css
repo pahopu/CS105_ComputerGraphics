@@ -13,6 +13,7 @@
     color: white;
     width: 55%;
     padding-left: 30px;
+    font-family: "Comfortaa", "Inter";
 }
 
 .nav{
@@ -115,10 +116,18 @@
     transition: opacity 0.3s;
     z-index: 1000;
     visibility: hidden;
+    font-family: 'Inter';
 }
 
 .tool-tip.geometry, .tool-tip.material{
     right: 5%;
+}
+
+.tool-tip.light{
+    right: 3%;
+    width: 125px;
+    transform: translateX(-64%);
+
 }
 
 .subtool{
@@ -145,7 +154,11 @@
     top: 44%;
 }
 
-.geometry-option.active, .material-option.active{
+.subtool.light-option{
+    top: 36%;
+}
+
+.geometry-option.active, .material-option.active, .light-option.active{
     opacity: 1;
     visibility: visible;    
     transition: all ease-in-out 0.2s;

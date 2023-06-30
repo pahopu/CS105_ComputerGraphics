@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import { TeapotBufferGeometry } from "./TeapotBufferGeometry";
 
-function initUserData(obj, type) {
+function initUserData(obj, type, typeMaterial) {
 	obj.userData.canjustify = true;
 	obj.userData.isSelected = false;
 	obj.userData.type = type;
+	obj.userData.typeMaterial = typeMaterial;
 	obj.userData.isTransform = false;
 	obj.name = type + THREE.MathUtils.randInt(0, 100);
 
@@ -43,90 +44,90 @@ function set_transform(obj, position, rotate, scale) {
 	return obj;
 }
 
-function create_cube() {
-	const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const cubeMesh = new THREE.Mesh(cubeGeometry, material);
+function get_material(geometry, typeMaterial) {
+	let obj;
+	let material;
+	switch (typeMaterial) {
+		case "Normal":
+			material = new THREE.MeshNormalMaterial({
+				transparent: true,
+				opacity: 1,
+			});
+			obj = new THREE.Mesh(geometry, material);
+			break;
+		case "Point":
+			material = new THREE.PointsMaterial({
+				transparent: true,
+				opacity: 1,
+				size: 0.2,
+			});
+			obj = new THREE.Points(geometry, material);
+			break;
+	}
+	return obj;
+}
 
-	cubeMesh.position.y = 1;
+function create_cube(typeMaterial = "Normal") {
+	const cubeGeometry = new THREE.BoxGeometry(3, 3, 3, 10, 10, 10);
+	const cubeMesh = get_material(cubeGeometry, typeMaterial);
 
-	initUserData(cubeMesh, "Cube");
+	cubeMesh.position.y = 3;
+
+	initUserData(cubeMesh, "Cube", typeMaterial);
 
 	return cubeMesh;
 }
 
-function create_sphere() {
-	const geometry = new THREE.SphereGeometry(1, 32, 16);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const sphere = new THREE.Mesh(geometry, material);
+function create_sphere(typeMaterial = "Normal") {
+	const geometry = new THREE.SphereGeometry(3, 32, 32);
+	const sphere = get_material(geometry, typeMaterial);
 
-	sphere.position.y = 1;
+	sphere.position.y = 3;
 
-	initUserData(sphere, "Sphere");
+	initUserData(sphere, "Sphere", typeMaterial);
 
 	return sphere;
 }
 
-function create_cone() {
-	const geometry = new THREE.ConeGeometry(1, 2, 32);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const cone = new THREE.Mesh(geometry, material);
+function create_cone(typeMaterial = "Normal") {
+	const geometry = new THREE.ConeGeometry(3, 3, 32, 16);
+	const cone = get_material(geometry, typeMaterial);
 
-	cone.position.y = 1;
+	cone.position.y = 3;
 
-	initUserData(cone, "Cone");
+	initUserData(cone, "Cone", typeMaterial);
 
 	return cone;
 }
 
-function create_cylinder() {
-	const geometry = new THREE.CylinderGeometry(1, 1, 2, 32);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const cyclinder = new THREE.Mesh(geometry, material);
+function create_cylinder(typeMaterial = "Normal") {
+	const geometry = new THREE.CylinderGeometry(3, 3, 6, 32, 16);
+	const cyclinder = get_material(geometry, typeMaterial);
 
-	cyclinder.position.y = 1;
+	cyclinder.position.y = 3;
 
-	initUserData(cyclinder, "Cylinder");
+	initUserData(cyclinder, "Cylinder", typeMaterial);
 
 	return cyclinder;
 }
 
-function create_torus() {
-	const geometry = new THREE.TorusGeometry(1, 0.3, 16, 100);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const torus = new THREE.Mesh(geometry, material);
+function create_torus(typeMaterial = "Normal") {
+	const geometry = new THREE.TorusGeometry(3, 1, 16, 48);
+	const torus = get_material(geometry, typeMaterial);
 
-	torus.position.y = 1;
+	torus.position.y = 3;
 
-	initUserData(torus, "Torus");
+	initUserData(torus, "Torus", typeMaterial);
 
 	return torus;
 }
 
-function create_teapot() {
-	const geometry = new TeapotBufferGeometry(1, 8);
-	const material = new THREE.MeshNormalMaterial({
-		transparent: true,
-		opacity: 1,
-	});
-	const teapot = new THREE.Mesh(geometry, material);
-	teapot.position.y = 1;
-	initUserData(teapot, "Teapot");
+function create_teapot(typeMaterial = "Normal") {
+	const geometry = new TeapotBufferGeometry(3, 8);
+	const teapot = get_material(geometry, typeMaterial);
+
+	teapot.position.y = 3;
+	initUserData(teapot, "Teapot", typeMaterial);
 	return teapot;
 }
 

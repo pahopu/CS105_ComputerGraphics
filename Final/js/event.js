@@ -1,8 +1,8 @@
 import { meshObject } from "./main";
-import { updateCurrentGeometry } from "./update";
+import { updateCurrentGeometry, updateCurrentMaterial } from "./update";
 
 const tools = document.querySelectorAll(".icon-tool");
-const icons_geometry = document.querySelectorAll(".icon-geometry");
+const icons_geometry = document.querySelectorAll(".sub-icon");
 
 tools.forEach((tool, index) => {
 	tool.addEventListener("mouseenter", showTooltip);
@@ -55,6 +55,7 @@ function selectTool(event) {
 			updateCurrentGeometry(meshObject);
 		} else if (icon.alt === "Material") {
 			material_option.className += " active";
+			updateCurrentMaterial(meshObject);
 		}
 	}
 }
@@ -64,7 +65,8 @@ function showTooltip(event) {
 
 	if (
 		icon.className.includes("active") &&
-		!icon.className.includes("-geometry")
+		!icon.className.includes(" geometry") &&
+		!icon.className.includes(" material")
 	)
 		return;
 	const tooltip = document.getElementsByClassName("tool-tip")[0];
@@ -73,8 +75,10 @@ function showTooltip(event) {
 
 	const iconRect = icon.getBoundingClientRect();
 
-	if (icon.className.includes("-geometry")) {
+	if (icon.className.includes(" geometry")) {
 		tooltip.className += " geometry";
+	} else if (icon.className.includes(" material")) {
+		tooltip.className += " material";
 	}
 	tooltip.style.top = iconRect.top + "px";
 	tooltip.style.opacity = 1;
@@ -85,6 +89,7 @@ function hideTooltip(event) {
 	const tooltip = document.getElementsByClassName("tool-tip")[0];
 
 	tooltip.className = tooltip.className.replace(" geometry", "");
+	tooltip.className = tooltip.className.replace(" material", "");
 
 	tooltip.style.opacity = 0;
 	tooltip.style.visibility = "hidden";

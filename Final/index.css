@@ -117,13 +117,14 @@
     visibility: hidden;
 }
 
-.tool-tip.geometry{
+.tool-tip.geometry, .tool-tip.material{
     right: 5%;
 }
 
 .subtool{
     display: flex;
     flex-direction: column;
+    align-items: center;
     padding: 10px;
     padding-bottom: 5px;
     position: absolute;
@@ -141,7 +142,7 @@
 }
 
 .subtool.material-option{
-    top: 47%;
+    top: 44%;
 }
 
 .geometry-option.active, .material-option.active{
@@ -155,7 +156,7 @@
     background-color: transparent;
 }
 
-.icon-geometry{
+.sub-icon{
     width: 25px;
     height: 25px;
     background-color: transparent;
@@ -165,19 +166,20 @@
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
 }
 
-.icon-geometry:hover{
+.sub-icon:hover{
     opacity: 0.6;
 }
 
-.icon-geometry.active{
+.sub-icon.active{
     filter: invert(86%) sepia(31%) saturate(912%) hue-rotate(328deg) brightness(101%) contrast(99%);
 }
 
-.icon-geometry[name='torus']{
+.sub-icon[name='torus']{
     margin-bottom: 4px;
 }
 
-.icon-geometry[name='teapot']{
+.sub-icon[name='teapot']{
     margin-bottom: 0px;
 }
+
 

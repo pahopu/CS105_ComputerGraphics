@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { updateCurrentGeometry } from "./update.js";
+import { updateCurrentGeometry, updateCurrentMaterial } from "./update.js";
 import {
 	create_background_point,
 	create_cube,
@@ -52,7 +52,7 @@ function init() {
 		1,
 		1000
 	);
-	camera.position.set(-8, 1.15, 7.5);
+	camera.position.set(10, 7, 20);
 	camera.lookAt(0, 0, 0);
 
 	// Renderer
@@ -206,6 +206,7 @@ function clickObject(event) {
 				transformControls.attach(object);
 			}
 			updateCurrentGeometry(meshObject);
+			updateCurrentMaterial(meshObject);
 		}
 	}
 }
@@ -242,36 +243,48 @@ function resetObj(obj) {
 	obj = null;
 }
 
-const onClickGeometry = (event) => {
-	const typeMesh = event.target.alt;
+const onClickSubToolObject = (event) => {
+	let typeMesh, typeMaterial;
 	let meshIndex = meshObject.findIndex(
 		(obj) => obj.userData.isSelected === true
 	);
-	if (meshObject[meshIndex].userData.type === typeMesh) return;
+	const event_type = event.target.className.includes(" geometry")
+		? "geometry"
+		: "material";
+	if (event_type === "geometry") {
+		typeMesh = event.target.alt;
+		typeMaterial = meshObject[meshIndex].userData.typeMaterial;
+	} else {
+		typeMaterial = event.target.alt;
+		typeMesh = meshObject[meshIndex].userData.type;
+	}
+
 	let isTransform = meshObject[meshIndex].userData.isTransform;
 	if (isTransform) transformControls.detach();
 	let current_position = meshObject[meshIndex].position;
 	let current_rotate = meshObject[meshIndex].rotation;
 	let current_scale = meshObject[meshIndex].scale;
+
 	resetObj(meshObject[meshIndex]);
+
 	switch (typeMesh) {
 		case "Cube":
-			meshObject[meshIndex] = create_cube();
+			meshObject[meshIndex] = create_cube(typeMaterial);
 			break;
 		case "Sphere":
-			meshObject[meshIndex] = create_sphere();
+			meshObject[meshIndex] = create_sphere(typeMaterial);
 			break;
 		case "Cone":
-			meshObject[meshIndex] = create_cone();
+			meshObject[meshIndex] = create_cone(typeMaterial);
 			break;
 		case "Cylinder":
-			meshObject[meshIndex] = create_cylinder();
+			meshObject[meshIndex] = create_cylinder(typeMaterial);
 			break;
 		case "Torus":
-			meshObject[meshIndex] = create_torus();
+			meshObject[meshIndex] = create_torus(typeMaterial);
 			break;
 		case "Teapot":
-			meshObject[meshIndex] = create_teapot();
+			meshObject[meshIndex] = create_teapot(typeMaterial);
 			break;
 	}
 	meshObject[meshIndex] = set_transform(
@@ -287,6 +300,7 @@ const onClickGeometry = (event) => {
 		transformControls.attach(meshObject[meshIndex]);
 	}
 	updateCurrentGeometry(meshObject);
+	updateCurrentMaterial(meshObject);
 };
 
 function active_transform(event) {
@@ -311,7 +325,12 @@ function active_transform(event) {
 
 const geometry_option = document.querySelectorAll(".geometry-option");
 geometry_option.forEach((option) => {
-	option.addEventListener("click", onClickGeometry);
+	option.addEventListener("click", onClickSubToolObject);
+});
+
+const material_option = document.querySelectorAll(".material-option");
+material_option.forEach((option) => {
+	option.addEventListener("click", onClickSubToolObject);
 });
 
 const tools = document.querySelectorAll(".icon-tool");

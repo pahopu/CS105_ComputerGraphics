@@ -48,8 +48,9 @@ function get_material(geometry, typeMaterial) {
 	let obj;
 	let material;
 	switch (typeMaterial) {
-		case "Normal":
-			material = new THREE.MeshNormalMaterial({
+		case "Solid":
+			material = new THREE.MeshBasicMaterial({
+				color: "#F5F5F5",
 				transparent: true,
 				opacity: 1,
 			});
@@ -67,11 +68,18 @@ function get_material(geometry, typeMaterial) {
 			material = new THREE.LineBasicMaterial({ transparent: true, opacity: 1 });
 			obj = new THREE.Line(geometry, material);
 			break;
+		case "Normal":
+			material = new THREE.MeshNormalMaterial({
+				transparent: true,
+				opacity: 1,
+			});
+			obj = new THREE.Mesh(geometry, material);
+			break;
 	}
 	return obj;
 }
 
-function create_cube(typeMaterial = "Normal") {
+function create_cube(typeMaterial = "Solid") {
 	const cubeGeometry = new THREE.BoxGeometry(3, 3, 3, 10, 10, 10);
 	const cubeMesh = get_material(cubeGeometry, typeMaterial);
 
@@ -82,7 +90,7 @@ function create_cube(typeMaterial = "Normal") {
 	return cubeMesh;
 }
 
-function create_sphere(typeMaterial = "Normal") {
+function create_sphere(typeMaterial = "Solid") {
 	const geometry = new THREE.SphereGeometry(3, 32, 32);
 	const sphere = get_material(geometry, typeMaterial);
 
@@ -93,7 +101,7 @@ function create_sphere(typeMaterial = "Normal") {
 	return sphere;
 }
 
-function create_cone(typeMaterial = "Normal") {
+function create_cone(typeMaterial = "Solid") {
 	const geometry = new THREE.ConeGeometry(3, 3, 32, 16);
 	const cone = get_material(geometry, typeMaterial);
 
@@ -104,7 +112,7 @@ function create_cone(typeMaterial = "Normal") {
 	return cone;
 }
 
-function create_cylinder(typeMaterial = "Normal") {
+function create_cylinder(typeMaterial = "Solid") {
 	const geometry = new THREE.CylinderGeometry(3, 3, 6, 32, 16);
 	const cyclinder = get_material(geometry, typeMaterial);
 
@@ -115,7 +123,7 @@ function create_cylinder(typeMaterial = "Normal") {
 	return cyclinder;
 }
 
-function create_torus(typeMaterial = "Normal") {
+function create_torus(typeMaterial = "Solid") {
 	const geometry = new THREE.TorusGeometry(3, 1, 16, 48);
 	const torus = get_material(geometry, typeMaterial);
 
@@ -126,7 +134,7 @@ function create_torus(typeMaterial = "Normal") {
 	return torus;
 }
 
-function create_teapot(typeMaterial = "Normal") {
+function create_teapot(typeMaterial = "Solid") {
 	const geometry = new TeapotBufferGeometry(3, 8);
 	const teapot = get_material(geometry, typeMaterial);
 

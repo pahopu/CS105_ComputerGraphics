@@ -47,14 +47,14 @@ Sử dụng Git Bash để có thể khởi chạy project.
 Clone project repository bằng câu lệnh dưới đây.
 
 ```bash
-git clone https://github.com/pahopu/CS105_3DAnimation.git
+git clone https://github.com/pahopu/CS105_ComputerGraphics.git
 ```
 
 ### 2. Cài đặt thư viện
 Trước tiên, bạn cần cài đặt [Node.js](https://nodejs.org/en). Sau đó, tiến hành cài đặt các thư viện cần thiết cho project với câu lệnh dưới đây.
 
 ```bash
-cd CS105_3DAnimation
+cd CS105_ComputerGraphics
 npm install
 ```
 
@@ -62,5 +62,5 @@ npm install
 Sau khi cài đặt thư viện, dùng câu lệnh dưới đây để chạy code.
 
 ```bash
-npx vite
+npx vite Seminar
 ```

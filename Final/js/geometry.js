@@ -7,6 +7,7 @@ function initUserData(obj, type, typeMaterial) {
 	obj.userData.type = type;
 	obj.userData.typeMaterial = typeMaterial;
 	obj.userData.isTransform = false;
+	obj.castShadow = true;
 	obj.name = type + THREE.MathUtils.randInt(0, 100);
 
 	return obj;

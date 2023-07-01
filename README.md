@@ -15,7 +15,7 @@
 [![Status](https://img.shields.io/badge/language2-css-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
 [![Status](https://img.shields.io/badge/language3-javascript-yellow?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
 
-## [BẢNG MỤC LỤC](#top)
+## [BẢNG MỤC  LỤC](#top)
 * [Giới thiệu môn học](#giới-thiệu-môn-học)
 * [Thông tin các thành viên](#thông-tin-về-các-thành-viên-nhóm)
 * [Thông tin seminar](#thông-tin-seminar)

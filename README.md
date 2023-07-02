@@ -9,15 +9,17 @@
 
 <h1 align="center"><b>ĐỒ HỌA MÁY TÍNH<br>(COMPUTER GRAPHICS)</b></h>
 
-[![Status](https://img.shields.io/badge/status-working-blue?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
-[![GitHub contributors](https://img.shields.io/github/contributors/pahopu/CS105_3DAnimation?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation/graphs/contributors)
-[![Status](https://img.shields.io/badge/language1-html-orange?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
-[![Status](https://img.shields.io/badge/language2-javascript-yellow?style=flat-square)](https://github.com/pahopu/CS105_3DAnimation)
+[![Status](https://img.shields.io/badge/status-working-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
+[![GitHub contributors](https://img.shields.io/github/contributors/pahopu/CS105_ComputerGraphics?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics/graphs/contributors)
+[![Status](https://img.shields.io/badge/language1-html-orange?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
+[![Status](https://img.shields.io/badge/language2-css-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
+[![Status](https://img.shields.io/badge/language3-javascript-yellow?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
 
 ## [BẢNG MỤC LỤC](#top)
 * [Giới thiệu môn học](#giới-thiệu-môn-học)
 * [Thông tin các thành viên](#thông-tin-về-các-thành-viên-nhóm)
 * [Thông tin seminar](#thông-tin-seminar)
+* [Thông tin final project](#thông-tin-final-project)
 * [Các bước cần thiết](#các-bước-cần-thiết)
 
 ## [GIỚI THIỆU MÔN HỌC](#top)
@@ -39,6 +41,10 @@
 * **Chủ đề seminar:** Animation trong mô hình 3D với Three.js
 * **Ngôn ngữ lập trình:** HTML, JavaScript
 
+## [THÔNG TIN FINAL PROJECT](#top)
+* **Đề tài đồ án:** Mô phỏng hình học 3D cơ bản
+* **Ngôn ngữ lập trình:** HTML, CSS, JavaScript
+
 ## [CÁC BƯỚC CẦN THIẾT](#top)
 Sử dụng Git Bash để có thể khởi chạy project.
 
@@ -46,20 +52,25 @@ Sử dụng Git Bash để có thể khởi chạy project.
 Clone project repository bằng câu lệnh dưới đây.
 
 ```bash
-git clone https://github.com/pahopu/CS105_3DAnimation.git
+git clone https://github.com/pahopu/CS105_ComputerGraphics.git
 ```
 
 ### 2. Cài đặt thư viện
 Trước tiên, bạn cần cài đặt [Node.js](https://nodejs.org/en). Sau đó, tiến hành cài đặt các thư viện cần thiết cho project với câu lệnh dưới đây.
 
 ```bash
-cd CS105_3DAnimation
+cd CS105_ComputerGraphics
 npm install
 ```
 
 ### 3. Chạy code
-Sau khi cài đặt thư viện, dùng câu lệnh dưới đây để chạy code.
-
+Sau khi cài đặt thư viện, dùng các câu lệnh dưới đây để chạy code.
+* Dùng câu lệnh bên dưới để chạy code trong folder Seminar.
 ```bash
-npx vite
+npx vite Seminar
+```
+
+* Dùng câu lệnh bên dưới để chạy code trong folder Final.
+```bash
+npx vite Final
 ```

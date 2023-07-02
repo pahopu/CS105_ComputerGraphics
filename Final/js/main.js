@@ -2,7 +2,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { updateCurrentGeometry, updateCurrentMaterial } from "./update.js";
+import {
+	updateCurrentGeometry,
+	updateCurrentMaterial,
+	updateLight,
+} from "./update.js";
 import {
 	create_background_point,
 	create_cube,
@@ -16,7 +20,7 @@ import {
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
-let point_light, direct_light;
+let point_light, point_light_helper, direct_light;
 let panel_gui = null;
 let isDragging = false;
 let arrowMesh;
@@ -41,6 +45,8 @@ function init() {
 
 	// Scene
 	scene = new THREE.Scene();
+	window.scene = scene;
+
 	// scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
 	scene.background = new THREE.Color(0x000000);
 
@@ -91,7 +97,12 @@ function init() {
 	direct_light.shadow.bias = 0.001;
 	direct_light.shadow.mapSize.width = 4096;
 	direct_light.shadow.mapSize.height = 4096;
-	// scene.add(direct_light);
+	direct_light.name = "Directional Light";
+
+	point_light = new THREE.PointLight(0xffffff, 1, 100);
+	point_light.position.set(5, 8, 5);
+	point_light.name = "Point Light";
+	point_light_helper = new THREE.PointLightHelper(point_light, 0.5);
 
 	// Ground
 	const plane = new THREE.Mesh(
@@ -312,6 +323,7 @@ function active_transform(event) {
 	if (!icon.className.includes(" active")) {
 		transformControls.attach(meshSelected);
 		meshSelected.userData.isTransform = true;
+		updateLight(true);
 	} else {
 		transformControls.detach();
 		meshSelected.userData.isTransform = false;
@@ -327,18 +339,40 @@ function active_transform(event) {
 
 function onClickLightOption(event) {
 	const light = event.target;
-	if (light.className.includes(" active")) {
-		light.className = light.className.replace(" active", "");
-		if (light.alt === "Directional Light") {
-			scene.remove(direct_light);
+
+	if (light.alt !== "Translate Light") {
+		scene.remove(point_light);
+		scene.remove(point_light_helper);
+		scene.remove(direct_light);
+
+		if (!light.className.includes(" active")) {
+			if (light.alt === "Directional Light") {
+				scene.add(direct_light);
+			} else if (light.alt === "Point Light") {
+				scene.add(point_light);
+				scene.add(point_light_helper);
+			}
 		}
 	} else {
-		light.className += " active";
-		if (light.alt === "Directional Light") {
-			scene.add(direct_light);
+		if (
+			scene.getObjectByName("Point Light") &&
+			!light.className.includes(" active")
+		) {
+			transfrom_icon.forEach((icon) => {
+				icon.className = icon.className.replace(" active", "");
+			});
+			transformControls.attach(point_light);
+			light.className += " active";
+		} else {
+			light.className = light.className.replace(" active", "");
+			transformControls.detach();
 		}
 	}
+
+	updateLight();
 }
+
+const transfrom_icon = document.querySelectorAll(".icon-tool.transform");
 
 const geometry_option = document.querySelectorAll(".geometry-option");
 geometry_option.forEach((option) => {

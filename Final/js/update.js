@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 function updateCurrentGeometry(meshObject) {
 	const geometry_option = document.getElementsByClassName("geometry-option")[0];
 	if (meshObject.length > 0 && geometry_option.className.includes(" active")) {
@@ -36,4 +38,25 @@ function updateCurrentMaterial(meshObject) {
 	}
 }
 
-export { updateCurrentGeometry, updateCurrentMaterial };
+function updateLight(active_transform = false) {
+	const light_option = document.querySelectorAll(".sub-icon.light");
+
+	if (active_transform) {
+		light_option[light_option.length - 1].className = light_option[
+			light_option.length - 1
+		].className.replace(" active", "");
+	} else {
+		for (let light of light_option) {
+			if (light.alt === "Translate Light") continue;
+			if (window.scene.getObjectByName(light.alt)) {
+				if (!light.className.includes(" active")) {
+					light.className += " active";
+				}
+			} else {
+				light.className = light.className.replace(" active", "");
+			}
+		}
+	}
+}
+
+export { updateCurrentGeometry, updateCurrentMaterial, updateLight };

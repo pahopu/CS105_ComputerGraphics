@@ -1,4 +1,8 @@
-import { updateCurrentGeometry, updateCurrentMaterial } from "./update";
+import {
+	updateCurrentGeometry,
+	updateCurrentMaterial,
+	updateLight,
+} from "./update";
 
 const tools = document.querySelectorAll(".icon-tool");
 const icons_geometry = document.querySelectorAll(".sub-icon");
@@ -59,6 +63,7 @@ function selectTool(event) {
 			updateCurrentMaterial(window.meshObject);
 		} else if (icon.alt === "Light") {
 			light_option.className += " active";
+			updateLight();
 		}
 	}
 }

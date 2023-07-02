@@ -19,6 +19,7 @@
 * [Giới thiệu môn học](#giới-thiệu-môn-học)
 * [Thông tin các thành viên](#thông-tin-về-các-thành-viên-nhóm)
 * [Thông tin seminar](#thông-tin-seminar)
+* [Thông tin final project](#thông-tin-final-project)
 * [Các bước cần thiết](#các-bước-cần-thiết)
 
 ## [GIỚI THIỆU MÔN HỌC](#top)
@@ -40,6 +41,10 @@
 * **Chủ đề seminar:** Animation trong mô hình 3D với Three.js
 * **Ngôn ngữ lập trình:** HTML, JavaScript
 
+## [THÔNG TIN FINAL PROJECT](#top)
+* **Đề tài đồ án:** Mô phỏng hình học 3D cơ bản
+* **Ngôn ngữ lập trình:** HTML, CSS, JavaScript
+
 ## [CÁC BƯỚC CẦN THIẾT](#top)
 Sử dụng Git Bash để có thể khởi chạy project.
 
@@ -59,8 +64,13 @@ npm install
 ```
 
 ### 3. Chạy code
-Sau khi cài đặt thư viện, dùng câu lệnh dưới đây để chạy code.
-
+Sau khi cài đặt thư viện, dùng các câu lệnh dưới đây để chạy code.
+* Dùng câu lệnh bên dưới để chạy code trong folder Seminar.
 ```bash
 npx vite Seminar
+```
+
+* Dùng câu lệnh bên dưới để chạy code trong folder Final.
+```bash
+npx vite Final
 ```

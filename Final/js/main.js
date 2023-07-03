@@ -26,7 +26,8 @@ let hasLight,
 	direct_light,
 	direct_light_helper,
 	spot_light,
-	spot_light_helper;
+	spot_light_helper,
+	light_intensity;
 let panel_gui = null;
 let isDragging = false;
 let arrowMesh;
@@ -46,6 +47,8 @@ function initObjects() {
 }
 
 function initLight() {
+	light_intensity = 1;
+
 	direct_light = new THREE.DirectionalLight(0xffffff);
 	direct_light.position.set(6, 17, 20);
 	direct_light.castShadow = true;
@@ -61,7 +64,7 @@ function initLight() {
 	direct_light.name = "Directional Light";
 	direct_light_helper = new THREE.DirectionalLightHelper(direct_light, 10);
 
-	point_light = new THREE.PointLight(0xffffff, 1, 100);
+	point_light = new THREE.PointLight(0xffffff, light_intensity, 100);
 	point_light.position.set(5, 8, 5);
 	point_light.castShadow = true;
 	point_light.name = "Point Light";
@@ -378,6 +381,7 @@ function onClickLightOption(event) {
 	const light = event.target;
 
 	const setting_light = ["Intensity", "Color Light", "Translate Light"];
+	slider[0].className = slider[0].className.replace(" active", "");
 
 	if (!setting_light.some((el) => light.alt.includes(el))) {
 		hasLight = false;
@@ -417,22 +421,39 @@ function onClickLightOption(event) {
 					});
 
 					light_option.forEach((option) => {
-						if (option.className.includes(" active")) {
+						if (option.className.includes(" active") && option !== light) {
 							transformControls.attach(scene.getObjectByName(option.alt));
 						}
 					});
 					transformControls.setMode("translate");
-				} else if (light.alt === "Color Light") {
 				}
 				light.className += " active";
 			} else {
 				light.className = light.className.replace(" active", "");
 				if (light.alt === "Translate Light") transformControls.detach();
+				slider[0].className = slider[0].className.replace(" active", "");
 			}
 		}
 	}
 
 	updateLight();
+}
+
+function onChangeIntensity(event) {
+	const setting_light = ["Intensity", "Color Light", "Translate Light"];
+
+	light_intensity = event.target.value;
+	if (hasLight) {
+		light_option.forEach((option) => {
+			if (
+				option.className.includes(" active") &&
+				!setting_light.some((el) => option.alt.includes(el))
+			) {
+				let light = scene.getObjectByName(option.alt);
+				light.intensity = light_intensity;
+			}
+		});
+	}
 }
 
 const transfrom_icon = document.querySelectorAll(".icon-tool.transform");
@@ -455,6 +476,13 @@ light_option.forEach((option) => {
 const tools = document.querySelectorAll(".icon-tool");
 tools.forEach((tool, index) => {
 	if (index < 3) tool.addEventListener("click", active_transform);
+});
+
+const slider = document.querySelectorAll(".slidecontainer");
+slider.forEach((sli) => {
+	if (sli.className.includes("intensity")) {
+		sli.addEventListener("change", onChangeIntensity, false);
+	}
 });
 
 window.addEventListener("keydown", HandleKeyboard);

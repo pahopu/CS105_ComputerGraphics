@@ -215,3 +215,19 @@
 .sub-icon[name='translate light']{
     margin-bottom: 0px;
 }
+
+.slidecontainer{
+    position: absolute;
+    background-color: transparent;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.slidecontainer.active{
+    opacity: 1;
+}
+
+.slidecontainer.intensity{
+    top: 44%;
+    right: 9%;
+}

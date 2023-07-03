@@ -40,6 +40,10 @@ function updateCurrentMaterial(meshObject) {
 
 function updateLight(active_transform = false) {
 	const light_option = document.querySelectorAll(".sub-icon.light");
+	const slider = document.querySelectorAll(".slidecontainer.intensity");
+
+	slider[0].className = slider[0].className.replace(" active", "");
+
 	const setting_light = ["Intensity", "Color Light", "Translate Light"];
 
 	if (active_transform) {
@@ -55,6 +59,12 @@ function updateLight(active_transform = false) {
 					light.className += " not-active";
 				} else {
 					light.className = light.className.replace(" not-active", "");
+					if (
+						light.alt === "Intensity" &&
+						light.className.includes(" active")
+					) {
+						slider[0].className += " active";
+					}
 				}
 			} else {
 				if (window.scene.getObjectByName(light.alt)) {

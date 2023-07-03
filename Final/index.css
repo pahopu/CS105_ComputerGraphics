@@ -155,7 +155,7 @@
 }
 
 .subtool.light-option{
-    top: 34%;
+    top: 20%;
 }
 
 .geometry-option.active, .material-option.active, .light-option.active{
@@ -196,3 +196,15 @@
 }
 
 
+.sub-icon.light{
+    margin: 10px 0;
+}
+
+.sub-icon[name = 'color']{
+    width: 20px;
+    height: 20px;
+}
+
+.sub-icon[name='translate light']{
+    margin-bottom: 0px;
+}

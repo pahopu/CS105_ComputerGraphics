@@ -20,9 +20,11 @@ import {
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
-let point_light,
+let hasLight,
+	point_light,
 	point_light_helper,
 	direct_light,
+	direct_light_helper,
 	spot_light,
 	spot_light_helper;
 let panel_gui = null;
@@ -41,6 +43,54 @@ function initObjects() {
 		boxMesh.userData.isSelected = true;
 	}
 	meshObject.push(boxMesh);
+}
+
+function initLight() {
+	direct_light = new THREE.DirectionalLight(0xffffff);
+	direct_light.position.set(6, 17, 20);
+	direct_light.castShadow = true;
+	direct_light.shadow.camera.top = 10;
+	direct_light.shadow.camera.bottom = -10;
+	direct_light.shadow.camera.left = -10;
+	direct_light.shadow.camera.right = 10;
+	direct_light.shadow.camera.near = 0.1;
+	direct_light.shadow.camera.far = 40;
+	direct_light.shadow.bias = 0.001;
+	direct_light.shadow.mapSize.width = 4096;
+	direct_light.shadow.mapSize.height = 4096;
+	direct_light.name = "Directional Light";
+	direct_light_helper = new THREE.DirectionalLightHelper(direct_light, 10);
+
+	point_light = new THREE.PointLight(0xffffff, 1, 100);
+	point_light.position.set(5, 8, 5);
+	point_light.castShadow = true;
+	point_light.name = "Point Light";
+	point_light.shadow.camera.top = 10;
+	point_light.shadow.camera.bottom = -10;
+	point_light.shadow.camera.left = -10;
+	point_light.shadow.camera.right = 10;
+	point_light.shadow.camera.near = 0.1;
+	point_light.shadow.camera.far = 40;
+	point_light.shadow.bias = 0.001;
+	point_light.shadow.mapSize.width = 4096;
+	point_light.shadow.mapSize.height = 4096;
+	point_light_helper = new THREE.PointLightHelper(point_light, 0.5);
+
+	spot_light = new THREE.SpotLight(0xffffff);
+	spot_light.name = "Spot Light";
+	spot_light.position.set(5, 8, 5);
+	spot_light.castShadow = true;
+	spot_light.shadow.camera.top = 10;
+	spot_light.shadow.camera.bottom = -10;
+	spot_light.shadow.camera.left = -10;
+	spot_light.shadow.camera.right = 10;
+	spot_light.shadow.camera.near = 0.1;
+	spot_light.shadow.camera.far = 40;
+	spot_light.shadow.bias = 0.001;
+	spot_light.shadow.mapSize.width = 4096;
+	spot_light.shadow.mapSize.height = 4096;
+
+	spot_light_helper = new THREE.SpotLightHelper(spot_light);
 }
 
 function init() {
@@ -82,39 +132,12 @@ function init() {
 
 	document.getElementById("rendering").appendChild(renderer.domElement);
 
-	// Responsive
+	initLight();
 
 	// Lights
 	const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
 	hemiLight.position.set(0, 17, 0);
 	// scene.add(hemiLight);
-
-	direct_light = new THREE.DirectionalLight(0xffffff);
-	direct_light.position.set(6, 17, 20);
-	direct_light.castShadow = true;
-	direct_light.shadow.camera.top = 10;
-	direct_light.shadow.camera.bottom = -10;
-	direct_light.shadow.camera.left = -10;
-	direct_light.shadow.camera.right = 10;
-	direct_light.shadow.camera.near = 0.1;
-	direct_light.shadow.camera.far = 40;
-	direct_light.shadow.bias = 0.001;
-	direct_light.shadow.mapSize.width = 4096;
-	direct_light.shadow.mapSize.height = 4096;
-	direct_light.name = "Directional Light";
-
-	point_light = new THREE.PointLight(0xffffff, 1, 100);
-	point_light.position.set(5, 8, 5);
-	point_light.castShadow = true;
-	point_light.name = "Point Light";
-	point_light_helper = new THREE.PointLightHelper(point_light, 0.5);
-
-	spot_light = new THREE.SpotLight(0xffffff);
-	spot_light.name = "Spot Light";
-	spot_light.position.set(5, 8, 5);
-	spot_light.castShadow = true;
-
-	spot_light_helper = new THREE.SpotLightHelper(spot_light);
 
 	// Ground
 	const plane = new THREE.Mesh(
@@ -353,17 +376,23 @@ function onClickLightOption(event) {
 	const light = event.target;
 
 	if (light.alt !== "Translate Light") {
+		hasLight = false;
 		scene.remove(point_light);
 		scene.remove(point_light_helper);
 		scene.remove(direct_light);
+		scene.remove(direct_light_helper);
 		scene.remove(spot_light);
 		scene.remove(spot_light_helper);
 
+		light_option[light_option.length - 1].className = light_option[
+			light_option.length - 1
+		].className.replace(" active", "");
 		transformControls.detach();
 
 		if (!light.className.includes(" active")) {
 			if (light.alt === "Directional Light") {
 				scene.add(direct_light);
+				scene.add(direct_light_helper);
 			} else if (light.alt === "Point Light") {
 				scene.add(point_light);
 				scene.add(point_light_helper);
@@ -371,18 +400,21 @@ function onClickLightOption(event) {
 				scene.add(spot_light);
 				scene.add(spot_light_helper);
 			}
+			hasLight = true;
 		}
 	} else {
-		if (
-			!scene.getObjectByName("Directional Light") &&
-			!light.className.includes(" active")
-		) {
+		if (!light.className.includes(" active") && hasLight) {
 			transfrom_icon.forEach((icon) => {
 				icon.className = icon.className.replace(" active", "");
 			});
-			if (scene.getObjectByName("Point Light"))
-				transformControls.attach(point_light);
-			else transformControls.attach(spot_light);
+
+			light_option.forEach((option) => {
+				if (option.className.includes(" active")) {
+					transformControls.attach(scene.getObjectByName(option.alt));
+				}
+			});
+			transformControls.setMode("translate");
+			light.className += " active";
 		} else {
 			light.className = light.className.replace(" active", "");
 			transformControls.detach();

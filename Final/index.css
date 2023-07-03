@@ -158,6 +158,8 @@
     top: 20%;
 }
 
+
+
 .geometry-option.active, .material-option.active, .light-option.active{
     opacity: 1;
     visibility: visible;    
@@ -193,6 +195,11 @@
 
 .sub-icon[name='teapot']{
     margin-bottom: 0px;
+}
+
+.sub-icon.not-active{
+    cursor:not-allowed;
+    opacity: 0.3;
 }
 
 

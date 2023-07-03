@@ -40,6 +40,7 @@ function updateCurrentMaterial(meshObject) {
 
 function updateLight(active_transform = false) {
 	const light_option = document.querySelectorAll(".sub-icon.light");
+	const setting_light = ["Intensity", "Color Light", "Translate Light"];
 
 	if (active_transform) {
 		light_option[light_option.length - 1].className = light_option[
@@ -47,13 +48,22 @@ function updateLight(active_transform = false) {
 		].className.replace(" active", "");
 	} else {
 		for (let light of light_option) {
-			if (light.alt === "Translate Light") continue;
-			if (window.scene.getObjectByName(light.alt)) {
-				if (!light.className.includes(" active")) {
-					light.className += " active";
+			if (setting_light.some((el) => light.alt.includes(el))) {
+				if (!window.hasLight) {
+					light.className = light.className.replace(" active", "");
+					light.className = light.className.replace(" not-active", "");
+					light.className += " not-active";
+				} else {
+					light.className = light.className.replace(" not-active", "");
 				}
 			} else {
-				light.className = light.className.replace(" active", "");
+				if (window.scene.getObjectByName(light.alt)) {
+					if (!light.className.includes(" active")) {
+						light.className += " active";
+					}
+				} else {
+					light.className = light.className.replace(" active", "");
+				}
 			}
 		}
 	}

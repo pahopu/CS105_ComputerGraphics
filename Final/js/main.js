@@ -91,6 +91,8 @@ function initLight() {
 	spot_light.shadow.mapSize.height = 4096;
 
 	spot_light_helper = new THREE.SpotLightHelper(spot_light);
+	hasLight = false;
+	window.hasLight = hasLight;
 }
 
 function init() {
@@ -375,7 +377,9 @@ function active_transform(event) {
 function onClickLightOption(event) {
 	const light = event.target;
 
-	if (light.alt !== "Translate Light") {
+	const setting_light = ["Intensity", "Color Light", "Translate Light"];
+
+	if (!setting_light.some((el) => light.alt.includes(el))) {
 		hasLight = false;
 		scene.remove(point_light);
 		scene.remove(point_light_helper);
@@ -402,22 +406,29 @@ function onClickLightOption(event) {
 			}
 			hasLight = true;
 		}
+		window.hasLight = hasLight;
 	} else {
-		if (!light.className.includes(" active") && hasLight) {
-			transfrom_icon.forEach((icon) => {
-				icon.className = icon.className.replace(" active", "");
-			});
+		if (hasLight) {
+			light.className = light.className.replace(" not-active", "");
+			if (!light.className.includes(" active")) {
+				if (light.alt === "Translate Light") {
+					transfrom_icon.forEach((icon) => {
+						icon.className = icon.className.replace(" active", "");
+					});
 
-			light_option.forEach((option) => {
-				if (option.className.includes(" active")) {
-					transformControls.attach(scene.getObjectByName(option.alt));
+					light_option.forEach((option) => {
+						if (option.className.includes(" active")) {
+							transformControls.attach(scene.getObjectByName(option.alt));
+						}
+					});
+					transformControls.setMode("translate");
+				} else if (light.alt === "Color Light") {
 				}
-			});
-			transformControls.setMode("translate");
-			light.className += " active";
-		} else {
-			light.className = light.className.replace(" active", "");
-			transformControls.detach();
+				light.className += " active";
+			} else {
+				light.className = light.className.replace(" active", "");
+				if (light.alt === "Translate Light") transformControls.detach();
+			}
 		}
 	}
 

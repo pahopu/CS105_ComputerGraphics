@@ -101,6 +101,7 @@ function init() {
 
 	point_light = new THREE.PointLight(0xffffff, 1, 100);
 	point_light.position.set(5, 8, 5);
+	point_light.castShadow = true;
 	point_light.name = "Point Light";
 	point_light_helper = new THREE.PointLightHelper(point_light, 0.5);
 

@@ -20,7 +20,11 @@ import {
 
 // INIT GLOBAL VARIABLES
 let scene, camera, renderer, clock, controls, transformControls;
-let point_light, point_light_helper, direct_light;
+let point_light,
+	point_light_helper,
+	direct_light,
+	spot_light,
+	spot_light_helper;
 let panel_gui = null;
 let isDragging = false;
 let arrowMesh;
@@ -104,6 +108,13 @@ function init() {
 	point_light.castShadow = true;
 	point_light.name = "Point Light";
 	point_light_helper = new THREE.PointLightHelper(point_light, 0.5);
+
+	spot_light = new THREE.SpotLight(0xffffff);
+	spot_light.name = "Spot Light";
+	spot_light.position.set(5, 8, 5);
+	spot_light.castShadow = true;
+
+	spot_light_helper = new THREE.SpotLightHelper(spot_light);
 
 	// Ground
 	const plane = new THREE.Mesh(
@@ -345,6 +356,10 @@ function onClickLightOption(event) {
 		scene.remove(point_light);
 		scene.remove(point_light_helper);
 		scene.remove(direct_light);
+		scene.remove(spot_light);
+		scene.remove(spot_light_helper);
+
+		transformControls.detach();
 
 		if (!light.className.includes(" active")) {
 			if (light.alt === "Directional Light") {
@@ -352,18 +367,22 @@ function onClickLightOption(event) {
 			} else if (light.alt === "Point Light") {
 				scene.add(point_light);
 				scene.add(point_light_helper);
+			} else if (light.alt === "Spot Light") {
+				scene.add(spot_light);
+				scene.add(spot_light_helper);
 			}
 		}
 	} else {
 		if (
-			scene.getObjectByName("Point Light") &&
+			!scene.getObjectByName("Directional Light") &&
 			!light.className.includes(" active")
 		) {
 			transfrom_icon.forEach((icon) => {
 				icon.className = icon.className.replace(" active", "");
 			});
-			transformControls.attach(point_light);
-			light.className += " active";
+			if (scene.getObjectByName("Point Light"))
+				transformControls.attach(point_light);
+			else transformControls.attach(spot_light);
 		} else {
 			light.className = light.className.replace(" active", "");
 			transformControls.detach();

@@ -27,7 +27,7 @@
 * **Mã môn học:** CS105
 * **Mã lớp:** CS105.N21.KHCL
 * **Năm học:** HK2 (2022 - 2023)
-* **Giảng viên:** TS. Cáp Phạm Đình Thăng
+* **Giảng viên:** ThS. Cáp Phạm Đình Thăng
 
 ## [THÔNG TIN VỀ CÁC THÀNH VIÊN NHÓM](#top)
 

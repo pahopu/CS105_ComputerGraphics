@@ -467,6 +467,11 @@ function onChangeIntensity(event) {
 			) {
 				let light = scene.getObjectByName(option.alt);
 				light.intensity = light_intensity;
+				const slider_content = document.querySelector(
+					".wrapper.intensity .slide-value"
+				);
+
+				slider_content.innerHTML = light.intensity;
 			}
 		});
 	}
@@ -476,8 +481,10 @@ function onChangeCameraProp(event) {
 	const camera_option_active = document.querySelector(
 		".sub-icon.camera.active"
 	);
+	const slider_content = document.querySelector(".wrapper.camera .slide-value");
 	camera[camera_option_active.name] = parseInt(event.target.value);
 	window[camera_option_active.name] = parseInt(event.target.value);
+	slider_content.innerHTML = event.target.value;
 	camera.updateProjectionMatrix();
 }
 

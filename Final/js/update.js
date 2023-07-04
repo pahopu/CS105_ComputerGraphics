@@ -41,6 +41,10 @@ function updateCurrentMaterial(meshObject) {
 function updateLight(active_transform = false) {
 	const light_option = document.querySelectorAll(".sub-icon.light");
 	const slider = document.querySelector(".wrapper.intensity");
+	const slider_input = document.querySelector(".wrapper.intensity input");
+	const slider_content = document.querySelector(
+		".wrapper.intensity .slide-value"
+	);
 
 	slider.className = slider.className.replace(" active", "");
 
@@ -64,6 +68,7 @@ function updateLight(active_transform = false) {
 						light.className.includes(" active")
 					) {
 						slider.className += " active";
+						slider_content.innerHTML = slider_input.value / 10;
 					}
 				}
 			} else {
@@ -93,6 +98,9 @@ function updateCamera() {
 		};
 		const wrapper = document.querySelector(".wrapper.camera");
 		const slider = document.querySelector(".wrapper.camera input");
+		const slider_content = document.querySelector(
+			".wrapper.camera .slide-value"
+		);
 
 		wrapper.className = wrapper.className.replace(" active", "");
 		wrapper.className += " active";
@@ -100,6 +108,8 @@ function updateCamera() {
 		slider.min = min_value[camera_option_active.alt];
 		slider.max = max_value[camera_option_active.alt];
 		slider.value = current_value[camera_option_active.alt];
+
+		slider_content.innerHTML = slider.value;
 	}
 }
 

@@ -163,9 +163,27 @@
     top: 20%;
 }
 
+.subtool.camera-option{
+    top:60%;
+    right: 3%;
+    transform: translateX(inherit) translateY(1px);
+}
+
+.subtool.camera-option .option{
+    font-family: "Comfortaa","Inter";
+    color: white;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.2 ease-in-out;
+}
+
+.subtool.camera-option .option:hover{
+    opacity: 0.6;
+}
 
 
-.geometry-option.active, .material-option.active, .light-option.active{
+
+.geometry-option.active, .material-option.active, .light-option.active, .camera-option.active{
     opacity: 1;
     visibility: visible;    
     transition: all ease-in-out 0.2s;
@@ -228,10 +246,12 @@
     transform: translateX(-2px);
     border-radius: var(--border-light);
     background-color: var(--light-intensity);
+    visibility: hidden;
 }
 
 .wrapper.active{
     opacity: 1;
+    visibility: visible;
 }
 
 .wrapper.intensity{

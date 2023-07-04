@@ -424,7 +424,10 @@ function onClickLightOption(event) {
 					});
 
 					light_option.forEach((option) => {
-						if (option.className.includes(" active") && option !== light) {
+						if (
+							option.className.includes(" active") &&
+							!setting_light.some((el) => option.alt.includes(el))
+						) {
 							transformControls.attach(scene.getObjectByName(option.alt));
 						}
 					});

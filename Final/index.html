@@ -248,6 +248,32 @@
 					/>
 				</div>
 			</div>
+			<div class="subtool camera-option">
+				<div class="option">
+					<img
+						src="Icon/fov.svg"
+						alt="Field of view"
+						name="fov"
+						class="sub-icon camera"
+					/>
+				</div>
+				<div class="option">
+					<img
+						src="Icon/zoomin.svg"
+						alt="Near"
+						name="near"
+						class="sub-icon camera"
+					/>
+				</div>
+				<div class="option">
+					<img
+						src="Icon/zoomout.svg"
+						alt="Far"
+						name="far"
+						class="sub-icon camera"
+					/>
+				</div>
+			</div>
 			<div class="wrapper intensity">
 				<div class="slidecontainer">
 					<input
@@ -260,11 +286,19 @@
 					/>
 				</div>
 			</div>
-			<div class="subtool camera-option">
-				<div class="option" name="FOV">FOV</div>
-				<div class="option" name="Near">Near</div>
-				<div class="option" name="Far">Far</div>
+			<div class="wrapper camera">
+				<div class="slidecontainer">
+					<input
+						type="range"
+						min="0"
+						max="100"
+						value="10"
+						class="slider"
+						id="myRange"
+					/>
+				</div>
 			</div>
+
 			<div id="rendering"></div>
 		</div>
 		<script type="module" src="js/main.js"></script>

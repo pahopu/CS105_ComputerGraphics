@@ -40,9 +40,9 @@ function updateCurrentMaterial(meshObject) {
 
 function updateLight(active_transform = false) {
 	const light_option = document.querySelectorAll(".sub-icon.light");
-	const slider = document.querySelectorAll(".wrapper.intensity");
+	const slider = document.querySelector(".wrapper.intensity");
 
-	slider[0].className = slider[0].className.replace(" active", "");
+	slider.className = slider.className.replace(" active", "");
 
 	const setting_light = ["Intensity", "Color Light", "Translate Light"];
 
@@ -63,7 +63,7 @@ function updateLight(active_transform = false) {
 						light.alt === "Intensity" &&
 						light.className.includes(" active")
 					) {
-						slider[0].className += " active";
+						slider.className += " active";
 					}
 				}
 			} else {
@@ -79,4 +79,33 @@ function updateLight(active_transform = false) {
 	}
 }
 
-export { updateCurrentGeometry, updateCurrentMaterial, updateLight };
+function updateCamera() {
+	const camera_option_active = document.querySelector(
+		".sub-icon.camera.active"
+	);
+	if (camera_option_active) {
+		const min_value = { "Field of view": 0, Near: 0, Far: 1000 };
+		const max_value = { "Field of view": 175, Near: 50, Far: 5000 };
+		const current_value = {
+			"Field of view": window.fov,
+			Near: window.near,
+			Far: window.far,
+		};
+		const wrapper = document.querySelector(".wrapper.camera");
+		const slider = document.querySelector(".wrapper.camera input");
+
+		wrapper.className = wrapper.className.replace(" active", "");
+		wrapper.className += " active";
+
+		slider.min = min_value[camera_option_active.alt];
+		slider.max = max_value[camera_option_active.alt];
+		slider.value = current_value[camera_option_active.alt];
+	}
+}
+
+export {
+	updateCurrentGeometry,
+	updateCurrentMaterial,
+	updateLight,
+	updateCamera,
+};

@@ -2,6 +2,7 @@ import {
 	updateCurrentGeometry,
 	updateCurrentMaterial,
 	updateLight,
+	updateCamera,
 } from "./update";
 
 const tools = document.querySelectorAll(".icon-tool");
@@ -41,13 +42,18 @@ function selectTool(event) {
 	const geometry_option = document.getElementsByClassName("geometry-option")[0];
 	const material_option = document.getElementsByClassName("material-option")[0];
 	const light_option = document.getElementsByClassName("light-option")[0];
+	const camera_option = document.getElementsByClassName("camera-option")[0];
 
 	geometry_option.className = geometry_option.className.replace(" active", "");
 	material_option.className = material_option.className.replace(" active", "");
 	light_option.className = light_option.className.replace(" active", "");
+	camera_option.className = camera_option.className.replace(" active", "");
 
-	const slider = document.querySelectorAll(".wrapper.intensity");
-	slider[0].className = slider[0].className.replace(" active", "");
+	const slider = document.querySelectorAll(".wrapper");
+
+	slider.forEach((sli) => {
+		sli.className = sli.className.replace(" active", "");
+	});
 
 	if (current.length > 0) {
 		if (current[0] === icon) flag = true;
@@ -67,18 +73,20 @@ function selectTool(event) {
 		} else if (icon.alt === "Light") {
 			light_option.className += " active";
 			updateLight();
+		} else if (icon.alt === "Camera") {
+			camera_option.className += " active";
+			updateCamera();
 		}
 	}
 }
 
 function showTooltip(event) {
 	const icon = event.target;
+	const list_show = [" geometry", " material", " light", " camera"];
 
 	if (
 		icon.className.includes("active") &&
-		!icon.className.includes(" geometry") &&
-		!icon.className.includes(" material") &&
-		!icon.className.includes(" light")
+		!list_show.some((el) => icon.className.includes(el))
 	)
 		return;
 	const tooltip = document.getElementsByClassName("tool-tip")[0];
@@ -87,13 +95,14 @@ function showTooltip(event) {
 
 	const iconRect = icon.getBoundingClientRect();
 
-	if (icon.className.includes(" geometry")) {
-		tooltip.className += " geometry";
-	} else if (icon.className.includes(" material")) {
-		tooltip.className += " material";
-	} else if (icon.className.includes(" light")) {
-		tooltip.className += " light";
-	}
+	list_show.some((el) => {
+		tooltip.className = tooltip.className.replace(el, "");
+		if (icon.className.includes(el)) {
+			tooltip.className += el;
+			return;
+		}
+	});
+
 	tooltip.style.top = iconRect.top + "px";
 	tooltip.style.opacity = 1;
 	tooltip.style.visibility = "visible";

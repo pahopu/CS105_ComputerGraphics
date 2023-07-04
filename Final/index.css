@@ -128,7 +128,7 @@
     right: 5%;
 }
 
-.tool-tip.light{
+.tool-tip.light,.tool-tip.camera{
     right: 3%;
     width: 125px;
     transform: translateX(-64%);
@@ -164,24 +164,10 @@
 }
 
 .subtool.camera-option{
-    top:60%;
-    right: 3%;
-    transform: translateX(inherit) translateY(1px);
+    top:59%;
+    right: 4%;
+    transform: translateX(-39%) translateY(1px);
 }
-
-.subtool.camera-option .option{
-    font-family: "Comfortaa","Inter";
-    color: white;
-    margin: 5px;
-    cursor: pointer;
-    transition: all 0.2 ease-in-out;
-}
-
-.subtool.camera-option .option:hover{
-    opacity: 0.6;
-}
-
-
 
 .geometry-option.active, .material-option.active, .light-option.active, .camera-option.active{
     opacity: 1;
@@ -239,6 +225,11 @@
     margin-bottom: 0px;
 }
 
+.sub-icon[name='field of view']{
+    width: 30px;
+    height: 30px;
+}
+
 .wrapper{
 	position: absolute;
     transition: all 0.2s ease-in-out;
@@ -257,6 +248,22 @@
 .wrapper.intensity{
     top: 32%;
     right: 8%;
+}
+
+.wrapper.camera{
+    top: 56%;
+    right: 9%;
+    transform: translateX(15px)
+}
+
+.wrapper.camera .slidecontainer{
+    height: 11rem;
+    width: 2.5rem;
+}
+
+.wrapper.camera input{
+    width: 11rem;
+    height: 2.5rem;
 }
 
 .slidecontainer {
@@ -285,7 +292,7 @@
     }
   
     &::after {
-      content: "−";
+      content: "-";
       bottom: 0;
     }
 }

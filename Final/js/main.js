@@ -6,6 +6,7 @@ import {
 	updateCurrentGeometry,
 	updateCurrentMaterial,
 	updateLight,
+	updateCamera,
 } from "./update.js";
 import {
 	create_background_point,
@@ -28,6 +29,7 @@ let hasLight,
 	spot_light,
 	spot_light_helper,
 	light_intensity;
+let fov, near, far;
 let panel_gui = null;
 let isDragging = false;
 let arrowMesh;
@@ -121,6 +123,14 @@ function init() {
 	);
 	camera.position.set(10, 7, 20);
 	camera.lookAt(0, 0, 0);
+
+	fov = camera.fov;
+	near = camera.near;
+	far = camera.far;
+
+	window.fov = fov;
+	window.near = near;
+	window.far = far;
 
 	// Renderer
 	renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -462,6 +472,37 @@ function onChangeIntensity(event) {
 	}
 }
 
+function onChangeCameraProp(event) {
+	const camera_option_active = document.querySelector(
+		".sub-icon.camera.active"
+	);
+	camera[camera_option_active.name] = parseInt(event.target.value);
+	window[camera_option_active.name] = parseInt(event.target.value);
+	camera.updateProjectionMatrix();
+}
+
+function onClickCameraOption(event) {
+	event.preventDefault();
+	const icon_click = event.target;
+	const current_active = document.querySelector(".sub-icon.camera.active");
+
+	const sliderCamera = document.querySelector(".wrapper.camera");
+	sliderCamera.className = sliderCamera.className.replace(" active", "");
+
+	if (icon_click === current_active) {
+		icon_click.className = icon_click.className.replace(" active", "");
+	} else {
+		if (current_active)
+			current_active.className = current_active.className.replace(
+				" active",
+				""
+			);
+		icon_click.className += " active";
+
+		updateCamera();
+	}
+}
+
 const transfrom_icon = document.querySelectorAll(".icon-tool.transform");
 
 const geometry_option = document.querySelectorAll(".geometry-option");
@@ -479,6 +520,11 @@ light_option.forEach((option) => {
 	option.addEventListener("click", onClickLightOption);
 });
 
+const camera_option = document.querySelectorAll(".sub-icon.camera");
+camera_option.forEach((option) => {
+	option.addEventListener("click", onClickCameraOption, false);
+});
+
 const tools = document.querySelectorAll(".icon-tool");
 tools.forEach((tool, index) => {
 	if (index < 3) tool.addEventListener("click", active_transform);
@@ -488,6 +534,8 @@ const slider = document.querySelectorAll(".wrapper");
 slider.forEach((sli) => {
 	if (sli.className.includes("intensity")) {
 		sli.addEventListener("input", onChangeIntensity, false);
+	} else if (sli.className.includes("camera")) {
+		sli.addEventListener("input", onChangeCameraProp, false);
 	}
 });
 

@@ -445,7 +445,7 @@ function onClickLightOption(event) {
 function onChangeIntensity(event) {
 	const setting_light = ["Intensity", "Color Light", "Translate Light"];
 
-	light_intensity = event.target.value;
+	light_intensity = event.target.value / 10;
 	if (hasLight) {
 		light_option.forEach((option) => {
 			if (
@@ -481,10 +481,10 @@ tools.forEach((tool, index) => {
 	if (index < 3) tool.addEventListener("click", active_transform);
 });
 
-const slider = document.querySelectorAll(".slidecontainer");
+const slider = document.querySelectorAll(".wrapper");
 slider.forEach((sli) => {
 	if (sli.className.includes("intensity")) {
-		sli.addEventListener("change", onChangeIntensity, false);
+		sli.addEventListener("input", onChangeIntensity, false);
 	}
 });
 

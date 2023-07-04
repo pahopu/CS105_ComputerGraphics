@@ -40,7 +40,7 @@ function updateCurrentMaterial(meshObject) {
 
 function updateLight(active_transform = false) {
 	const light_option = document.querySelectorAll(".sub-icon.light");
-	const slider = document.querySelectorAll(".slidecontainer.intensity");
+	const slider = document.querySelectorAll(".wrapper.intensity");
 
 	slider[0].className = slider[0].className.replace(" active", "");
 

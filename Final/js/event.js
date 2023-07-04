@@ -46,7 +46,7 @@ function selectTool(event) {
 	material_option.className = material_option.className.replace(" active", "");
 	light_option.className = light_option.className.replace(" active", "");
 
-	const slider = document.querySelectorAll(".slidecontainer.intensity");
+	const slider = document.querySelectorAll(".wrapper.intensity");
 	slider[0].className = slider[0].className.replace(" active", "");
 
 	if (current.length > 0) {

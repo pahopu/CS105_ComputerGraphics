@@ -8,6 +8,11 @@
     box-sizing: border-box;
 }
 
+:root{
+    --light-intensity: rgba(128,128,128,0.5);
+    --border-light: 0.75rem;
+}
+
 .title-mini{
     font-size: 20px;
     color: white;
@@ -137,7 +142,7 @@
     padding: 10px;
     padding-bottom: 5px;
     position: absolute;
-    background-color: rgba(128, 128, 128, 0.5);
+    background-color: rgba(128, 128, 128, 0.311);
     border-radius: 4px;
     transition: all ease-in-out 0.2s;
     opacity: 0;
@@ -216,18 +221,87 @@
     margin-bottom: 0px;
 }
 
-.slidecontainer{
-    position: absolute;
-    background-color: transparent;
-    opacity: 0;
+.wrapper{
+	position: absolute;
     transition: all 0.2s ease-in-out;
+    opacity: 0;
+    transform: translateX(-2px);
+    border-radius: var(--border-light);
+    background-color: var(--light-intensity);
 }
 
-.slidecontainer.active{
+.wrapper.active{
     opacity: 1;
 }
 
-.slidecontainer.intensity{
-    top: 44%;
-    right: 9%;
+.wrapper.intensity{
+    top: 32%;
+    right: 8%;
 }
+
+.slidecontainer {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    position: relative;
+    height: 12rem;
+    width: 2.5rem;
+  
+    &::before,
+    &::after {
+      display: block;
+      position: absolute;
+      z-index: 99;
+      color: #fff;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      line-height: 1;
+      padding: .75rem 0;
+      pointer-events: none;
+    }
+  
+    &::before {
+      content: "+";
+    }
+  
+    &::after {
+      content: "−";
+      bottom: 0;
+    }
+}
+  
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--light-intensity);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    padding: 0;
+    width: 12rem;
+    height: 2.5rem;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    border-radius: var(--border-light);
+    overflow: hidden;
+    cursor: row-resize;
+
+    &[step]{
+        background-color: transparent;
+        background-image: repeating-linear-gradient(to right, var(--light-intensity), var(--light-intensity) calc(12.5% - 1px), black 12.5%);
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 0;
+        box-shadow: -20rem 0 0 20rem var(--light-intensity);
+    }
+
+    &::-moz-range-thumb {
+        border: none;
+        width: 0;
+        box-shadow: -20rem 0 0 20rem var(--light-intensity);
+    }
+}
+  
+

@@ -401,12 +401,15 @@ function onClickLightOption(event) {
 			if (light.alt === "Directional Light") {
 				scene.add(direct_light);
 				scene.add(direct_light_helper);
+				direct_light.intensity = light_intensity;
 			} else if (light.alt === "Point Light") {
 				scene.add(point_light);
 				scene.add(point_light_helper);
+				point_light.intensity = light_intensity;
 			} else if (light.alt === "Spot Light") {
 				scene.add(spot_light);
 				scene.add(spot_light_helper);
+				spot_light.intensity = light_intensity;
 			}
 			hasLight = true;
 		}

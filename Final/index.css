@@ -124,11 +124,11 @@
     font-family: 'Inter';
 }
 
-.tool-tip.geometry, .tool-tip.material{
+.tool-tip.geometry{
     right: 5%;
 }
 
-.tool-tip.light,.tool-tip.camera, .tool-tip.color{
+.tool-tip.light,.tool-tip.camera, .tool-tip.color, .tool-tip.material{
     right: 3%;
     width: 125px;
     transform: translateX(-64%);
@@ -156,7 +156,7 @@
 }
 
 .subtool.material-option{
-    top: 44%;
+    top: 38%;
 }
 
 .subtool.light-option{
@@ -198,6 +198,11 @@
 .option{
     position: relative;
     background-color: transparent;
+}
+
+.material-option .option{
+    margin: 4px 0px;
+    padding: 0;
 }
 
 .animation-option .option{
@@ -246,6 +251,11 @@
 
 .sub-icon[name='teapot']{
     margin-bottom: 0px;
+}
+
+.sub-icon[name='texture uploaded'], .sub-icon[name='phong']{
+    width: 22px;
+    height: 22px;
 }
 
 .sub-icon.not-active{

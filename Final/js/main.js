@@ -310,6 +310,21 @@ function resetObj(obj) {
 	obj = null;
 }
 
+function importTexture(event) {
+	let input = document.createElement("input");
+	input.type = "file";
+	input.onchange = (e) => {
+		const reader = new FileReader();
+		reader.addEventListener("load", () => {
+			localStorage.setItem("texture_uploaded", reader.result);
+		});
+		reader.readAsDataURL(e.target.files[0]);
+		// let userImageURL = URL.createObjectURL(e.target.files[0]);
+		// localStorage.setItem("texture_uploaded", userImageURL);
+	};
+	input.click();
+}
+
 const onClickSubToolObject = (event) => {
 	let typeMesh, typeMaterial;
 	let meshIndex = meshObject.findIndex(
@@ -326,6 +341,8 @@ const onClickSubToolObject = (event) => {
 		typeMaterial = event.target.alt;
 		typeMesh = meshObject[meshIndex].userData.type;
 	}
+
+	// if (event_type === "material" && typeMaterial === "Texture Uploaded") return;
 
 	let isTransform = meshObject[meshIndex].userData.isTransform;
 	if (isTransform) transformControls.detach();
@@ -584,6 +601,14 @@ geometry_option.forEach((option) => {
 });
 
 const material_option = document.querySelectorAll(".material-option");
+const material_option_option = document.querySelectorAll(
+	".material-option .option"
+);
+
+material_option_option[material_option_option.length - 1].addEventListener(
+	"click",
+	importTexture
+);
 material_option.forEach((option) => {
 	option.addEventListener("click", onClickSubToolObject);
 });

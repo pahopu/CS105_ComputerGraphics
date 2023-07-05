@@ -113,9 +113,35 @@ function updateCamera() {
 	}
 }
 
+function updateAnimation() {
+	if (window.meshObject.length > 0) {
+		const current_active = document.querySelector(
+			".subtool.animation-option .option.active"
+		);
+
+		const ani_option = document.querySelectorAll(
+			".subtool.animation-option .option"
+		);
+
+		if (current_active)
+			current_active.className = current_active.className.replace(
+				" active",
+				""
+			);
+
+		let currentSelect = meshObject.find(
+			(obj) => obj.userData.isSelected === true
+		);
+
+		if (currentSelect.userData.typeAni !== 0)
+			ani_option[currentSelect.userData.typeAni - 1].className += " active";
+	}
+}
+
 export {
 	updateCurrentGeometry,
 	updateCurrentMaterial,
 	updateLight,
 	updateCamera,
+	updateAnimation,
 };

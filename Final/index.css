@@ -169,15 +169,44 @@
     transform: translateX(-39%) translateY(1px);
 }
 
-.geometry-option.active, .material-option.active, .light-option.active, .camera-option.active{
+.subtool.animation-option{
+    top: 50%;
+    right: 1%;
+    transform: translateX(-38%) translateY(4px);
+
+}
+
+[class$='-option active']{
     opacity: 1;
     visibility: visible;    
     transition: all ease-in-out 0.2s;
 }
 
+[class$='-option']>.option{
+   opacity: 0;
+   visibility: hidden;
+   pointer-events: none;
+}
+
 .option{
     position: relative;
     background-color: transparent;
+}
+
+.animation-option .option{
+    color: white;
+    margin: 8px;
+    font-family: 'Comfortaa','Inter';
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.animation-option .option.active{
+    color : #FEC869;
+}
+
+.animation-option .option:hover{
+    opacity: 0.6;
 }
 
 .sub-icon{
@@ -348,5 +377,5 @@ input[type="range"] {
     user-select: none;
     z-index: 0;
     pointer-events: none;
-    transition: all 0.1s linear;
+    transition: all 1s linear;
 }

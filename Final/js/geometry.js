@@ -43,10 +43,21 @@ function create_background_point() {
 	return background_points;
 }
 
-function set_transform(obj, position, rotate, scale) {
-	obj.position.copy(position);
-	obj.rotation.copy(rotate);
-	obj.scale.copy(scale);
+function set_transform(obj, old_object) {
+	const props = ["position", "rotation", "scale"];
+
+	props.forEach((prop) => obj[prop].copy(old_object[prop].clone()));
+
+	obj.userData = {
+		...obj.userData,
+		isSelected: old_object.userData.isSelected,
+		isTransform: old_object.userData.isTransform,
+		typeAni: old_object.userData.typeAni,
+		alpha_ani: old_object.userData.alpha_ani,
+		scale_ani: old_object.userData.scale_ani,
+		start_scale_ani: old_object.userData.start_scale_ani,
+	};
+
 	return obj;
 }
 

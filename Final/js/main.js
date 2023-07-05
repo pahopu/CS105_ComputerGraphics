@@ -7,6 +7,7 @@ import {
 	updateCurrentMaterial,
 	updateLight,
 	updateCamera,
+	updateAnimation,
 } from "./update.js";
 import {
 	create_background_point,
@@ -270,6 +271,7 @@ function clickObject(event) {
 			}
 			updateCurrentGeometry(meshObject);
 			updateCurrentMaterial(meshObject);
+			updateAnimation();
 		}
 	}
 }
@@ -311,6 +313,7 @@ const onClickSubToolObject = (event) => {
 	let meshIndex = meshObject.findIndex(
 		(obj) => obj.userData.isSelected === true
 	);
+	const old_object = meshObject[meshIndex].clone();
 	const event_type = event.target.className.includes(" geometry")
 		? "geometry"
 		: "material";
@@ -324,9 +327,6 @@ const onClickSubToolObject = (event) => {
 
 	let isTransform = meshObject[meshIndex].userData.isTransform;
 	if (isTransform) transformControls.detach();
-	let current_position = meshObject[meshIndex].position;
-	let current_rotate = meshObject[meshIndex].rotation;
-	let current_scale = meshObject[meshIndex].scale;
 
 	resetObj(meshObject[meshIndex]);
 
@@ -350,16 +350,9 @@ const onClickSubToolObject = (event) => {
 			meshObject[meshIndex] = create_teapot(typeMaterial);
 			break;
 	}
-	meshObject[meshIndex] = set_transform(
-		meshObject[meshIndex],
-		current_position,
-		current_rotate,
-		current_scale
-	);
-	meshObject[meshIndex].userData.isSelected = true;
+	meshObject[meshIndex] = set_transform(meshObject[meshIndex], old_object);
 	scene.add(meshObject[meshIndex]);
 	if (isTransform) {
-		meshObject[meshIndex].userData.isTransform = true;
 		transformControls.attach(meshObject[meshIndex]);
 	}
 	updateCurrentGeometry(meshObject);
@@ -510,6 +503,33 @@ function onClickCameraOption(event) {
 	}
 }
 
+function onClickAnimationOption(event, index) {
+	event.preventDefault();
+	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
+
+	meshSelected.userData.typeAni = 0;
+
+	const ani_click = event.target;
+	const current_active = document.querySelector(
+		".subtool.animation-option .option.active"
+	);
+
+	if (ani_click === current_active) {
+		ani_click.className = ani_click.className.replace(" active", "");
+	} else {
+		if (current_active)
+			current_active.className = current_active.className.replace(
+				" active",
+				""
+			);
+		ani_click.className += " active";
+		meshSelected.userData.typeAni = index;
+		meshSelected.userData.start_scale_ani = meshSelected.scale.clone();
+	}
+
+	updateAnimation();
+}
+
 const transfrom_icon = document.querySelectorAll(".icon-tool.transform");
 
 const geometry_option = document.querySelectorAll(".geometry-option");
@@ -525,6 +545,15 @@ material_option.forEach((option) => {
 const light_option = document.querySelectorAll(".sub-icon.light");
 light_option.forEach((option) => {
 	option.addEventListener("click", onClickLightOption);
+});
+
+const animation_option = document.querySelectorAll(
+	".subtool.animation-option .option"
+);
+animation_option.forEach((option, index) => {
+	option.addEventListener("click", (event) =>
+		onClickAnimationOption(event, index + 1)
+	);
 });
 
 const camera_option = document.querySelectorAll(".sub-icon.camera");
@@ -559,7 +588,7 @@ document
 let time = Date.now();
 function update() {
 	const current_time = Date.now();
-	const delta_time = (current_time - time) / 1000;
+	const delta_time = current_time - time;
 	time = current_time;
 
 	const initialAngularVelocity = new THREE.Vector3(0.5, 0.5, 0.5);
@@ -611,9 +640,9 @@ function update() {
 					obj.userData.scale_ani = -obj.userData.scale_ani;
 
 				// Update the cube's rotation
-				obj.rotation.x += initialAngularVelocity.x * delta_time;
-				obj.rotation.y += initialAngularVelocity.y * delta_time;
-				obj.rotation.z += initialAngularVelocity.z * delta_time;
+				obj.rotation.x += initialAngularVelocity.x * delta_time * 0.001;
+				obj.rotation.y += initialAngularVelocity.y * delta_time * 0.001;
+				obj.rotation.z += initialAngularVelocity.z * delta_time * 0.001;
 				break;
 		}
 	});

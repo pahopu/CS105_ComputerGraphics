@@ -3,6 +3,7 @@ import {
 	updateCurrentMaterial,
 	updateLight,
 	updateCamera,
+	updateAnimation,
 } from "./update";
 
 const tools = document.querySelectorAll(".icon-tool");
@@ -43,11 +44,17 @@ function selectTool(event) {
 	const material_option = document.getElementsByClassName("material-option")[0];
 	const light_option = document.getElementsByClassName("light-option")[0];
 	const camera_option = document.getElementsByClassName("camera-option")[0];
+	const animation_option =
+		document.getElementsByClassName("animation-option")[0];
 
 	geometry_option.className = geometry_option.className.replace(" active", "");
 	material_option.className = material_option.className.replace(" active", "");
 	light_option.className = light_option.className.replace(" active", "");
 	camera_option.className = camera_option.className.replace(" active", "");
+	animation_option.className = animation_option.className.replace(
+		" active",
+		""
+	);
 
 	const slider = document.querySelectorAll(".wrapper");
 
@@ -76,6 +83,9 @@ function selectTool(event) {
 		} else if (icon.alt === "Camera") {
 			camera_option.className += " active";
 			updateCamera();
+		} else if (icon.alt === "Animation") {
+			animation_option.className += " active";
+			updateAnimation();
 		}
 	}
 }

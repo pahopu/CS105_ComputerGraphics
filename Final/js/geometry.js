@@ -7,6 +7,11 @@ function initUserData(obj, type, typeMaterial) {
 	obj.userData.type = type;
 	obj.userData.typeMaterial = typeMaterial;
 	obj.userData.isTransform = false;
+	obj.userData.typeAni = 0;
+	obj.userData.alpha_ani = 0;
+	obj.userData.scale_ani = 1;
+
+	obj.userData.start_scale_ani = obj.scale.clone();
 	obj.castShadow = true;
 	obj.name = type + THREE.MathUtils.randInt(0, 100);
 

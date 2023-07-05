@@ -556,7 +556,71 @@ document
 	.getElementById("rendering")
 	.addEventListener("mousemove", hoverObject, false);
 
+let time = Date.now();
+function update() {
+	const current_time = Date.now();
+	const delta_time = (current_time - time) / 1000;
+	time = current_time;
+
+	const initialAngularVelocity = new THREE.Vector3(0.5, 0.5, 0.5);
+
+	meshObject.forEach((obj) => {
+		switch (obj.userData.typeAni) {
+			case 0:
+				break;
+			case 1:
+				obj.rotation.x += delta_time * 0.0005;
+				obj.rotation.y += delta_time * 0.002;
+				obj.rotation.z += delta_time * 0.001;
+				break;
+			case 2:
+				obj.position.y = (Math.sin(Date.now() * 0.002) + 1.3) * 6;
+				obj.rotation.y += delta_time * 0.002;
+				obj.rotation.z += delta_time * 0.001;
+				break;
+			case 3:
+				obj.userData.alpha_ani = Math.PI * 0.005 + obj.userData.alpha_ani;
+				obj.position.x = Math.sin(obj.userData.alpha_ani) * 5;
+				obj.position.z = Math.cos(obj.userData.alpha_ani) * 5;
+				obj.rotation.y = Date.now() * 0.002;
+				obj.rotation.z = Date.now() * 0.001;
+				if (obj.userData.alpha_ani == 2 * Math.PI) obj.userData.alpha_ani = 0;
+				break;
+			case 4:
+				let scale_unit = 0.005;
+				let min_axis = Math.min(
+					obj.userData.start_scale_ani.x,
+					obj.userData.start_scale_ani.y,
+					obj.userData.start_scale_ani.z
+				);
+
+				scale_unit = obj.userData.scale_ani * scale_unit;
+
+				let scale_vector = new THREE.Vector3(
+					(obj.userData.start_scale_ani.x / min_axis) * scale_unit,
+					(obj.userData.start_scale_ani.y / min_axis) * scale_unit,
+					(obj.userData.start_scale_ani.z / min_axis) * scale_unit
+				);
+
+				obj.scale.sub(scale_vector);
+
+				if (
+					obj.scale.x <= -obj.userData.start_scale_ani.x ||
+					obj.scale.x >= obj.userData.start_scale_ani.x
+				)
+					obj.userData.scale_ani = -obj.userData.scale_ani;
+
+				// Update the cube's rotation
+				obj.rotation.x += initialAngularVelocity.x * delta_time;
+				obj.rotation.y += initialAngularVelocity.y * delta_time;
+				obj.rotation.z += initialAngularVelocity.z * delta_time;
+				break;
+		}
+	});
+}
+
 function animate() {
+	update();
 	requestAnimationFrame(animate);
 
 	controls.update();

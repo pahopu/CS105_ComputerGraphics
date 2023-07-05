@@ -48,6 +48,8 @@ function set_transform(obj, old_object) {
 
 	props.forEach((prop) => obj[prop].copy(old_object[prop].clone()));
 
+	obj.material.color = old_object.material.color.clone();
+
 	obj.userData = {
 		...obj.userData,
 		isSelected: old_object.userData.isSelected,

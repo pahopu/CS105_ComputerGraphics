@@ -8,6 +8,7 @@ import {
 	updateLight,
 	updateCamera,
 	updateAnimation,
+	updateColor,
 } from "./update.js";
 import {
 	create_background_point,
@@ -272,6 +273,7 @@ function clickObject(event) {
 			updateCurrentGeometry(meshObject);
 			updateCurrentMaterial(meshObject);
 			updateAnimation();
+			updateColor();
 		}
 	}
 }
@@ -387,6 +389,10 @@ function onClickLightOption(event) {
 	slider[0].className = slider[0].className.replace(" active", "");
 
 	if (!setting_light.some((el) => light.alt.includes(el))) {
+		let old_color;
+		if (window.currentLight) {
+			old_color = window.currentLight.color.clone();
+		}
 		hasLight = false;
 		scene.remove(point_light);
 		scene.remove(point_light_helper);
@@ -394,6 +400,8 @@ function onClickLightOption(event) {
 		scene.remove(direct_light_helper);
 		scene.remove(spot_light);
 		scene.remove(spot_light_helper);
+
+		window.currentLight = null;
 
 		light_option[light_option.length - 1].className = light_option[
 			light_option.length - 1
@@ -405,18 +413,25 @@ function onClickLightOption(event) {
 				scene.add(direct_light);
 				scene.add(direct_light_helper);
 				direct_light.intensity = light_intensity;
+
+				window.currentLight = direct_light;
 			} else if (light.alt === "Point Light") {
 				scene.add(point_light);
 				scene.add(point_light_helper);
 				point_light.intensity = light_intensity;
+				window.currentLight = point_light;
 			} else if (light.alt === "Spot Light") {
 				scene.add(spot_light);
 				scene.add(spot_light_helper);
 				spot_light.intensity = light_intensity;
+				window.currentLight = spot_light;
 			}
 			hasLight = true;
 		}
 		window.hasLight = hasLight;
+		if (window.currentLight !== null && old_color) {
+			window.currentLight.color = old_color;
+		}
 	} else {
 		if (hasLight) {
 			light.className = light.className.replace(" not-active", "");
@@ -426,14 +441,7 @@ function onClickLightOption(event) {
 						icon.className = icon.className.replace(" active", "");
 					});
 
-					light_option.forEach((option) => {
-						if (
-							option.className.includes(" active") &&
-							!setting_light.some((el) => option.alt.includes(el))
-						) {
-							transformControls.attach(scene.getObjectByName(option.alt));
-						}
-					});
+					transformControls.attach(window.currentLight);
 					transformControls.setMode("translate");
 				}
 				light.className += " active";
@@ -446,6 +454,7 @@ function onClickLightOption(event) {
 	}
 
 	updateLight();
+	updateColor();
 }
 
 function onChangeIntensity(event) {
@@ -530,6 +539,43 @@ function onClickAnimationOption(event, index) {
 	updateAnimation();
 }
 
+function onChangeColor(event, index) {
+	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
+	let color = new THREE.Color(event.target.value);
+	if (index === 0) {
+		meshSelected.material.color = color;
+	} else {
+		window.currentLight.color = color;
+
+		console.log(window.currentLight);
+	}
+}
+
+function onClickColorOption(event, index) {
+	event.preventDefault();
+
+	color_picker.forEach((color) => {
+		color.className = color.className.replace(" active", "");
+	});
+
+	const option_click = event.target;
+	const current_active = document.querySelector(".sub-icon.color.active");
+
+	if (option_click === current_active) {
+		option_click.className = option_click.className.replace(" active", "");
+	} else {
+		if (current_active)
+			current_active.className = current_active.className.replace(
+				" active",
+				""
+			);
+		option_click.className += " active";
+		color_picker[index].className += " active";
+	}
+
+	updateColor();
+}
+
 const transfrom_icon = document.querySelectorAll(".icon-tool.transform");
 
 const geometry_option = document.querySelectorAll(".geometry-option");
@@ -560,6 +606,20 @@ const camera_option = document.querySelectorAll(".sub-icon.camera");
 camera_option.forEach((option) => {
 	option.addEventListener("click", onClickCameraOption, false);
 });
+
+const color_option = document.querySelectorAll(".sub-icon.color");
+color_option.forEach((option, index) => {
+	option.addEventListener(
+		"click",
+		(event) => onClickColorOption(event, index),
+		false
+	);
+});
+
+const color_picker = document.querySelectorAll(".color-picker");
+color_picker.forEach((picker, index) =>
+	picker.addEventListener("input", (e) => onChangeColor(e, index))
+);
 
 const tools = document.querySelectorAll(".icon-tool");
 tools.forEach((tool, index) => {

@@ -205,16 +205,49 @@ window.addEventListener(
 );
 
 function HandleKeyboard(event) {
-	switch (event.code) {
-		case "KeyG":
-			transformControls.setMode("translate");
-			break;
-		case "KeyR":
-			transformControls.setMode("rotate");
-			break;
-		case "KeyS":
-			transformControls.setMode("scale");
-			break;
+	let mode = { KeyT: "translate", KeyR: "rotate", KeyS: "scale" };
+
+	if (!(event.code in mode)) return;
+
+	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
+
+	let transform_active = document.querySelector(".icon-tool.transform.active");
+	let turn_off_transform = false;
+
+	if (transform_active) {
+		if (mode[event.code] === transform_active.name) {
+			turn_off_transform = true;
+		}
+	}
+
+	if (transform_active)
+		transform_active.className = transform_active.className.replace(
+			" active",
+			""
+		);
+
+	if (!turn_off_transform) {
+		transformControls.detach();
+		transformControls.attach(meshSelected);
+		meshSelected.userData.isTransform = true;
+		let new_transform_active = document.querySelector(
+			`.icon-tool.transform[name=${mode[event.code]}]`
+		);
+		new_transform_active.className += " active";
+		switch (event.code) {
+			case "KeyT":
+				transformControls.setMode("translate");
+				break;
+			case "KeyR":
+				transformControls.setMode("rotate");
+				break;
+			case "KeyS":
+				transformControls.setMode("scale");
+				break;
+		}
+	} else {
+		transformControls.detach();
+		meshSelected.userData.isTransform = false;
 	}
 }
 

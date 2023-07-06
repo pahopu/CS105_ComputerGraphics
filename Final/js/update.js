@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import invert from "invert-color";
 
 function updateCurrentGeometry(meshObject) {
 	const geometry_option = document.getElementsByClassName("geometry-option")[0];
@@ -9,7 +9,7 @@ function updateCurrentGeometry(meshObject) {
 			currentSelect = meshObject.find(
 				(obj) => obj.userData.isSelected === true
 			);
-		const list_icon = document.getElementsByClassName("sub-icon");
+		const list_icon = document.getElementsByClassName("sub-icon geometry");
 		for (let icon of list_icon) {
 			icon.className = icon.className.replace(" active", "");
 			if (icon.alt === currentSelect.userData.type) {
@@ -28,7 +28,7 @@ function updateCurrentMaterial(meshObject) {
 			currentSelect = meshObject.find(
 				(obj) => obj.userData.isSelected === true
 			);
-		const list_icon = document.getElementsByClassName("sub-icon");
+		const list_icon = document.getElementsByClassName("sub-icon material");
 		for (let icon of list_icon) {
 			icon.className = icon.className.replace(" active", "");
 			if (icon.alt === currentSelect.userData.typeMaterial) {
@@ -48,7 +48,7 @@ function updateLight(active_transform = false) {
 
 	slider.className = slider.className.replace(" active", "");
 
-	const setting_light = ["Intensity", "Color Light", "Translate Light"];
+	const setting_light = ["Intensity", "Distance Light", "Translate Light"];
 
 	if (active_transform) {
 		light_option[light_option.length - 1].className = light_option[
@@ -129,12 +129,62 @@ function updateAnimation() {
 				""
 			);
 
-		let currentSelect = meshObject.find(
+		let currentSelect = window.meshObject.find(
 			(obj) => obj.userData.isSelected === true
 		);
 
 		if (currentSelect.userData.typeAni !== 0)
 			ani_option[currentSelect.userData.typeAni - 1].className += " active";
+	}
+}
+
+function updateColor() {
+	const is_color_tool_active = document.querySelector(".icon-tool.cl.active");
+
+	if (is_color_tool_active) {
+		let light_color = document.querySelectorAll(".sub-icon.color")[1];
+		light_color.className = light_color.className.replace(" not-active", "");
+
+		if (!window.hasLight) {
+			light_color.className = light_color.className.replace(" active", "");
+			light_color.className += " not-active";
+		}
+	}
+
+	const color_option_active = document.querySelector(".sub-icon.color.active");
+
+	const all_color_picker = document.querySelectorAll(".color-picker");
+	all_color_picker.forEach(
+		(color_picker) =>
+			(color_picker.className = color_picker.className.replace(" active", ""))
+	);
+
+	if (is_color_tool_active && color_option_active) {
+		let class_picker = color_option_active.alt.includes("Object")
+			? "object"
+			: "light";
+
+		const color_picker = document.querySelector(
+			`.color-picker.${class_picker}`
+		);
+		color_picker.className += " active";
+		const color_input = color_picker.querySelector("input[type=color]");
+		const color_value = color_picker.querySelector(".color-value");
+
+		let currentSelect = window.meshObject.find(
+			(obj) => obj.userData.isSelected === true
+		);
+
+		// Set value and color of color picker relevant to selected
+		let hex_value;
+		if (class_picker === "object")
+			hex_value = "#" + currentSelect.material.color.getHexString();
+		else {
+			hex_value = "#" + window.currentLight.color.getHexString();
+		}
+		color_input.value = hex_value;
+		color_value.innerHTML = hex_value;
+		color_value.style.color = invert(hex_value, true);
 	}
 }
 
@@ -144,4 +194,5 @@ export {
 	updateLight,
 	updateCamera,
 	updateAnimation,
+	updateColor,
 };

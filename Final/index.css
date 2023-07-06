@@ -91,7 +91,7 @@
     width: 30px;
     height: 30px;
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
-    transition: all linear 0.1s;
+    transition: all ease-in-out 0.1s;
     cursor: pointer;
     z-index: 0;
 }
@@ -124,11 +124,11 @@
     font-family: 'Inter';
 }
 
-.tool-tip.geometry, .tool-tip.material{
+.tool-tip.geometry{
     right: 5%;
 }
 
-.tool-tip.light,.tool-tip.camera{
+.tool-tip.light,.tool-tip.camera, .tool-tip.color, .tool-tip.material{
     right: 3%;
     width: 125px;
     transform: translateX(-64%);
@@ -156,7 +156,7 @@
 }
 
 .subtool.material-option{
-    top: 44%;
+    top: 38%;
 }
 
 .subtool.light-option{
@@ -167,6 +167,10 @@
     top:59%;
     right: 4%;
     transform: translateX(-39%) translateY(1px);
+}
+
+.subtool.color-option{
+    top: 70%;
 }
 
 .subtool.animation-option{
@@ -180,17 +184,25 @@
     opacity: 1;
     visibility: visible;    
     transition: all ease-in-out 0.2s;
+    
 }
 
 [class$='-option']>.option{
    opacity: 0;
    visibility: hidden;
    pointer-events: none;
+   transition: all 0.2s ease-in-out;
+
 }
 
 .option{
     position: relative;
     background-color: transparent;
+}
+
+.material-option .option{
+    margin: 4px 0px;
+    padding: 0;
 }
 
 .animation-option .option{
@@ -227,12 +239,23 @@
     filter: invert(86%) sepia(31%) saturate(912%) hue-rotate(328deg) brightness(101%) contrast(99%);
 }
 
+.sub-icon.not-active{
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
+
 .sub-icon[name='torus']{
     margin-bottom: 4px;
 }
 
 .sub-icon[name='teapot']{
     margin-bottom: 0px;
+}
+
+.sub-icon[name='texture uploaded'], .sub-icon[name='phong']{
+    width: 22px;
+    height: 22px;
 }
 
 .sub-icon.not-active{
@@ -358,6 +381,64 @@ input[type="range"] {
         width: 0;
         box-shadow: -20rem 0 0 20rem var(--light-intensity);
     }
+}
+
+.color-picker{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    padding: 8px;
+    background-color: rgba(128, 128, 128, 0.5);
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.color-picker.active{
+    opacity: 1;
+    visibility: visible;
+}
+
+.color-picker.object{
+    top: 71%;
+    right: 8.2%;
+}
+
+.color-picker.light{
+    top: 76%;
+    right: 8.2%;
+}
+
+input[type='color']{
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    width: 80px;
+    height: 20px;
+    padding: 0;   
+    z-index: 0;
+}
+
+input[type='color']::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type='color']::-webkit-color-swatch {
+	border: none;
+}
+
+.color-value{
+    position: absolute;
+    color: white;
+    background-color: transparent;
+    pointer-events: none;
+    cursor: default;
+    font-size: 14px;
+    text-align: center;
+    font-family: 'Comfortaa','Inter';
+    z-index: 1;
+    transform: translateY(1px);
 }
   
 

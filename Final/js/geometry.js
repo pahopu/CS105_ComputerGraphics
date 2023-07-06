@@ -10,6 +10,7 @@ function initUserData(obj, type, typeMaterial) {
 	obj.userData.typeAni = 0;
 	obj.userData.alpha_ani = 0;
 	obj.userData.scale_ani = 1;
+	obj.userData.texture_src = null;
 
 	obj.userData.start_scale_ani = obj.scale.clone();
 	obj.castShadow = true;
@@ -47,6 +48,8 @@ function set_transform(obj, old_object) {
 	const props = ["position", "rotation", "scale"];
 
 	props.forEach((prop) => obj[prop].copy(old_object[prop].clone()));
+
+	obj.material.color = old_object.material.color.clone();
 
 	obj.userData = {
 		...obj.userData,
@@ -87,6 +90,26 @@ function get_material(geometry, typeMaterial) {
 			break;
 		case "Normal":
 			material = new THREE.MeshNormalMaterial({
+				transparent: true,
+				opacity: 1,
+			});
+			obj = new THREE.Mesh(geometry, material);
+			break;
+		case "Phong":
+			material = new THREE.MeshPhongMaterial({
+				side: THREE.DoubleSide,
+				transparent: true,
+				opacity: 1,
+			});
+			obj = new THREE.Mesh(geometry, material);
+			break;
+		case "Texture Uploaded":
+			let userImageURL = localStorage.getItem("texture_uploaded");
+			var loader = new THREE.TextureLoader();
+			loader.setCrossOrigin("");
+			var texture = loader.load(userImageURL);
+			material = new THREE.MeshStandardMaterial({
+				map: texture,
 				transparent: true,
 				opacity: 1,
 			});

@@ -44,22 +44,51 @@ function create_background_point() {
 	return background_points;
 }
 
-function set_transform(obj, old_object) {
+function initDefault(obj) {
+	obj.userData.init = {
+		...obj.userData,
+		position: obj.position.clone(),
+		rotation: obj.rotation.clone(),
+		scale: obj.scale.clone(),
+		color: obj.material.color.clone(),
+	};
+
+	return obj;
+}
+
+function set_transform(obj, old_object, _case = "change") {
 	const props = ["position", "rotation", "scale"];
 
-	props.forEach((prop) => obj[prop].copy(old_object[prop].clone()));
+	if (_case === "change") {
+		props.forEach((prop) => obj[prop].copy(old_object[prop].clone()));
 
-	obj.material.color = old_object.material.color.clone();
+		obj.material.color = old_object.material.color.clone();
 
-	obj.userData = {
-		...obj.userData,
-		isSelected: old_object.userData.isSelected,
-		isTransform: old_object.userData.isTransform,
-		typeAni: old_object.userData.typeAni,
-		alpha_ani: old_object.userData.alpha_ani,
-		scale_ani: old_object.userData.scale_ani,
-		start_scale_ani: old_object.userData.start_scale_ani,
-	};
+		obj.userData = {
+			...obj.userData,
+			isSelected: old_object.userData.isSelected,
+			isTransform: old_object.userData.isTransform,
+			typeAni: old_object.userData.typeAni,
+			alpha_ani: old_object.userData.alpha_ani,
+			scale_ani: old_object.userData.scale_ani,
+			start_scale_ani: old_object.userData.start_scale_ani,
+		};
+	} else {
+		props.forEach((prop) => {
+			let prop_value = old_object[prop];
+			obj[prop].copy(prop_value);
+		});
+		obj.material.color = old_object.color;
+		obj.userData = {
+			...obj.userData,
+			isSelected: old_object.isSelected,
+			isTransform: old_object.isTransform,
+			typeAni: old_object.typeAni,
+			alpha_ani: old_object.alpha_ani,
+			scale_ani: old_object.scale_ani,
+			start_scale_ani: old_object.start_scale_ani,
+		};
+	}
 
 	return obj;
 }
@@ -183,6 +212,31 @@ function create_teapot(typeMaterial = "Solid") {
 	return teapot;
 }
 
+function create_geometry(typeMesh, typeMaterial) {
+	let obj;
+	switch (typeMesh) {
+		case "Cube":
+			obj = create_cube(typeMaterial);
+			break;
+		case "Sphere":
+			obj = create_sphere(typeMaterial);
+			break;
+		case "Cone":
+			obj = create_cone(typeMaterial);
+			break;
+		case "Cylinder":
+			obj = create_cylinder(typeMaterial);
+			break;
+		case "Torus":
+			obj = create_torus(typeMaterial);
+			break;
+		case "Teapot":
+			obj = create_teapot(typeMaterial);
+			break;
+	}
+	return obj;
+}
+
 export {
 	create_background_point,
 	set_transform,
@@ -192,4 +246,6 @@ export {
 	create_cylinder,
 	create_torus,
 	create_teapot,
+	create_geometry,
+	initDefault,
 };

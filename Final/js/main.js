@@ -13,12 +13,9 @@ import {
 import {
 	create_background_point,
 	create_cube,
-	create_sphere,
-	create_cone,
 	set_transform,
-	create_cylinder,
-	create_torus,
-	create_teapot,
+	create_geometry,
+	initDefault,
 } from "./geometry.js";
 
 // INIT GLOBAL VARIABLES
@@ -47,6 +44,7 @@ function initObjects() {
 	if (meshObject.length === 0) {
 		boxMesh.userData.isSelected = true;
 	}
+	boxMesh = initDefault(boxMesh);
 	meshObject.push(boxMesh);
 }
 
@@ -223,11 +221,12 @@ function HandleKeyboard(event) {
 document.getElementsByClassName("btn-add")[0].addEventListener(
 	"click",
 	function (e) {
-		const boxMesh = create_cube();
+		let boxMesh = create_cube();
 		boxMesh.position.x = THREE.MathUtils.randInt(0, 10);
 		boxMesh.position.y = THREE.MathUtils.randInt(1, 5);
 
 		meshObject.push(boxMesh);
+		boxMesh = initDefault(boxMesh);
 		scene.add(boxMesh);
 	},
 	false
@@ -328,6 +327,7 @@ const onClickSubToolObject = (event, excludes = 0) => {
 		(obj) => obj.userData.isSelected === true
 	);
 	const old_object = meshObject[meshIndex].clone();
+	let init_object = { ...meshObject[meshIndex].userData.init };
 
 	if (!excludes) {
 		event_type = event.target.className.includes(" geometry")
@@ -354,31 +354,12 @@ const onClickSubToolObject = (event, excludes = 0) => {
 		return;
 
 	let isTransform = meshObject[meshIndex].userData.isTransform;
-	if (isTransform) transformControls.detach();
+	transformControls.detach();
 
 	resetObj(meshObject[meshIndex]);
-
-	switch (typeMesh) {
-		case "Cube":
-			meshObject[meshIndex] = create_cube(typeMaterial);
-			break;
-		case "Sphere":
-			meshObject[meshIndex] = create_sphere(typeMaterial);
-			break;
-		case "Cone":
-			meshObject[meshIndex] = create_cone(typeMaterial);
-			break;
-		case "Cylinder":
-			meshObject[meshIndex] = create_cylinder(typeMaterial);
-			break;
-		case "Torus":
-			meshObject[meshIndex] = create_torus(typeMaterial);
-			break;
-		case "Teapot":
-			meshObject[meshIndex] = create_teapot(typeMaterial);
-			break;
-	}
+	meshObject[meshIndex] = create_geometry(typeMesh, typeMaterial);
 	meshObject[meshIndex] = set_transform(meshObject[meshIndex], old_object);
+	meshObject[meshIndex].userData.init = init_object;
 	scene.add(meshObject[meshIndex]);
 	if (isTransform) {
 		transformControls.attach(meshObject[meshIndex]);
@@ -602,6 +583,43 @@ function onClickColorOption(event, index) {
 	updateColor();
 }
 
+function onClickResetObject(event) {
+	event.preventDefault();
+
+	let meshIndex = meshObject.findIndex(
+		(obj) => obj.userData.isSelected === true
+	);
+
+	let init_object = { ...meshObject[meshIndex].userData.init };
+
+	let isTransform = meshObject[meshIndex].userData.isTransform;
+	transformControls.detach();
+
+	resetObj(meshObject[meshIndex]);
+
+	meshObject[meshIndex] = create_geometry(
+		init_object.type,
+		init_object.typeMaterial
+	);
+	meshObject[meshIndex] = set_transform(
+		meshObject[meshIndex],
+		init_object,
+		"reset"
+	);
+	meshObject[meshIndex].userData.init = init_object;
+	meshObject[meshIndex].userData.isSelected = true;
+	meshObject[meshIndex].userData.isTransform = isTransform;
+
+	scene.add(meshObject[meshIndex]);
+
+	if (isTransform) {
+		transformControls.attach(meshObject[meshIndex]);
+	}
+	updateCurrentGeometry(meshObject);
+	updateCurrentMaterial(meshObject);
+	updateColor();
+}
+
 const transfrom_icon = document.querySelectorAll(".icon-tool.transform");
 
 const geometry_option = document.querySelectorAll(".sub-icon.geometry");
@@ -664,6 +682,9 @@ slider.forEach((sli) => {
 		sli.addEventListener("input", onChangeCameraProp, false);
 	}
 });
+
+const reset_icon = document.querySelector(".icon-reset");
+reset_icon.addEventListener("click", onClickResetObject);
 
 window.addEventListener("keydown", HandleKeyboard);
 

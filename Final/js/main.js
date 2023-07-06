@@ -311,38 +311,47 @@ function resetObj(obj) {
 }
 
 function importTexture(event) {
-	let input = document.createElement("input");
-	input.type = "file";
-	input.onchange = (e) => {
-		const reader = new FileReader();
-		reader.addEventListener("load", () => {
-			localStorage.setItem("texture_uploaded", reader.result);
-		});
-		reader.readAsDataURL(e.target.files[0]);
-		// let userImageURL = URL.createObjectURL(e.target.files[0]);
-		// localStorage.setItem("texture_uploaded", userImageURL);
-	};
-	input.click();
+	const reader = new FileReader();
+	reader.addEventListener("load", () => {
+		localStorage.setItem("texture_uploaded", reader.result);
+		const texture_option = document.querySelector(".sub-icon.material.texture");
+		onClickSubToolObject(texture_option, 1);
+	});
+	reader.readAsDataURL(event.target.files[0]);
 }
 
-const onClickSubToolObject = (event) => {
-	let typeMesh, typeMaterial;
+const onClickSubToolObject = (event, excludes = 0) => {
+	if (event.target && event.target.className.includes("input-uploaded")) return;
+
+	let typeMesh, typeMaterial, event_type;
 	let meshIndex = meshObject.findIndex(
 		(obj) => obj.userData.isSelected === true
 	);
 	const old_object = meshObject[meshIndex].clone();
-	const event_type = event.target.className.includes(" geometry")
-		? "geometry"
-		: "material";
-	if (event_type === "geometry") {
-		typeMesh = event.target.alt;
-		typeMaterial = meshObject[meshIndex].userData.typeMaterial;
+
+	if (!excludes) {
+		event_type = event.target.className.includes(" geometry")
+			? "geometry"
+			: "material";
+		if (event_type === "geometry") {
+			typeMesh = event.target.alt;
+			typeMaterial = meshObject[meshIndex].userData.typeMaterial;
+		} else {
+			typeMaterial = event.target.alt;
+			typeMesh = meshObject[meshIndex].userData.type;
+		}
 	} else {
-		typeMaterial = event.target.alt;
+		event_type = "material";
 		typeMesh = meshObject[meshIndex].userData.type;
+		typeMaterial = "Texture Uploaded";
 	}
 
-	// if (event_type === "material" && typeMaterial === "Texture Uploaded") return;
+	if (
+		event_type === "material" &&
+		typeMaterial === "Texture Uploaded" &&
+		excludes === 0
+	)
+		return;
 
 	let isTransform = meshObject[meshIndex].userData.isTransform;
 	if (isTransform) transformControls.detach();
@@ -595,20 +604,16 @@ function onClickColorOption(event, index) {
 
 const transfrom_icon = document.querySelectorAll(".icon-tool.transform");
 
-const geometry_option = document.querySelectorAll(".geometry-option");
+const geometry_option = document.querySelectorAll(".sub-icon.geometry");
 geometry_option.forEach((option) => {
 	option.addEventListener("click", onClickSubToolObject);
 });
 
-const material_option = document.querySelectorAll(".material-option");
-const material_option_option = document.querySelectorAll(
-	".material-option .option"
-);
+const texture_uploaded = document.querySelector("label input.input-uploaded");
+texture_uploaded.addEventListener("change", importTexture);
 
-material_option_option[material_option_option.length - 1].addEventListener(
-	"click",
-	importTexture
-);
+const material_option = document.querySelectorAll(".sub-icon.material");
+
 material_option.forEach((option) => {
 	option.addEventListener("click", onClickSubToolObject);
 });

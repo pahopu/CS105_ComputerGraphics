@@ -205,14 +205,21 @@
 						class="sub-icon material"
 					/>
 				</div>
-				<div class="option">
+				<label class="option" for="upload">
 					<img
 						src="Icon/texture.svg"
 						alt="Texture Uploaded"
 						name="texture uploaded"
-						class="sub-icon material"
+						class="sub-icon material texture"
+						aria-hidden="true"
 					/>
-				</div>
+					<input
+						type="file"
+						class="input-uploaded"
+						id="upload"
+						accept="image/*"
+					/>
+				</label>
 			</div>
 			<div class="subtool light-option">
 				<div class="option">

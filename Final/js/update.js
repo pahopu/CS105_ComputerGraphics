@@ -85,10 +85,19 @@ function updateLight(active_transform = false) {
 }
 
 function updateCamera() {
+	const camera_tool = document.querySelector(".camera-option.active");
 	const camera_option_active = document.querySelector(
 		".sub-icon.camera.active"
 	);
-	if (camera_option_active) {
+
+	const wrapper = document.querySelector(".wrapper.camera");
+	const slider = document.querySelector(".wrapper.camera input");
+	const slider_content = document.querySelector(".wrapper.camera .slide-value");
+
+	wrapper.className = wrapper.className.replace(" active", "");
+	slider.className = slider.className.replace(" active", "");
+	slider_content.className = slider_content.className.replace(" active", "");
+	if (camera_tool && camera_option_active) {
 		const min_value = { "Field of view": 0, Near: 0, Far: 1000 };
 		const max_value = { "Field of view": 175, Near: 50, Far: 5000 };
 		const current_value = {
@@ -96,14 +105,10 @@ function updateCamera() {
 			Near: window.near,
 			Far: window.far,
 		};
-		const wrapper = document.querySelector(".wrapper.camera");
-		const slider = document.querySelector(".wrapper.camera input");
-		const slider_content = document.querySelector(
-			".wrapper.camera .slide-value"
-		);
 
-		wrapper.className = wrapper.className.replace(" active", "");
 		wrapper.className += " active";
+		slider.className += " active";
+		slider_content.className += " active";
 
 		slider.min = min_value[camera_option_active.alt];
 		slider.max = max_value[camera_option_active.alt];

@@ -57,6 +57,9 @@ function onClickColorOption(event) {
 	const color_option = document.querySelector(".subtool.color-option");
 	const color_picker = document.querySelectorAll(".color-picker");
 
+	const camera_option = document.querySelector(".camera-option");
+	const camera_tool = document.querySelector(".icon-tool.normal.cr");
+
 	color_picker.forEach((picker) => {
 		picker.className = picker.className.replace(" active", "");
 	});
@@ -64,6 +67,9 @@ function onClickColorOption(event) {
 	color_option.className = color_option.className.replace(" active", "");
 	if (!event.target.className.includes(" active")) {
 		hideTooltip();
+		camera_option.className = camera_option.className.replace(" active", "");
+		camera_tool.className = camera_tool.className.replace(" active", "");
+		updateCamera();
 		event.target.className += " active";
 		color_option.className += " active";
 	} else {
@@ -100,6 +106,9 @@ function selectTool(event) {
 	const animation_option =
 		document.getElementsByClassName("animation-option")[0];
 
+	const color_tool = document.querySelector(".icon-tool.cl");
+	const color_option = document.querySelector(".color-option");
+
 	geometry_option.className = geometry_option.className.replace(" active", "");
 	material_option.className = material_option.className.replace(" active", "");
 	light_option.className = light_option.className.replace(" active", "");
@@ -134,8 +143,12 @@ function selectTool(event) {
 			light_option.className += " active";
 			updateLight();
 		} else if (icon.alt === "Camera") {
+			color_tool.className = color_tool.className.replace(" active", "");
+			color_option.className = color_option.className.replace(" active", "");
+
 			camera_option.className += " active";
 			updateCamera();
+			updateColor();
 		} else if (icon.alt === "Animation") {
 			animation_option.className += " active";
 			updateAnimation();

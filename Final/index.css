@@ -21,6 +21,12 @@
     font-family: "Comfortaa", "Inter";
 }
 
+@media only screen and (min-width: 1025px) and (max-width: 1469px) {
+    .title-mini{
+        width: 60%;
+    }
+}
+
 .nav{
     display: flex;
     align-items: center;

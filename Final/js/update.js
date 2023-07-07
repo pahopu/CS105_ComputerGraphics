@@ -14,7 +14,8 @@ function updateToolBar() {
 	const list_except = ["Light", "Camera"];
 
 	reset_icon.className = reset_icon.className.replace(" not-active", "");
-	remove_icon.className = remove_icon.className.replace(" not-active", "");
+	if (remove_icon)
+		remove_icon.className = remove_icon.className.replace(" not-active", "");
 
 	all_normal_tool.forEach(
 		(tool) => (tool.className = tool.className.replace(" not-active", ""))
@@ -33,7 +34,8 @@ function updateToolBar() {
 	);
 	if (window.meshObject.length === 0 || !meshSelected) {
 		reset_icon.className += " not-active";
-		remove_icon.className += " not-active";
+
+		if (remove_icon) remove_icon.className += " not-active";
 		all_normal_tool.forEach((tool) => {
 			if (!list_except.some((el) => tool.alt.includes(el))) {
 				tool.className = tool.className.replace(" active", "");

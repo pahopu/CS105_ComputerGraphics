@@ -159,7 +159,8 @@
 }
 
 .tool-tip.geometry{
-    right: 5%;
+    right: 6%;
+    width: 125px;
 }
 
 .tool-tip.light,.tool-tip.camera, .tool-tip.color, .tool-tip.material{
@@ -186,7 +187,8 @@
 }
 
 .subtool.geometry-option{
-    top: 20%;
+    top: 35%;
+    right: 3.3%;
 }
 
 .subtool.material-option{
@@ -195,6 +197,7 @@
 
 .subtool.light-option{
     top: 20%;
+    right: 3.8%;
 }
 
 .subtool.camera-option{
@@ -284,13 +287,80 @@
     opacity: 0.6;
 }
 
-.sub-icon[name='torus']{
-    margin-bottom: 4px;
+.subtool.geometry-option{
+    padding: 0;
 }
 
-.sub-icon[name='teapot']{
+.subtool.geometry-option ul{
+    height: 210px;
+    background-color: transparent;
+    overflow-y: scroll;
+    white-space: nowrap;
+    padding: 10px;
+}
+
+.subtool.geometry-option ul::-webkit-scrollbar{
+    width: 5px;
+}
+
+.subtool.geometry-option ul::-webkit-scrollbar-track {
+    background: transparent;        /* color of the tracking area */
+
+}
+  
+.subtool.geometry-option ul::-webkit-scrollbar-thumb {
+    background-color: transparent;    /* color of the scroll thumb */
+    border-radius: 10px;       /* roundness of the scroll thumb */
+    border: 3px solid rgba(255, 255, 255, 0.498);  /* creates padding around scroll thumb */
+}
+
+.subtool.geometry-option ul .sub-icon{
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+}
+
+.subtool.geometry-option ul .sub-icon[alt='Heart']{
+    margin-bottom: 0;
+}
+
+.subtool.geometry-option ul .sub-icon[name='torus']{
     margin-bottom: 0px;
 }
+
+.subtool.geometry-option ul .sub-icon[name='torus knot']{
+    width: 40px !important;
+    height: 40px !important;
+    transform: translateX(-5px);
+    margin-bottom: 0;
+}
+
+.subtool.geometry-option ul .sub-icon[name='teapot']{
+    width: 32px !important;
+    height: 32px !important;
+    margin-bottom: 5px;
+}
+
+.subtool.geometry-option ul .sub-icon[name='octahedron']{
+    width: 27px;
+    height: 27px;
+    transform: translateX(2px);
+    margin-bottom: 12px;
+
+}
+
+.subtool.geometry-option ul .sub-icon[name='icosahedron']{
+    width: 28px;
+    height: 28px;
+    transform: translateX(2px);
+}
+
+.subtool.geometry-option ul .sub-icon[name='dodecahedron']{
+    width: 42px;
+    height: 42px;
+    transform: translateX(-6px);
+}
+
 
 .sub-icon[name='texture uploaded'], .sub-icon[name='phong']{
     width: 22px;

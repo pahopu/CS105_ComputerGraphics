@@ -203,6 +203,17 @@ function create_torus(typeMaterial = "Solid") {
 	return torus;
 }
 
+function create_torus_knot(typeMaterial = "Solid") {
+	const geometry = new THREE.TorusKnotGeometry(2, 0.6, 100, 16);
+	const torus_knot = get_material(geometry, typeMaterial);
+
+	torus_knot.position.y = 3;
+
+	initUserData(torus_knot, "Torus Knot", typeMaterial);
+
+	return torus_knot;
+}
+
 function create_teapot(typeMaterial = "Solid") {
 	const geometry = new TeapotBufferGeometry(3, 8);
 	const teapot = get_material(geometry, typeMaterial);
@@ -232,6 +243,9 @@ function create_geometry(typeMesh, typeMaterial) {
 			break;
 		case "Teapot":
 			obj = create_teapot(typeMaterial);
+			break;
+		case "Torus Knot":
+			obj = create_torus_knot(typeMaterial);
 			break;
 	}
 	return obj;

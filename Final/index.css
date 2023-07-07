@@ -11,6 +11,9 @@
 :root{
     --light-intensity: rgba(128,128,128,0.5);
     --border-light: 0.75rem;
+    --filter-white: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
+    --filter-active: invert(86%) sepia(31%) saturate(912%) hue-rotate(328deg) brightness(101%) contrast(99%);
+    --color-active: #FEC869;
 }
 
 .title-mini{
@@ -42,7 +45,7 @@
     width: 35px;
     height: 35px;
     background-color: transparent;
-    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
+    filter: var(--filter-white);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
@@ -111,7 +114,7 @@
     background-color: transparent;
     width: 30px;
     height: 30px;
-    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
+    filter: var(--filter-white);
     transition: all ease-in-out 0.1s;
     cursor: pointer;
     z-index: 0;
@@ -122,7 +125,7 @@
 }
 
 .icon-tool.active{
-    filter: invert(86%) sepia(31%) saturate(912%) hue-rotate(328deg) brightness(101%) contrast(99%);
+    filter: var(--filter-active);
 }
 
 .tool-tip {
@@ -239,7 +242,7 @@
 }
 
 .animation-option .option.active{
-    color : #FEC869;
+    color : var(--color-active);
 }
 
 .animation-option .option:hover{
@@ -485,3 +488,81 @@ input[type='color']::-webkit-color-swatch {
     pointer-events: none;
     transition: all 1s linear;
 }
+
+
+.container-add{
+    background-color: transparent;
+    position: absolute;
+    top: 80%;
+    right: 2.5%;
+}
+
+.tool-add-sub-option{
+    background-color: transparent;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.tool-add-sub-option .top,.tool-add-sub-option .bottom{
+    background-color: transparent;
+    display: flex;
+    justify-content: end;
+    flex-flow: row-reverse;
+}
+
+.tool-add-sub-option .top{
+    width: 100px;
+}
+
+.tool-add-sub-option .bottom{
+    margin-top: -10px;
+    height: 100px;
+}
+
+.icon-add-sub{
+    width: 35px;
+    height: 35px;
+    background-color: transparent;
+    filter: var(--filter-white);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.icon-add-sub.main{
+    margin-left: -10px;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.icon-add-sub.main:hover{
+    opacity: 0.6;
+}
+
+.icon-add-sub.main.active{
+    filter: var(--filter-active);
+}
+
+.icon-add-sub.add, .icon-add-sub.remove{
+    opacity: 0;
+    visibility: hidden;
+}
+
+.icon-add-sub.add.active, .icon-add-sub.remove.active{
+    visibility: visible;
+    opacity: 1;
+}
+
+.icon-add-sub.add.active:hover, .icon-add-sub.remove.active:hover{
+    opacity: 0.6;
+}
+
+.icon-add-sub.add.active{
+    transform: translateX(-30px);
+
+}
+
+.icon-add-sub.remove.active{
+    transform: translateY(30px);
+}
+
+

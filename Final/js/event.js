@@ -17,6 +17,44 @@ const icons_color = document.querySelectorAll(".sub-icon.color");
 const color_picker = document.querySelectorAll("input[type='color']");
 color_picker.forEach((el) => el.addEventListener("input", onChangeColor));
 
+const add_sub_tool = document.querySelector(".tool-add-sub-option");
+const add_sub_tool_main = add_sub_tool.querySelector(".icon-add-sub.main");
+const add_sub_tool_add = add_sub_tool.querySelector(".icon-add-sub.add");
+const add_sub_tool_remove = add_sub_tool.querySelector(".icon-add-sub.remove");
+
+add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
+add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
+
+function manage_add_sub_tool(event) {
+	let main_is_active = add_sub_tool_main.className.includes(" active");
+	if (!main_is_active) {
+		add_sub_tool_main.className += " active";
+		active_add_sub_tool();
+	} else {
+		add_sub_tool_main.className = add_sub_tool_main.className.replace(
+			" active",
+			""
+		);
+		deactive_add_sub_tool();
+	}
+}
+
+function active_add_sub_tool() {
+	add_sub_tool_add.className += " active";
+	add_sub_tool_remove.className += " active";
+}
+
+function deactive_add_sub_tool() {
+	add_sub_tool_add.className = add_sub_tool_add.className.replace(
+		" active",
+		""
+	);
+	add_sub_tool_remove.className = add_sub_tool_remove.className.replace(
+		" active",
+		""
+	);
+}
+
 tools.forEach((tool, index) => {
 	tool.addEventListener("mouseenter", showTooltip);
 	tool.addEventListener("mouseleave", hideTooltip);

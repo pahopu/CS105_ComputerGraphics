@@ -316,6 +316,12 @@
     margin-bottom: 0px;
 }
 
+.sub-icon[name='distance']{
+    width: 35px;
+    height: 35px;
+
+}
+
 .sub-icon[name='field of view']{
     width: 30px;
     height: 30px;
@@ -338,6 +344,11 @@
 
 .wrapper.intensity{
     top: 32%;
+    right: 8%;
+}
+
+.wrapper.distance{
+    top: 35%;
     right: 8%;
 }
 
@@ -574,6 +585,11 @@ input[type='color']::-webkit-color-swatch {
 
 .icon-add-sub.remove.active{
     transform: translateY(30px);
+}
+
+.icon-add-sub.remove.active.not-active{
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 

@@ -251,7 +251,7 @@ function HandleKeyboard(event) {
 	}
 }
 
-document.getElementsByClassName("btn-add")[0].addEventListener(
+document.querySelector(".icon-add-sub.add").addEventListener(
 	"click",
 	function (e) {
 		let boxMesh = create_cube();

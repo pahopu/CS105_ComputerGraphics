@@ -50,6 +50,11 @@
     transition: all 0.2s ease-in-out;
 }
 
+.icon-reset.not-active{
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 .icon-reset:hover{
     opacity: 0.6;
 }
@@ -115,7 +120,7 @@
     width: 30px;
     height: 30px;
     filter: var(--filter-white);
-    transition: all ease-in-out 0.1s;
+    transition: all ease-in-out 0.2s;
     cursor: pointer;
     z-index: 0;
 }
@@ -126,6 +131,11 @@
 
 .icon-tool.active{
     filter: var(--filter-active);
+}
+
+[class^='icon-tool'][class$='not-active']{
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 .tool-tip {
@@ -176,7 +186,7 @@
 }
 
 .subtool.geometry-option{
-    top: 35%;
+    top: 20%;
 }
 
 .subtool.material-option{
@@ -194,7 +204,7 @@
 }
 
 .subtool.color-option{
-    top: 70%;
+    top: 65%;
 }
 
 .subtool.animation-option{
@@ -208,8 +218,9 @@
     opacity: 1;
     visibility: visible;    
     transition: all ease-in-out 0.2s;
-    
 }
+
+
 
 [class$='-option']>.option{
    opacity: 0;
@@ -430,12 +441,12 @@ input[type="range"] {
 }
 
 .color-picker.object{
-    top: 71%;
+    top: 65.2%;
     right: 8.2%;
 }
 
 .color-picker.light{
-    top: 76%;
+    top: 71.2%;
     right: 8.2%;
 }
 

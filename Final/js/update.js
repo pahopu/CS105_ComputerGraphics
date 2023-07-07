@@ -1,4 +1,63 @@
 import invert from "invert-color";
+import { meshObject } from "./main";
+
+function updateToolBar() {
+	const reset_icon = document.querySelector(".icon-reset");
+	const all_normal_tool = document.querySelectorAll(".icon-tool.normal");
+	const all_transform_tool = document.querySelectorAll(".icon-tool.transform");
+
+	const all_option = document.querySelectorAll(
+		"[class^='subtool'][class*='-option']"
+	);
+
+	const list_except = ["Light", "Camera"];
+
+	reset_icon.className = reset_icon.className.replace(" not-active", "");
+
+	all_normal_tool.forEach(
+		(tool) => (tool.className = tool.className.replace(" not-active", ""))
+	);
+
+	all_transform_tool.forEach((tool) => {
+		tool.className = tool.className.replace(" not-active", "");
+	});
+
+	all_option.forEach((option) => {
+		option.className = option.className.replace(" not-active", "");
+	});
+
+	let meshSelected = window.meshObject.find(
+		(obj) => obj.userData.isSelected === true
+	);
+	if (window.meshObject.length === 0 || !meshSelected) {
+		reset_icon.className += " not-active";
+		all_normal_tool.forEach((tool) => {
+			if (!list_except.some((el) => tool.alt.includes(el))) {
+				tool.className = tool.className.replace(" active", "");
+				tool.className += " not-active";
+
+				let tool_option = document.querySelector(
+					`[class^='subtool ${tool.name}-option']`
+				);
+
+				tool_option.className = tool_option.className.replace(" active", "");
+				tool_option.className += " not-active";
+			}
+		});
+
+		all_transform_tool.forEach((tool) => {
+			tool.className = tool.className.replace(" active", "");
+			tool.className += " not-active";
+		});
+	}
+
+	updateCamera();
+	updateColor();
+	updateAnimation();
+	updateCurrentGeometry(window.meshObject);
+	updateCurrentMaterial(window.meshObject);
+	updateLight();
+}
 
 function updateCurrentGeometry(meshObject) {
 	const geometry_option = document.getElementsByClassName("geometry-option")[0];
@@ -120,42 +179,62 @@ function updateCamera() {
 
 function updateAnimation() {
 	if (window.meshObject.length > 0) {
-		const current_active = document.querySelector(
-			".subtool.animation-option .option.active"
-		);
-
-		const ani_option = document.querySelectorAll(
-			".subtool.animation-option .option"
-		);
-
-		if (current_active)
-			current_active.className = current_active.className.replace(
-				" active",
-				""
-			);
-
 		let currentSelect = window.meshObject.find(
 			(obj) => obj.userData.isSelected === true
 		);
 
-		if (currentSelect.userData.typeAni !== 0)
-			ani_option[currentSelect.userData.typeAni - 1].className += " active";
+		if (currentSelect) {
+			const current_active = document.querySelector(
+				".subtool.animation-option .option.active"
+			);
+
+			const ani_option = document.querySelectorAll(
+				".subtool.animation-option .option"
+			);
+
+			if (current_active)
+				current_active.className = current_active.className.replace(
+					" active",
+					""
+				);
+
+			if (currentSelect.userData.typeAni !== 0)
+				ani_option[currentSelect.userData.typeAni - 1].className += " active";
+		}
 	}
 }
 
 function updateColor() {
 	const is_color_tool_active = document.querySelector(".icon-tool.cl.active");
+	let color_option = document.querySelectorAll(".sub-icon.color");
+
+	let currentSelect = window.meshObject.find(
+		(obj) => obj.userData.isSelected === true
+	);
 
 	if (is_color_tool_active) {
-		let light_color = document.querySelectorAll(".sub-icon.color")[1];
+		let geometry_color = color_option[0];
+		let light_color = color_option[1];
+
+		geometry_color.className = geometry_color.className.replace(
+			" not-active",
+			""
+		);
 		light_color.className = light_color.className.replace(" not-active", "");
 
 		if (!window.hasLight) {
 			light_color.className = light_color.className.replace(" active", "");
 			light_color.className += " not-active";
 		}
-	}
 
+		if (meshObject.length === 0 || !currentSelect) {
+			geometry_color.className = geometry_color.className.replace(
+				" active",
+				""
+			);
+			geometry_color.className += " not-active";
+		}
+	}
 	const color_option_active = document.querySelector(".sub-icon.color.active");
 
 	const all_color_picker = document.querySelectorAll(".color-picker");
@@ -175,10 +254,6 @@ function updateColor() {
 		color_picker.className += " active";
 		const color_input = color_picker.querySelector("input[type=color]");
 		const color_value = color_picker.querySelector(".color-value");
-
-		let currentSelect = window.meshObject.find(
-			(obj) => obj.userData.isSelected === true
-		);
 
 		// Set value and color of color picker relevant to selected
 		let hex_value;
@@ -200,4 +275,5 @@ export {
 	updateCamera,
 	updateAnimation,
 	updateColor,
+	updateToolBar,
 };

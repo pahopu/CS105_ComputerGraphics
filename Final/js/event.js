@@ -5,6 +5,7 @@ import {
 	updateCamera,
 	updateAnimation,
 	updateColor,
+	updateToolBar,
 } from "./update";
 
 import invert from "invert-color";
@@ -24,6 +25,34 @@ const add_sub_tool_remove = add_sub_tool.querySelector(".icon-add-sub.remove");
 
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
+
+tools.forEach((tool, index) => {
+	tool.addEventListener("mouseenter", showTooltip);
+	tool.addEventListener("mouseleave", hideTooltip);
+	if (index < 3) tool.addEventListener("click", selectTransfrom);
+	else if (tool.className.includes("cl"))
+		tool.addEventListener("click", onClickColorOption);
+	else tool.addEventListener("click", selectTool);
+});
+
+icons_geometry.forEach((icon) => {
+	icon.addEventListener("mouseenter", showTooltip);
+	icon.addEventListener("mouseleave", hideTooltip);
+});
+
+icons_color.forEach((icon) => {
+	icon.addEventListener("click", (e) => {
+		if (e.target.className.includes(" active")) {
+			hideTooltip();
+		}
+	});
+
+	icon.addEventListener("mouseenter", (e) => {
+		if (e.target.className.includes(" active")) {
+			hideTooltip();
+		}
+	});
+});
 
 function manage_add_sub_tool(event) {
 	let main_is_active = add_sub_tool_main.className.includes(" active");
@@ -55,34 +84,6 @@ function deactive_add_sub_tool() {
 	);
 }
 
-tools.forEach((tool, index) => {
-	tool.addEventListener("mouseenter", showTooltip);
-	tool.addEventListener("mouseleave", hideTooltip);
-	if (index < 3) tool.addEventListener("click", selectTransfrom);
-	else if (tool.className.includes("cl"))
-		tool.addEventListener("click", onClickColorOption);
-	else tool.addEventListener("click", selectTool);
-});
-
-icons_geometry.forEach((icon) => {
-	icon.addEventListener("mouseenter", showTooltip);
-	icon.addEventListener("mouseleave", hideTooltip);
-});
-
-icons_color.forEach((icon) => {
-	icon.addEventListener("click", (e) => {
-		if (e.target.className.includes(" active")) {
-			hideTooltip();
-		}
-	});
-
-	icon.addEventListener("mouseenter", (e) => {
-		if (e.target.className.includes(" active")) {
-			hideTooltip();
-		}
-	});
-});
-
 function onChangeColor(event) {
 	let color_value = event.target.offsetParent.children[1];
 	color_value.innerHTML = event.target.value;
@@ -103,6 +104,7 @@ function onClickColorOption(event) {
 	});
 
 	color_option.className = color_option.className.replace(" active", "");
+
 	if (!event.target.className.includes(" active")) {
 		hideTooltip();
 		camera_option.className = camera_option.className.replace(" active", "");

@@ -9,6 +9,7 @@ import {
 	updateCamera,
 	updateAnimation,
 	updateColor,
+	updateToolBar,
 } from "./update.js";
 import {
 	create_background_point,
@@ -44,7 +45,11 @@ function initObjects() {
 	if (meshObject.length === 0) {
 		boxMesh.userData.isSelected = true;
 	}
+	const arrowGeometry = new THREE.ConeGeometry(0.5, 1, 32);
+	const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+	arrowMesh = new THREE.Mesh(arrowGeometry, arrowMaterial);
 	boxMesh = initDefault(boxMesh);
+
 	meshObject.push(boxMesh);
 }
 
@@ -140,10 +145,6 @@ function init() {
 
 	controls = new OrbitControls(camera, renderer.domElement);
 	controls.update();
-
-	const arrowGeometry = new THREE.ConeGeometry(0.5, 1, 32);
-	const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-	arrowMesh = new THREE.Mesh(arrowGeometry, arrowMaterial);
 
 	document.getElementById("rendering").appendChild(renderer.domElement);
 
@@ -260,7 +261,33 @@ document.querySelector(".icon-add-sub.add").addEventListener(
 
 		meshObject.push(boxMesh);
 		boxMesh = initDefault(boxMesh);
+
+		if (meshObject.length === 1) {
+			boxMesh.userData.isSelected = true;
+		}
 		scene.add(boxMesh);
+
+		updateToolBar();
+	},
+	false
+);
+
+document.querySelector(".icon-add-sub.remove").addEventListener(
+	"click",
+	function (e) {
+		transformControls.detach();
+		let meshSelected = meshObject.find(
+			(obj) => obj.userData.isSelected === true
+		);
+		meshObject = meshObject.filter((obj) => obj !== meshSelected);
+		meshSelected = resetObj(meshSelected);
+
+		if (meshObject.length === 1) {
+			meshObject[0].userData.isSelected = true;
+		}
+		window.meshObject = meshObject;
+
+		updateToolBar();
 	},
 	false
 );
@@ -302,10 +329,7 @@ function clickObject(event) {
 			if (isTransform) {
 				transformControls.attach(object);
 			}
-			updateCurrentGeometry(meshObject);
-			updateCurrentMaterial(meshObject);
-			updateAnimation();
-			updateColor();
+			updateToolBar();
 		}
 	}
 }
@@ -332,14 +356,16 @@ function hoverObject(event) {
 }
 
 function resetObj(obj) {
-	scene.remove(obj);
 	obj.traverse(function (object) {
 		if (object.isMesh) {
 			object.geometry.dispose();
 			object.material.dispose();
 		}
 	});
+	scene.remove(obj);
+
 	obj = null;
+	return obj;
 }
 
 function importTexture(event) {
@@ -354,71 +380,74 @@ function importTexture(event) {
 
 const onClickSubToolObject = (event, excludes = 0) => {
 	if (event.target && event.target.className.includes("input-uploaded")) return;
+	if (meshObject.length > 0) {
+		let typeMesh, typeMaterial, event_type;
+		let meshIndex = meshObject.findIndex(
+			(obj) => obj.userData.isSelected === true
+		);
+		const old_object = meshObject[meshIndex].clone();
+		let init_object = { ...meshObject[meshIndex].userData.init };
 
-	let typeMesh, typeMaterial, event_type;
-	let meshIndex = meshObject.findIndex(
-		(obj) => obj.userData.isSelected === true
-	);
-	const old_object = meshObject[meshIndex].clone();
-	let init_object = { ...meshObject[meshIndex].userData.init };
-
-	if (!excludes) {
-		event_type = event.target.className.includes(" geometry")
-			? "geometry"
-			: "material";
-		if (event_type === "geometry") {
-			typeMesh = event.target.alt;
-			typeMaterial = meshObject[meshIndex].userData.typeMaterial;
+		if (!excludes) {
+			event_type = event.target.className.includes(" geometry")
+				? "geometry"
+				: "material";
+			if (event_type === "geometry") {
+				typeMesh = event.target.alt;
+				typeMaterial = meshObject[meshIndex].userData.typeMaterial;
+			} else {
+				typeMaterial = event.target.alt;
+				typeMesh = meshObject[meshIndex].userData.type;
+			}
 		} else {
-			typeMaterial = event.target.alt;
+			event_type = "material";
 			typeMesh = meshObject[meshIndex].userData.type;
+			typeMaterial = "Texture Uploaded";
 		}
-	} else {
-		event_type = "material";
-		typeMesh = meshObject[meshIndex].userData.type;
-		typeMaterial = "Texture Uploaded";
+
+		if (
+			event_type === "material" &&
+			typeMaterial === "Texture Uploaded" &&
+			excludes === 0
+		)
+			return;
+
+		let isTransform = meshObject[meshIndex].userData.isTransform;
+		transformControls.detach();
+
+		meshObject[meshIndex] = resetObj(meshObject[meshIndex]);
+		meshObject[meshIndex] = create_geometry(typeMesh, typeMaterial);
+		meshObject[meshIndex] = set_transform(meshObject[meshIndex], old_object);
+		meshObject[meshIndex].userData.init = init_object;
+		scene.add(meshObject[meshIndex]);
+		if (isTransform) {
+			transformControls.attach(meshObject[meshIndex]);
+		}
 	}
-
-	if (
-		event_type === "material" &&
-		typeMaterial === "Texture Uploaded" &&
-		excludes === 0
-	)
-		return;
-
-	let isTransform = meshObject[meshIndex].userData.isTransform;
-	transformControls.detach();
-
-	resetObj(meshObject[meshIndex]);
-	meshObject[meshIndex] = create_geometry(typeMesh, typeMaterial);
-	meshObject[meshIndex] = set_transform(meshObject[meshIndex], old_object);
-	meshObject[meshIndex].userData.init = init_object;
-	scene.add(meshObject[meshIndex]);
-	if (isTransform) {
-		transformControls.attach(meshObject[meshIndex]);
-	}
-	updateCurrentGeometry(meshObject);
-	updateCurrentMaterial(meshObject);
+	updateToolBar();
 };
 
 function active_transform(event) {
 	event.preventDefault();
 	const icon = event.target;
 	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
-	if (!icon.className.includes(" active")) {
-		transformControls.attach(meshSelected);
-		meshSelected.userData.isTransform = true;
-		updateLight(true);
-	} else {
-		transformControls.detach();
-		meshSelected.userData.isTransform = false;
-	}
-	if (icon.alt === "Translate") {
-		transformControls.setMode("translate");
-	} else if (icon.alt === "Rotate") {
-		transformControls.setMode("rotate");
-	} else if (icon.alt === "Scale") {
-		transformControls.setMode("scale");
+
+	if (meshObject.length > 0 && meshSelected) {
+		if (!icon.className.includes(" active")) {
+			transformControls.attach(meshSelected);
+			meshSelected.userData.isTransform = true;
+			updateLight(true);
+		} else {
+			transformControls.detach();
+			meshSelected.userData.isTransform = false;
+		}
+		if (icon.alt === "Translate") {
+			transformControls.setMode("translate");
+		} else if (icon.alt === "Rotate") {
+			transformControls.setMode("rotate");
+		} else if (icon.alt === "Scale") {
+			transformControls.setMode("scale");
+		}
 	}
 }
 
@@ -556,24 +585,26 @@ function onClickAnimationOption(event, index) {
 	event.preventDefault();
 	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
 
-	meshSelected.userData.typeAni = 0;
+	if (meshSelected) {
+		meshSelected.userData.typeAni = 0;
 
-	const ani_click = event.target;
-	const current_active = document.querySelector(
-		".subtool.animation-option .option.active"
-	);
+		const ani_click = event.target;
+		const current_active = document.querySelector(
+			".subtool.animation-option .option.active"
+		);
 
-	if (ani_click === current_active) {
-		ani_click.className = ani_click.className.replace(" active", "");
-	} else {
-		if (current_active)
-			current_active.className = current_active.className.replace(
-				" active",
-				""
-			);
-		ani_click.className += " active";
-		meshSelected.userData.typeAni = index;
-		meshSelected.userData.start_scale_ani = meshSelected.scale.clone();
+		if (ani_click === current_active) {
+			ani_click.className = ani_click.className.replace(" active", "");
+		} else {
+			if (current_active)
+				current_active.className = current_active.className.replace(
+					" active",
+					""
+				);
+			ani_click.className += " active";
+			meshSelected.userData.typeAni = index;
+			meshSelected.userData.start_scale_ani = meshSelected.scale.clone();
+		}
 	}
 
 	updateAnimation();
@@ -586,8 +617,6 @@ function onChangeColor(event, index) {
 		meshSelected.material.color = color;
 	} else {
 		window.currentLight.color = color;
-
-		console.log(window.currentLight);
 	}
 }
 
@@ -628,7 +657,7 @@ function onClickResetObject(event) {
 	let isTransform = meshObject[meshIndex].userData.isTransform;
 	transformControls.detach();
 
-	resetObj(meshObject[meshIndex]);
+	meshObject[meshIndex] = resetObj(meshObject[meshIndex]);
 
 	meshObject[meshIndex] = create_geometry(
 		init_object.type,
@@ -650,6 +679,7 @@ function onClickResetObject(event) {
 	}
 	updateCurrentGeometry(meshObject);
 	updateCurrentMaterial(meshObject);
+
 	updateColor();
 }
 

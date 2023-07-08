@@ -33,6 +33,8 @@ tools.forEach((tool, index) => {
 	if (index < 3) tool.addEventListener("click", selectTransfrom);
 	else if (tool.className.includes("cl"))
 		tool.addEventListener("click", onClickColorOption);
+	else if (tool.className.includes("music"))
+		tool.addEventListener("click", onClickMusic);
 	else tool.addEventListener("click", selectTool);
 });
 
@@ -54,6 +56,19 @@ icons_color.forEach((icon) => {
 		}
 	});
 });
+
+function onClickMusic(event) {
+	const music_tool = event.target;
+	if (!event.target.className.includes(" active")) {
+		music_tool.className += " active";
+
+		// Handle process for turn on music
+	} else {
+		music_tool.className = music_tool.className.replace(" active", "");
+
+		// Handle process for turn off music
+	}
+}
 
 function manage_add_sub_tool(event) {
 	let main_is_active = add_sub_tool_main.className.includes(" active");

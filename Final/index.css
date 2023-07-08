@@ -14,6 +14,15 @@
     --filter-white: invert(100%) sepia(0%) saturate(0%) hue-rotate(222deg) brightness(104%) contrast(101%);
     --filter-active: invert(86%) sepia(31%) saturate(912%) hue-rotate(328deg) brightness(101%) contrast(99%);
     --color-active: #FEC869;
+    --reset-top: 9%;
+    --tool-top: 17%;
+    --light-top: 17%;
+    --geometry-top: 30.5%;
+    --material-top: 33%;
+    --animation-top: 48%;
+    --camera-top: 57%;
+    --color-top: 63%;
+    --add-sub-top: 83.5%;
 }
 
 .title-mini{
@@ -36,8 +45,8 @@
 .reset{
     position: absolute;
     background-color: transparent;
-    top: 12%;
-    right: 2.5%;
+    top: var(--reset-top);
+    right: 2.25%;
     transform: translateX(-1px)
 }
 
@@ -97,8 +106,8 @@
     padding: 10px;
     background: gray;
     border-radius: 5px;
-    right: 2%;
-    top: 20%;
+    right: 1.65%;
+    top: var(--tool-top);
     z-index: 0;
 }
 
@@ -120,9 +129,15 @@
     width: 30px;
     height: 30px;
     filter: var(--filter-white);
-    transition: all ease-in-out 0.2s;
+    transition: all ease-in-out 0.25s;
     cursor: pointer;
     z-index: 0;
+}
+
+.icon-tool[name='geometry']{
+    width: 35px;
+    height: 35px;
+
 }
 
 .icon-tool:hover{
@@ -187,31 +202,31 @@
 }
 
 .subtool.geometry-option{
-    top: 35%;
+    top: var(--geometry-top);
     right: 3.3%;
 }
 
 .subtool.material-option{
-    top: 38%;
+    top: var(--material-top);
 }
 
 .subtool.light-option{
-    top: 20%;
+    top: var(--light-top);
     right: 3.8%;
 }
 
 .subtool.camera-option{
-    top:59%;
+    top: var(--camera-top);
     right: 4%;
     transform: translateX(-39%) translateY(1px);
 }
 
 .subtool.color-option{
-    top: 65%;
+    top: var(--color-top);
 }
 
 .subtool.animation-option{
-    top: 50%;
+    top: var(--animation-top);
     right: 1%;
     transform: translateX(-38%) translateY(4px);
 
@@ -369,6 +384,10 @@
     height: 22px;
 }
 
+.sub-icon[alt='Light Color']{
+    margin-bottom: 0;
+}
+
 .sub-icon.not-active{
     cursor:not-allowed;
     opacity: 0.3;
@@ -415,12 +434,12 @@
 }
 
 .wrapper.intensity{
-    top: 32%;
+    top: 29.5%;
     right: 8.8%;
 }
 
 .wrapper.distance{
-    top: 35%;
+    top: 33%;
     right: 8.8%;
 }
 
@@ -524,12 +543,12 @@ input[type="range"] {
 }
 
 .color-picker.object{
-    top: 65.2%;
+    top: 63.2%;
     right: 8.2%;
 }
 
 .color-picker.light{
-    top: 71.2%;
+    top: 69.2%;
     right: 8.2%;
 }
 
@@ -587,8 +606,8 @@ input[type='color']::-webkit-color-swatch {
 .container-add{
     background-color: transparent;
     position: absolute;
-    top: 80%;
-    right: 2.5%;
+    top: var(--add-sub-top);
+    right: 2.25%;
 }
 
 .tool-add-sub-option{

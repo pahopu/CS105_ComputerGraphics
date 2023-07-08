@@ -214,22 +214,31 @@ function HandleKeyboard(event) {
 
 	let meshSelected = meshObject.find((obj) => obj.userData.isSelected === true);
 
+	if (!meshSelected || meshObject.length === 0) return;
+
 	let transform_active = document.querySelector(".icon-tool.transform.active");
+	let light_translate_active = document.querySelector(
+		".sub-icon.light[alt='Translate Light'].active"
+	);
+
 	let turn_off_transform = false;
 
 	if (transform_active) {
 		if (mode[event.code] === transform_active.name) {
 			turn_off_transform = true;
 		}
-	}
 
-	if (transform_active)
 		transform_active.className = transform_active.className.replace(
 			" active",
 			""
 		);
+	}
 
 	if (!turn_off_transform) {
+		if (light_translate_active) {
+			light_translate_active.className =
+				light_translate_active.className.replace(" active", "");
+		}
 		transformControls.detach();
 		transformControls.attach(meshSelected);
 		meshSelected.userData.isTransform = true;

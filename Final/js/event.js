@@ -24,8 +24,12 @@ const add_sub_tool_main = add_sub_tool.querySelector(".icon-add-sub.main");
 const add_sub_tool_add = add_sub_tool.querySelector(".icon-add-sub.add");
 const add_sub_tool_remove = add_sub_tool.querySelector(".icon-add-sub.remove");
 
+<<<<<<< HEAD
+const audio = new Audio("Only_LeeHi.mp3");
+=======
 const audio = new Audio('audio/Only_LeeHi.mp3');
 audio.loop = true;
+>>>>>>> d1c23c04a5935acb711c0eec67c150b249a89186
 
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
@@ -130,6 +134,16 @@ function onClickColorOption(event) {
 	const camera_option = document.querySelector(".camera-option");
 	const camera_tool = document.querySelector(".icon-tool.normal.cr");
 
+	const material_option = document.querySelector(".material-option");
+	const material_tool = document.querySelector(
+		".icon-tool.normal[name='material']"
+	);
+
+	const animation_option = document.querySelector(".animation-option");
+	const animation_tool = document.querySelector(
+		".icon-tool.normal[name='animation']"
+	);
+
 	color_picker.forEach((picker) => {
 		picker.className = picker.className.replace(" active", "");
 	});
@@ -138,9 +152,25 @@ function onClickColorOption(event) {
 
 	if (!event.target.className.includes(" active")) {
 		hideTooltip();
+
 		camera_option.className = camera_option.className.replace(" active", "");
 		camera_tool.className = camera_tool.className.replace(" active", "");
+
+		material_option.className = material_option.className.replace(
+			" active",
+			""
+		);
+		material_tool.className = material_tool.className.replace(" active", "");
+
+		animation_option.className = animation_option.className.replace(
+			" active",
+			""
+		);
+		animation_tool.className = animation_tool.className.replace(" active", "");
+
 		updateCamera();
+		updateAnimation();
+		updateCurrentMaterial(window.meshObject);
 		event.target.className += " active";
 		color_option.className += " active";
 	} else {
@@ -208,8 +238,12 @@ function selectTool(event) {
 			geometry_option.className += " active";
 			updateCurrentGeometry(window.meshObject);
 		} else if (icon.alt === "Material") {
+			color_tool.className = color_tool.className.replace(" active", "");
+			color_option.className = color_option.className.replace(" active", "");
+
 			material_option.className += " active";
 			updateCurrentMaterial(window.meshObject);
+			updateColor();
 		} else if (icon.alt === "Light") {
 			light_option.className += " active";
 			updateLight();
@@ -221,8 +255,12 @@ function selectTool(event) {
 			updateCamera();
 			updateColor();
 		} else if (icon.alt === "Animation") {
+			color_tool.className = color_tool.className.replace(" active", "");
+			color_option.className = color_option.className.replace(" active", "");
+
 			animation_option.className += " active";
 			updateAnimation();
+			updateColor();
 		}
 	}
 }

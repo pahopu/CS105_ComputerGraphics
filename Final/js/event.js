@@ -24,6 +24,8 @@ const add_sub_tool_main = add_sub_tool.querySelector(".icon-add-sub.main");
 const add_sub_tool_add = add_sub_tool.querySelector(".icon-add-sub.add");
 const add_sub_tool_remove = add_sub_tool.querySelector(".icon-add-sub.remove");
 
+const audio = new Audio('Only_LeeHi.mp3');
+
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
 
@@ -61,11 +63,11 @@ function onClickMusic(event) {
 	const music_tool = event.target;
 	if (!event.target.className.includes(" active")) {
 		music_tool.className += " active";
-
+		audio.play();
 		// Handle process for turn on music
 	} else {
 		music_tool.className = music_tool.className.replace(" active", "");
-
+		audio.pause();
 		// Handle process for turn off music
 	}
 }

@@ -24,7 +24,12 @@ const add_sub_tool_main = add_sub_tool.querySelector(".icon-add-sub.main");
 const add_sub_tool_add = add_sub_tool.querySelector(".icon-add-sub.add");
 const add_sub_tool_remove = add_sub_tool.querySelector(".icon-add-sub.remove");
 
+<<<<<<< HEAD
 const audio = new Audio("Only_LeeHi.mp3");
+=======
+const audio = new Audio('audio/Only_LeeHi.mp3');
+audio.loop = true;
+>>>>>>> d1c23c04a5935acb711c0eec67c150b249a89186
 
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);
 add_sub_tool_main.addEventListener("click", manage_add_sub_tool);

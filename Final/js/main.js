@@ -28,6 +28,7 @@ let hasLight,
 	direct_light_helper,
 	spot_light,
 	spot_light_helper,
+	ambient_light,
 	light_intensity,
 	light_distance;
 let fov, near, far;
@@ -101,6 +102,9 @@ function initLight() {
 	spot_light.shadow.bias = 0.001;
 	spot_light.shadow.mapSize.width = 4096;
 	spot_light.shadow.mapSize.height = 4096;
+
+	ambient_light = new THREE.AmbientLight(0x404040, 10);
+	scene.add(ambient_light);
 
 	spot_light_helper = new THREE.SpotLightHelper(spot_light);
 	hasLight = false;

@@ -28,7 +28,8 @@ let hasLight,
 	direct_light_helper,
 	spot_light,
 	spot_light_helper,
-	light_intensity;
+	light_intensity,
+	light_distance;
 let fov, near, far;
 let panel_gui = null;
 let isDragging = false;
@@ -55,6 +56,7 @@ function initObjects() {
 
 function initLight() {
 	light_intensity = 1;
+	light_distance = 100;
 
 	direct_light = new THREE.DirectionalLight(0xffffff);
 	direct_light.position.set(6, 17, 20);
@@ -486,17 +488,22 @@ function onClickLightOption(event) {
 				scene.add(direct_light);
 				scene.add(direct_light_helper);
 				direct_light.intensity = light_intensity;
+				direct_light.distance = light_distance;
 
 				window.currentLight = direct_light;
 			} else if (light.alt === "Point Light") {
 				scene.add(point_light);
 				scene.add(point_light_helper);
 				point_light.intensity = light_intensity;
+				point_light.distance = light_distance;
+
 				window.currentLight = point_light;
 			} else if (light.alt === "Spot Light") {
 				scene.add(spot_light);
 				scene.add(spot_light_helper);
 				spot_light.intensity = light_intensity;
+				spot_light.distance = light_distance;
+
 				window.currentLight = spot_light;
 			}
 			hasLight = true;
@@ -550,8 +557,13 @@ function onClickLightOption(event) {
 function onChangeAttrLight(event) {
 	const attr = event.target;
 	const setting_light = ["Intensity", "Distance", "Translate Light"];
-	let light_attr_value = event.target.value;
-	if (attr.name === "intensity") light_attr_value /= 10;
+	let light_attr_value = attr.value;
+	if (attr.name === "intensity") {
+		light_attr_value /= 10;
+		light_intensity = light_attr_value;
+	} else {
+		light_distance = attr.value;
+	}
 	if (hasLight) {
 		light_option.forEach((option) => {
 			if (

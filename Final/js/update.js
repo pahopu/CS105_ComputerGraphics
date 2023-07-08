@@ -103,6 +103,8 @@ function updateCurrentMaterial(meshObject) {
 }
 
 function updateLight(active_transform = false) {
+	const light_tool = document.querySelector(".icon-tool[name='light']");
+
 	const light_option = document.querySelectorAll(".sub-icon.light");
 	const slider_intensity = document.querySelector(".wrapper.intensity");
 	const slider_intensity_input = document.querySelector(
@@ -142,7 +144,10 @@ function updateLight(active_transform = false) {
 					light.className += " not-active";
 				} else {
 					light.className = light.className.replace(" not-active", "");
-					if (light.className.includes(" active")) {
+					if (
+						light.className.includes(" active") &&
+						light_tool.className.includes(" active")
+					) {
 						if (light.alt === "Intensity") {
 							slider_distance.className = slider_distance.className.replace(
 								" active",

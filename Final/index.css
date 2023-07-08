@@ -159,7 +159,7 @@
 }
 
 .tool-tip.geometry{
-    right: 6%;
+    right: 5%;
     width: 125px;
 }
 
@@ -344,21 +344,23 @@
 .subtool.geometry-option ul .sub-icon[name='octahedron']{
     width: 27px;
     height: 27px;
-    transform: translateX(2px);
-    margin-bottom: 12px;
-
+    transform: translateX(2px) rotate(-11deg);
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .subtool.geometry-option ul .sub-icon[name='icosahedron']{
     width: 28px;
     height: 28px;
-    transform: translateX(2px);
+    transform: translateX(2px) rotate(-21deg);
+    margin-bottom: 12px;
 }
 
 .subtool.geometry-option ul .sub-icon[name='dodecahedron']{
     width: 42px;
     height: 42px;
     transform: translateX(-6px);
+    margin-bottom: 6px;
 }
 
 
@@ -414,12 +416,12 @@
 
 .wrapper.intensity{
     top: 32%;
-    right: 8%;
+    right: 8.8%;
 }
 
 .wrapper.distance{
     top: 35%;
-    right: 8%;
+    right: 8.8%;
 }
 
 .wrapper.camera{

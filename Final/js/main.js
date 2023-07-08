@@ -560,9 +560,9 @@ function onChangeAttrLight(event) {
 	let light_attr_value = attr.value;
 	if (attr.name === "intensity") {
 		light_attr_value /= 10;
-		light_intensity = light_attr_value;
+		light_intensity = parseInt(light_attr_value);
 	} else {
-		light_distance = attr.value;
+		light_distance = parseInt(attr.value);
 	}
 	if (hasLight) {
 		light_option.forEach((option) => {
@@ -571,12 +571,12 @@ function onChangeAttrLight(event) {
 				!setting_light.some((el) => option.alt.includes(el))
 			) {
 				let light = scene.getObjectByName(option.alt);
-				light[attr.name] = light_attr_value;
+				light[attr.name] = parseInt(light_attr_value);
 				const slider_content = document.querySelector(
 					`.wrapper.${attr.name} .slide-value`
 				);
 
-				slider_content.innerHTML = light_attr_value;
+				slider_content.innerHTML = parseInt(light_attr_value);
 			}
 		});
 	}

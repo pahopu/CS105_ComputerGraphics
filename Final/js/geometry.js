@@ -148,6 +148,26 @@ function get_material(geometry, typeMaterial) {
 	return obj;
 }
 
+function getTube(size) {
+	class CustomSinCurve extends THREE.Curve {
+		constructor(scale = 1) {
+			super();
+
+			this.scale = scale;
+		}
+
+		getPoint(t, optionalTarget = new THREE.Vector3()) {
+			const tx = t * 3 - 1.5;
+			const ty = Math.sin(2 * Math.PI * t);
+			const tz = 0;
+
+			return optionalTarget.set(tx, ty, tz).multiplyScalar(this.scale);
+		}
+	}
+
+	return new CustomSinCurve(size);
+}
+
 function create_cube(typeMaterial = "Solid") {
 	const cubeGeometry = new THREE.BoxGeometry(3, 3, 3, 10, 10, 10);
 	const cubeMesh = get_material(cubeGeometry, typeMaterial);
@@ -203,6 +223,17 @@ function create_torus(typeMaterial = "Solid") {
 	return torus;
 }
 
+function create_torus_knot(typeMaterial = "Solid") {
+	const geometry = new THREE.TorusKnotGeometry(2, 0.6, 100, 16);
+	const torus_knot = get_material(geometry, typeMaterial);
+
+	torus_knot.position.y = 3;
+
+	initUserData(torus_knot, "Torus Knot", typeMaterial);
+
+	return torus_knot;
+}
+
 function create_teapot(typeMaterial = "Solid") {
 	const geometry = new TeapotBufferGeometry(3, 8);
 	const teapot = get_material(geometry, typeMaterial);
@@ -210,6 +241,118 @@ function create_teapot(typeMaterial = "Solid") {
 	teapot.position.y = 3;
 	initUserData(teapot, "Teapot", typeMaterial);
 	return teapot;
+}
+
+function create_tube(typeMaterial) {
+	const geometry = new THREE.TubeGeometry(getTube(3), 40, 1, 16, false);
+	const tube = get_material(geometry, typeMaterial);
+	tube.position.y = 3;
+	initUserData(tube, "Tube", typeMaterial);
+	return tube;
+}
+
+function create_octahedron(typeMaterial) {
+	const geometry = new THREE.OctahedronGeometry(3, 0);
+	const octahedron = get_material(geometry, typeMaterial);
+	octahedron.position.y = 3;
+	initUserData(octahedron, "Octahedron", typeMaterial);
+	return octahedron;
+}
+
+function create_tetrahedron(typeMaterial) {
+	const geometry = new THREE.TetrahedronGeometry(3, 0);
+	const tetrahedron = get_material(geometry, typeMaterial);
+	tetrahedron.position.y = 3;
+	initUserData(tetrahedron, "Tetrahedron", typeMaterial);
+	return tetrahedron;
+}
+
+function create_dodecahedron(typeMaterial) {
+	const geometry = new THREE.DodecahedronGeometry(3, 0);
+	const dodecahedron = get_material(geometry, typeMaterial);
+	dodecahedron.position.y = 3;
+	initUserData(dodecahedron, "Dodecahedron", typeMaterial);
+	return dodecahedron;
+}
+
+function create_icosahedron(typeMaterial) {
+	const geometry = new THREE.IcosahedronGeometry(3, 0);
+	const icosahedron = get_material(geometry, typeMaterial);
+	icosahedron.position.y = 3;
+	initUserData(icosahedron, "Icosahedron", typeMaterial);
+	return icosahedron;
+}
+
+function create_heart(typeMaterial) {
+	const unit_scale = 0.1;
+	const x = -10 * unit_scale,
+		y = -10 * unit_scale;
+	var heartShape = new THREE.Shape();
+	heartShape.moveTo(x + 5 * unit_scale, y + 5 * unit_scale);
+	heartShape.bezierCurveTo(
+		x + 5 * unit_scale,
+		y + 5 * unit_scale,
+		x + 4 * unit_scale,
+		y,
+		x,
+		y
+	);
+	heartShape.bezierCurveTo(
+		x - 6 * unit_scale,
+		y,
+		x - 6 * unit_scale,
+		y + 7 * unit_scale,
+		x - 6 * unit_scale,
+		y + 7 * unit_scale
+	);
+	heartShape.bezierCurveTo(
+		x - 6 * unit_scale,
+		y + 11 * unit_scale,
+		x - 3 * unit_scale,
+		y + 15.4 * unit_scale,
+		x + 5 * unit_scale,
+		y + 19 * unit_scale
+	);
+	heartShape.bezierCurveTo(
+		x + 12 * unit_scale,
+		y + 15.4 * unit_scale,
+		x + 16 * unit_scale,
+		y + 11 * unit_scale,
+		x + 16 * unit_scale,
+		y + 7 * unit_scale
+	);
+	heartShape.bezierCurveTo(
+		x + 16 * unit_scale,
+		y + 7 * unit_scale,
+		x + 16 * unit_scale,
+		y,
+		x + 10 * unit_scale,
+		y
+	);
+	heartShape.bezierCurveTo(
+		x + 7 * unit_scale,
+		y,
+		x + 5 * unit_scale,
+		y + 5 * unit_scale,
+		x + 5 * unit_scale,
+		y + 5 * unit_scale
+	);
+
+	const extrudeSettings = {
+		depth: 0.2,
+		bevelEnabled: true,
+		bevelSegments: 8,
+		steps: 2,
+		bevelSize: 0.2,
+		bevelThickness: 0.2,
+	};
+
+	const geometryHeart = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+	let heart = get_material(geometryHeart, typeMaterial);
+
+	heart.position.y = 3;
+	initUserData(heart, "Heart", typeMaterial);
+	return heart;
 }
 
 function create_geometry(typeMesh, typeMaterial) {
@@ -232,6 +375,27 @@ function create_geometry(typeMesh, typeMaterial) {
 			break;
 		case "Teapot":
 			obj = create_teapot(typeMaterial);
+			break;
+		case "Torus Knot":
+			obj = create_torus_knot(typeMaterial);
+			break;
+		case "Tube":
+			obj = create_tube(typeMaterial);
+			break;
+		case "Tetrahedron":
+			obj = create_tetrahedron(typeMaterial);
+			break;
+		case "Octahedron":
+			obj = create_octahedron(typeMaterial);
+			break;
+		case "Dodecahedron":
+			obj = create_dodecahedron(typeMaterial);
+			break;
+		case "Icosahedron":
+			obj = create_icosahedron(typeMaterial);
+			break;
+		case "Heart":
+			obj = create_heart(typeMaterial);
 			break;
 	}
 	return obj;

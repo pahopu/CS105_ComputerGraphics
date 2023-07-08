@@ -28,7 +28,8 @@ let hasLight,
 	direct_light_helper,
 	spot_light,
 	spot_light_helper,
-	light_intensity;
+	light_intensity,
+	light_distance;
 let fov, near, far;
 let panel_gui = null;
 let isDragging = false;
@@ -55,6 +56,7 @@ function initObjects() {
 
 function initLight() {
 	light_intensity = 1;
+	light_distance = 100;
 
 	direct_light = new THREE.DirectionalLight(0xffffff);
 	direct_light.position.set(6, 17, 20);
@@ -279,13 +281,16 @@ document.querySelector(".icon-add-sub.remove").addEventListener(
 		let meshSelected = meshObject.find(
 			(obj) => obj.userData.isSelected === true
 		);
-		meshObject = meshObject.filter((obj) => obj !== meshSelected);
-		meshSelected = resetObj(meshSelected);
 
-		if (meshObject.length === 1) {
-			meshObject[0].userData.isSelected = true;
+		if (meshObject.length > 0 && meshSelected) {
+			meshObject = meshObject.filter((obj) => obj !== meshSelected);
+			meshSelected = resetObj(meshSelected);
+
+			if (meshObject.length === 1) {
+				meshObject[0].userData.isSelected = true;
+			}
+			window.meshObject = meshObject;
 		}
-		window.meshObject = meshObject;
 
 		updateToolBar();
 	},
@@ -454,8 +459,9 @@ function active_transform(event) {
 function onClickLightOption(event) {
 	const light = event.target;
 
-	const setting_light = ["Intensity", "Color Light", "Translate Light"];
+	const setting_light = ["Intensity", "Distance", "Translate Light"];
 	slider[0].className = slider[0].className.replace(" active", "");
+	slider[1].className = slider[1].className.replace(" active", "");
 
 	if (!setting_light.some((el) => light.alt.includes(el))) {
 		let old_color;
@@ -482,17 +488,22 @@ function onClickLightOption(event) {
 				scene.add(direct_light);
 				scene.add(direct_light_helper);
 				direct_light.intensity = light_intensity;
+				direct_light.distance = light_distance;
 
 				window.currentLight = direct_light;
 			} else if (light.alt === "Point Light") {
 				scene.add(point_light);
 				scene.add(point_light_helper);
 				point_light.intensity = light_intensity;
+				point_light.distance = light_distance;
+
 				window.currentLight = point_light;
 			} else if (light.alt === "Spot Light") {
 				scene.add(spot_light);
 				scene.add(spot_light_helper);
 				spot_light.intensity = light_intensity;
+				spot_light.distance = light_distance;
+
 				window.currentLight = spot_light;
 			}
 			hasLight = true;
@@ -512,12 +523,29 @@ function onClickLightOption(event) {
 
 					transformControls.attach(window.currentLight);
 					transformControls.setMode("translate");
+				} else {
+					let light_intensity = document.querySelector(
+						"[class*='sub-icon light'][name='intensity']"
+					);
+					let light_distance = document.querySelector(
+						"[class*='sub-icon light'][name='distance']"
+					);
+
+					light_intensity.className = light_intensity.className.replace(
+						" active",
+						""
+					);
+					light_distance.className = light_distance.className.replace(
+						" active",
+						""
+					);
 				}
 				light.className += " active";
 			} else {
 				light.className = light.className.replace(" active", "");
 				if (light.alt === "Translate Light") transformControls.detach();
 				slider[0].className = slider[0].className.replace(" active", "");
+				slider[1].className = slider[1].className.replace(" active", "");
 			}
 		}
 	}
@@ -526,10 +554,16 @@ function onClickLightOption(event) {
 	updateColor();
 }
 
-function onChangeIntensity(event) {
-	const setting_light = ["Intensity", "Color Light", "Translate Light"];
-
-	light_intensity = event.target.value / 10;
+function onChangeAttrLight(event) {
+	const attr = event.target;
+	const setting_light = ["Intensity", "Distance", "Translate Light"];
+	let light_attr_value = attr.value;
+	if (attr.name === "intensity") {
+		light_attr_value /= 10;
+		light_intensity = parseInt(light_attr_value);
+	} else {
+		light_distance = parseInt(attr.value);
+	}
 	if (hasLight) {
 		light_option.forEach((option) => {
 			if (
@@ -537,12 +571,12 @@ function onChangeIntensity(event) {
 				!setting_light.some((el) => option.alt.includes(el))
 			) {
 				let light = scene.getObjectByName(option.alt);
-				light.intensity = light_intensity;
+				light[attr.name] = parseInt(light_attr_value);
 				const slider_content = document.querySelector(
-					".wrapper.intensity .slide-value"
+					`.wrapper.${attr.name} .slide-value`
 				);
 
-				slider_content.innerHTML = light.intensity;
+				slider_content.innerHTML = parseInt(light_attr_value);
 			}
 		});
 	}
@@ -739,10 +773,10 @@ tools.forEach((tool, index) => {
 
 const slider = document.querySelectorAll(".wrapper");
 slider.forEach((sli) => {
-	if (sli.className.includes("intensity")) {
-		sli.addEventListener("input", onChangeIntensity, false);
-	} else if (sli.className.includes("camera")) {
+	if (sli.className.includes("camera")) {
 		sli.addEventListener("input", onChangeCameraProp, false);
+	} else {
+		sli.addEventListener("input", onChangeAttrLight, false);
 	}
 });
 

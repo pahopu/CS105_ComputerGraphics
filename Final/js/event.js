@@ -1,3 +1,4 @@
+import { meshObject } from "./main";
 import {
 	updateCurrentGeometry,
 	updateCurrentMaterial,
@@ -70,12 +71,24 @@ function manage_add_sub_tool(event) {
 
 function active_add_sub_tool() {
 	add_sub_tool_add.className += " active";
-	add_sub_tool_remove.className += " active";
+
+	if (
+		meshObject.length > 0 &&
+		meshObject.find((obj) => obj.userData.isSelected === true)
+	) {
+		add_sub_tool_remove.className += " active";
+	} else {
+		add_sub_tool_remove.className += " not-active";
+	}
 }
 
 function deactive_add_sub_tool() {
 	add_sub_tool_add.className = add_sub_tool_add.className.replace(
 		" active",
+		""
+	);
+	add_sub_tool_remove.className = add_sub_tool_remove.className.replace(
+		" not-active",
 		""
 	);
 	add_sub_tool_remove.className = add_sub_tool_remove.className.replace(

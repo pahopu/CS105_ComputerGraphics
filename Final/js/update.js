@@ -2,6 +2,7 @@ import invert from "invert-color";
 import { meshObject } from "./main";
 
 function updateToolBar() {
+	const remove_icon = document.querySelector(".icon-add-sub.remove.active");
 	const reset_icon = document.querySelector(".icon-reset");
 	const all_normal_tool = document.querySelectorAll(".icon-tool.normal");
 	const all_transform_tool = document.querySelectorAll(".icon-tool.transform");
@@ -13,6 +14,8 @@ function updateToolBar() {
 	const list_except = ["Light", "Camera"];
 
 	reset_icon.className = reset_icon.className.replace(" not-active", "");
+	if (remove_icon)
+		remove_icon.className = remove_icon.className.replace(" not-active", "");
 
 	all_normal_tool.forEach(
 		(tool) => (tool.className = tool.className.replace(" not-active", ""))
@@ -31,6 +34,8 @@ function updateToolBar() {
 	);
 	if (window.meshObject.length === 0 || !meshSelected) {
 		reset_icon.className += " not-active";
+
+		if (remove_icon) remove_icon.className += " not-active";
 		all_normal_tool.forEach((tool) => {
 			if (!list_except.some((el) => tool.alt.includes(el))) {
 				tool.className = tool.className.replace(" active", "");
@@ -98,16 +103,33 @@ function updateCurrentMaterial(meshObject) {
 }
 
 function updateLight(active_transform = false) {
+	const light_tool = document.querySelector(".icon-tool[name='light']");
+
 	const light_option = document.querySelectorAll(".sub-icon.light");
-	const slider = document.querySelector(".wrapper.intensity");
-	const slider_input = document.querySelector(".wrapper.intensity input");
-	const slider_content = document.querySelector(
+	const slider_intensity = document.querySelector(".wrapper.intensity");
+	const slider_intensity_input = document.querySelector(
+		".wrapper.intensity input"
+	);
+	const slider_intensity_content = document.querySelector(
 		".wrapper.intensity .slide-value"
 	);
 
-	slider.className = slider.className.replace(" active", "");
+	const slider_distance = document.querySelector(".wrapper.distance");
+	const slider_distance_input = document.querySelector(
+		".wrapper.distance input"
+	);
+	const slider_distance_content = document.querySelector(
+		".wrapper.distance .slide-value"
+	);
 
-	const setting_light = ["Intensity", "Distance Light", "Translate Light"];
+	slider_intensity.className = slider_intensity.className.replace(
+		" active",
+		""
+	);
+
+	slider_distance.className = slider_distance.className.replace(" active", "");
+
+	const setting_light = ["Intensity", "Distance", "Translate Light"];
 
 	if (active_transform) {
 		light_option[light_option.length - 1].className = light_option[
@@ -123,11 +145,25 @@ function updateLight(active_transform = false) {
 				} else {
 					light.className = light.className.replace(" not-active", "");
 					if (
-						light.alt === "Intensity" &&
-						light.className.includes(" active")
+						light.className.includes(" active") &&
+						light_tool.className.includes(" active")
 					) {
-						slider.className += " active";
-						slider_content.innerHTML = slider_input.value / 10;
+						if (light.alt === "Intensity") {
+							slider_distance.className = slider_distance.className.replace(
+								" active",
+								""
+							);
+							slider_intensity.className += " active";
+							slider_intensity_content.innerHTML =
+								slider_intensity_input.value / 10;
+						} else if (light.alt === "Distance") {
+							slider_intensity.className = slider_intensity.className.replace(
+								" active",
+								""
+							);
+							slider_distance.className += " active";
+							slider_distance_content.innerHTML = slider_distance_input.value;
+						}
 					}
 				}
 			} else {

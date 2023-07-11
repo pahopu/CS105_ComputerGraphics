@@ -21,6 +21,7 @@
 * [Thông tin seminar](#thông-tin-seminar)
 * [Thông tin final project](#thông-tin-final-project)
 * [Các bước cần thiết](#các-bước-cần-thiết)
+* [Demo final project video](#demo-final-project-video)
 
 ## [GIỚI THIỆU MÔN HỌC](#top)
 * **Tên môn học:** Đồ họa Máy tính - Computer Graphics
@@ -74,3 +75,6 @@ npx vite Seminar
 ```bash
 npx vite Final
 ```
+
+## [DEMO FINAL PROJECT VIDEO](#top)
+Bạn có thể xem video demo tại [đây](https://drive.google.com/file/d/1W5FeB6GJJZ_9kqYrV8tcoElcbzV9nHD3/view?usp=drive_link).

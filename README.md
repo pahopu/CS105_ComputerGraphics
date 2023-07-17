@@ -9,7 +9,7 @@
 
 <h1 align="center"><b>ĐỒ HỌA MÁY TÍNH<br>(COMPUTER GRAPHICS)</b></h>
 
-[![Status](https://img.shields.io/badge/status-working-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
+[![Status](https://img.shields.io/badge/status-done-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
 [![GitHub contributors](https://img.shields.io/github/contributors/pahopu/CS105_ComputerGraphics?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics/graphs/contributors)
 [![Status](https://img.shields.io/badge/language1-html-orange?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
 [![Status](https://img.shields.io/badge/language2-css-blue?style=flat-square)](https://github.com/pahopu/CS105_ComputerGraphics)
